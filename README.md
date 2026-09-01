@@ -13,11 +13,11 @@ Sistema integral para la evaluación, auditoría y simulación financiera de cos
 
 ---
 
-## 📦 Despliegue en ZimaBoard / Servidor con Docker
+## 📦 Despliegue en ZimaBoard / Servidor con Docker (Producción)
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/<tu-usuario>/evaluacion-costos-bioquimicos.git
+git clone https://github.com/juanmaobarrio/evaluacion-costos-bioquimicos.git
 cd evaluacion-costos-bioquimicos
 ```
 
@@ -26,8 +26,8 @@ cd evaluacion-costos-bioquimicos
 docker compose up -d --build
 ```
 
-### 3. Accesos
-* **Frontend Web:** `http://<IP-DE-TU-ZIMABOARD>:3000`
+### 3. Accesos en Producción
+* **Frontend Web:** `http://<IP-DE-TU-ZIMABOARD>:5174`
 * **Backend API Docs (Swagger):** `http://<IP-DE-TU-ZIMABOARD>:8001/api/v1/docs`
 
 ---
