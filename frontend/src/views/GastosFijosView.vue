@@ -355,20 +355,20 @@ const insumosDescartables = computed(() => {
 const loadData = async () => {
   loading.value = true;
   try {
-    const [resGf, resMat, resParam, resIns, resSec] = await Promise.all([
+    const results = await Promise.allSettled([
       apiClient.get('/gastos-fijos'),
       apiClient.get('/materiales-extraccion'),
       apiClient.get('/parametros'),
       apiClient.get('/insumos'),
       apiClient.get('/secciones')
     ]);
-    gastosFijos.value = resGf.data;
-    materialesExtraccion.value = resMat.data;
-    parametros.value = resParam.data;
-    allInsumos.value = resIns.data;
-    secciones.value = resSec.data;
+    if (results[0].status === 'fulfilled') gastosFijos.value = results[0].value.data;
+    if (results[1].status === 'fulfilled') materialesExtraccion.value = results[1].value.data;
+    if (results[2].status === 'fulfilled') parametros.value = results[2].value.data;
+    if (results[3].status === 'fulfilled') allInsumos.value = results[3].value.data;
+    if (results[4].status === 'fulfilled') secciones.value = results[4].value.data;
   } catch (err) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los datos', life: 3000 });
+    toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar algunos datos', life: 3000 });
   } finally {
     loading.value = false;
   }

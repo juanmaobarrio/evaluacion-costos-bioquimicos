@@ -437,18 +437,18 @@ const filteredDeterminaciones = computed(() => {
 const loadData = async () => {
   loading.value = true;
   try {
-    const [resDets, resEqs, resIns, resSec] = await Promise.all([
+    const results = await Promise.allSettled([
       apiClient.get('/determinaciones'),
       apiClient.get('/equipos'),
       apiClient.get('/insumos'),
       apiClient.get('/secciones')
     ]);
-    determinaciones.value = resDets.data;
-    equipos.value = resEqs.data;
-    insumosList.value = resIns.data;
-    seccionesList.value = resSec.data;
+    if (results[0].status === 'fulfilled') determinaciones.value = results[0].value.data;
+    if (results[1].status === 'fulfilled') equipos.value = results[1].value.data;
+    if (results[2].status === 'fulfilled') insumosList.value = results[2].value.data;
+    if (results[3].status === 'fulfilled') seccionesList.value = results[3].value.data;
   } catch (err) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar las determinaciones', life: 3000 });
+    toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar algunos datos de determinaciones', life: 3000 });
   } finally {
     loading.value = false;
   }

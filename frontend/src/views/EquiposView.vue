@@ -310,12 +310,12 @@ const formatNumber = (val: number | string | undefined | null) => {
 const loadEquipos = async () => {
   loading.value = true;
   try {
-    const [resEq, resSec] = await Promise.all([
+    const results = await Promise.allSettled([
       apiClient.get('/equipos'),
       apiClient.get('/secciones')
     ]);
-    equipos.value = resEq.data;
-    seccionesList.value = resSec.data;
+    if (results[0].status === 'fulfilled') equipos.value = results[0].value.data;
+    if (results[1].status === 'fulfilled') seccionesList.value = results[1].value.data;
   } catch (err) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los equipos', life: 3000 });
   } finally {

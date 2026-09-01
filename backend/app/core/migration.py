@@ -53,8 +53,9 @@ async def run_auto_migrations():
 
     # 3. Asegurar que las secciones por defecto existan
     try:
-        from app.modules.costos_generales.models import SeccionLaboratorio
+        from app.modules.costos_generales.models import SeccionLaboratorio, ParametroLaboratorio
         from sqlalchemy import select, func
+        from decimal import Decimal
         async with AsyncSessionLocal() as db:
             sec_count = (await db.execute(select(func.count(SeccionLaboratorio.id)))).scalar()
             if not sec_count or sec_count == 0:
@@ -72,5 +73,19 @@ async def run_auto_migrations():
                 db.add_all(secciones)
                 await db.commit()
                 log.info("[MIGRACIÓN OK] Secciones iniciales creadas.")
+
+            # Asegurar parámetros esenciales
+            param_count = (await db.execute(select(func.count(ParametroLaboratorio.id)))).scalar()
+            if not param_count or param_count == 0:
+                log.info("[MIGRACIÓN] Inicializando parámetros de laboratorio por defecto...")
+                params = [
+                    ParametroLaboratorio(clave="PACIENTES_MENSUALES_ESTIMADOS", valor_numerico=Decimal("1500"), descripcion="Volumen mensual promedio de pacientes atendidos", categoria="Produccion"),
+                    ParametroLaboratorio(clave="VALOR_HORA_TECNICO", valor_numerico=Decimal("4500.00"), descripcion="Costo hora mano de obra técnica (ARS)", categoria="ManoDeObra"),
+                    ParametroLaboratorio(clave="VALOR_HORA_BIOQUIMICO", valor_numerico=Decimal("9000.00"), descripcion="Costo hora bioquímica de firma y validación (ARS)", categoria="ManoDeObra"),
+                    ParametroLaboratorio(clave="USD_EXCHANGE_RATE", valor_numerico=Decimal("1200.00"), descripcion="Tipo de cambio de referencia USD a ARS", categoria="Moneda"),
+                ]
+                db.add_all(params)
+                await db.commit()
+                log.info("[MIGRACIÓN OK] Parámetros iniciales creados.")
     except Exception as e:
-        log.warning(f"[MIGRACIÓN WARN] Verificación de secciones: {e}")
+        log.warning(f"[MIGRACIÓN WARN] Verificación de secciones/parámetros: {e}")
