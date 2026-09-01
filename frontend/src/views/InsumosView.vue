@@ -198,11 +198,11 @@
             </div>
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Costo Compra Unitario *</label>
-              <input v-model.number="formIns.costo_presentacion" type="number" step="0.01" min="0.01" required class="form-input text-xs" />
+              <input v-model.number="formIns.costo_presentacion" type="number" step="any" min="0.0001" required class="form-input text-xs" />
             </div>
             <div>
               <label class="block font-semibold text-amber-400 mb-1">Tipo de Cambio USD/ARS</label>
-              <input v-model.number="formIns.tipo_cambio_al_costear" type="number" step="1" class="form-input text-xs" />
+              <input v-model.number="formIns.tipo_cambio_al_costear" type="number" step="any" class="form-input text-xs" />
             </div>
           </div>
         </div>
@@ -217,14 +217,14 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Unidades Compradas / Consumidas *</label>
-              <input v-model.number="formIns.unidades_compradas_periodo" type="number" step="0.1" min="0.1" required class="form-input text-xs" placeholder="Ej: 4" />
+              <input v-model.number="formIns.unidades_compradas_periodo" type="number" step="any" min="0.0001" required class="form-input text-xs" placeholder="Ej: 4" />
               <p class="text-[10px] text-slate-500 mt-0.5">Cantidad de reactivos/cajas consumidos en el período</p>
             </div>
             <div>
               <label class="block font-semibold text-slate-300 mb-1">
                 {{ formIns.base_calculo === 'paciente' ? 'Pacientes Atendidos en el Período *' : 'Determinaciones Entregadas en el Período *' }}
               </label>
-              <input v-model.number="formIns.determinaciones_periodo" type="number" step="1" min="1" required class="form-input text-xs" :placeholder="formIns.base_calculo === 'paciente' ? 'Ej: 1500 pacientes' : 'Ej: 31445 tests'" />
+              <input v-model.number="formIns.determinaciones_periodo" type="number" step="any" min="1" required class="form-input text-xs" :placeholder="formIns.base_calculo === 'paciente' ? 'Ej: 1500 pacientes' : 'Ej: 31445 tests'" />
               <p class="text-[10px] text-slate-500 mt-0.5">
                 {{ formIns.base_calculo === 'paciente' ? 'Total de pacientes/extracciones en el período' : 'Total de tests entregados que usan este insumo' }}
               </p>

@@ -237,11 +237,11 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-300 mb-1">Arancel de Venta Ref. (ARS) *</label>
-            <input v-model.number="formDet.arancel_referencia_ars" type="number" step="10" required class="form-input text-xs" placeholder="Ej: 5200" />
+            <input v-model.number="formDet.arancel_referencia_ars" type="number" step="any" required class="form-input text-xs" placeholder="Ej: 5200" />
           </div>
           <div>
             <label class="block font-semibold text-slate-300 mb-1">Tiempo de Proceso Técnico (min)</label>
-            <input v-model.number="formDet.tiempo_proceso_minutos" type="number" step="0.5" class="form-input text-xs" />
+            <input v-model.number="formDet.tiempo_proceso_minutos" type="number" step="any" class="form-input text-xs" />
           </div>
         </div>
 

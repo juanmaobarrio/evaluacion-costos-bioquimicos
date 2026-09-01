@@ -151,7 +151,7 @@
             </div>
             <div>
               <label class="block font-semibold text-amber-400 mb-1">Tipo de Cambio USD/ARS *</label>
-              <input v-model.number="formEq.tipo_cambio_al_costear" type="number" step="1" required class="form-input text-xs" />
+              <input v-model.number="formEq.tipo_cambio_al_costear" type="number" step="any" required class="form-input text-xs" />
             </div>
           </div>
         </div>
@@ -166,22 +166,22 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Alquiler / Comodato Mensual</label>
-              <input v-model.number="formEq.costo_alquiler_mensual" type="number" step="10" class="form-input text-xs" placeholder="0.00" />
+              <input v-model.number="formEq.costo_alquiler_mensual" type="number" step="any" class="form-input text-xs" placeholder="0.00" />
             </div>
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Service Técnico / Mantenimiento Mensual</label>
-              <input v-model.number="formEq.costo_mantenimiento_mensual" type="number" step="10" class="form-input text-xs" placeholder="0.00" />
+              <input v-model.number="formEq.costo_mantenimiento_mensual" type="number" step="any" class="form-input text-xs" placeholder="0.00" />
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Amortización Mensual (si es propio)</label>
-              <input v-model.number="formEq.costo_amortizacion_mensual" type="number" step="10" class="form-input text-xs" placeholder="0.00" />
+              <input v-model.number="formEq.costo_amortizacion_mensual" type="number" step="any" class="form-input text-xs" placeholder="0.00" />
             </div>
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Abono Servicio Calibración Técnica Oficial</label>
-              <input v-model.number="formEq.costo_calibracion_controles_mensual" type="number" step="10" class="form-input text-xs" placeholder="0.00" />
+              <input v-model.number="formEq.costo_calibracion_controles_mensual" type="number" step="any" class="form-input text-xs" placeholder="0.00" />
             </div>
           </div>
 

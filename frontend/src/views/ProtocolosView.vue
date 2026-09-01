@@ -111,7 +111,7 @@
 
         <div>
           <label class="block font-semibold text-slate-300 mb-1">Arancel Sugerido (ARS)</label>
-          <input v-model.number="formProt.arancel_sugerido_ars" type="number" step="100" class="form-input text-xs" />
+          <input v-model.number="formProt.arancel_sugerido_ars" type="number" step="any" class="form-input text-xs" />
         </div>
 
         <!-- Selección de Determinaciones -->

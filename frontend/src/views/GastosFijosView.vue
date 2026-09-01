@@ -207,7 +207,7 @@
           </div>
           <div>
             <label class="block font-semibold text-slate-300 mb-1">Monto Mensual (ARS) *</label>
-            <input v-model.number="formGasto.monto_mensual" type="number" step="100" required class="form-input text-xs" />
+            <input v-model.number="formGasto.monto_mensual" type="number" step="any" required class="form-input text-xs" />
           </div>
         </div>
         <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
@@ -230,7 +230,7 @@
         </div>
         <div>
           <label class="block font-semibold text-slate-300 mb-1">Cantidad por Paciente *</label>
-          <input v-model.number="formMaterial.cantidad" type="number" step="0.5" min="0.1" required class="form-input text-xs" />
+          <input v-model.number="formMaterial.cantidad" type="number" step="any" min="0.01" required class="form-input text-xs" />
         </div>
         <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
           <button type="button" @click="materialDialog = false" class="btn-secondary text-xs">Cancelar</button>
