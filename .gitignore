@@ -1,0 +1,38 @@
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/*.local
+
+# Python / Backend
+backend/__pycache__/
+backend/*/__pycache__/
+backend/*/*/__pycache__/
+backend/*/*/*/__pycache__/
+*.py[cod]
+*$py.class
+backend/.venv/
+.venv/
+env/
+venv/
+*.log
+backend/*.log
+costos_bioquimica.db
+*.db
+*.db-journal
+backend/costos_bioquimica.db
+backend/costos_bioquimica.db-journal
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker / Temporary test files
+screenshot*.png
+test_*.mjs
+qa_*.mjs
+verify_*.mjs
