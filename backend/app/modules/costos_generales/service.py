@@ -4,9 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete, func
 from sqlalchemy.orm import selectinload
 from app.modules.costos_generales.models import (
-    GastoFijoMensual, ParametroLaboratorio, MaterialExtraccionItem, Protocolo, ProtocoloEstudio
+    SeccionLaboratorio, GastoFijoMensual, ParametroLaboratorio, MaterialExtraccionItem, Protocolo, ProtocoloEstudio
 )
 from app.modules.costos_generales.schemas import (
+    SeccionLaboratorioCreate, SeccionLaboratorioUpdate, SeccionLaboratorioOut,
     GastoFijoCreate, GastoFijoUpdate, GastoFijoOut,
     ParametroLaboratorioCreate, ParametroLaboratorioUpdate, ParametroLaboratorioOut,
     MaterialExtraccionItemCreate, MaterialExtraccionItemOut,
@@ -16,6 +17,45 @@ from app.modules.determinaciones.service import DeterminacionService
 from app.modules.determinaciones.models import Determinacion, DeterminacionInsumo
 from app.modules.insumos.models import Insumo
 from app.modules.costos.calculator_service import CostCalculatorService, round_currency
+
+class SeccionesService:
+    @staticmethod
+    async def get_all(db: AsyncSession, activo_only: bool = False) -> List[SeccionLaboratorioOut]:
+        query = select(SeccionLaboratorio)
+        if activo_only:
+            query = query.where(SeccionLaboratorio.activo == True)
+        res = await db.execute(query.order_by(SeccionLaboratorio.nombre))
+        return res.scalars().all()
+
+    @staticmethod
+    async def create(db: AsyncSession, seccion_in: SeccionLaboratorioCreate) -> SeccionLaboratorio:
+        seccion = SeccionLaboratorio(**seccion_in.model_dump())
+        db.add(seccion)
+        await db.commit()
+        await db.refresh(seccion)
+        return seccion
+
+    @staticmethod
+    async def update(db: AsyncSession, seccion_id: int, seccion_in: SeccionLaboratorioUpdate) -> Optional[SeccionLaboratorio]:
+        res = await db.execute(select(SeccionLaboratorio).where(SeccionLaboratorio.id == seccion_id))
+        seccion = res.scalars().first()
+        if not seccion:
+            return None
+        for k, v in seccion_in.model_dump(exclude_unset=True).items():
+            setattr(seccion, k, v)
+        await db.commit()
+        await db.refresh(seccion)
+        return seccion
+
+    @staticmethod
+    async def delete(db: AsyncSession, seccion_id: int) -> bool:
+        res = await db.execute(select(SeccionLaboratorio).where(SeccionLaboratorio.id == seccion_id))
+        seccion = res.scalars().first()
+        if not seccion:
+            return False
+        await db.delete(seccion)
+        await db.commit()
+        return True
 
 class GastosFijosService:
     @staticmethod

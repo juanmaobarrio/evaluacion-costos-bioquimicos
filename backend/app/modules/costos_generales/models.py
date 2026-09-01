@@ -4,6 +4,16 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime, Numeric, Text
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
+class SeccionLaboratorio(Base):
+    __tablename__ = "secciones_laboratorio"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nombre = Column(String(100), unique=True, index=True, nullable=False)
+    descripcion = Column(String(255), nullable=True)
+    color = Column(String(50), default="emerald") # emerald, blue, purple, amber, cyan, rose
+    activo = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 class GastoFijoMensual(Base):
     __tablename__ = "gastos_fijos_mensuales"
 
@@ -35,7 +45,7 @@ class MaterialExtraccionItem(Base):
     insumo_id = Column(Integer, ForeignKey("insumos.id", ondelete="CASCADE"), nullable=False)
     cantidad = Column(Numeric(10, 4), default=1.0, nullable=False)
     es_obligatorio = Column(Boolean, default=True) # Siempre se computa por paciente
-    
+
     insumo = relationship("Insumo")
 
 class ProtocoloEstudio(Base):
@@ -55,13 +65,13 @@ class Protocolo(Base):
     nombre = Column(String(200), nullable=False, index=True) # Ej: "Perfil Lipídico", "Chequeo Básico", "Rutina Quirúrgica"
     codigo = Column(String(50), unique=True, nullable=True)
     descripcion = Column(Text, nullable=True)
-    
+
     # Costos calculados
     costo_determinaciones_ars = Column(Numeric(14, 4), default=0.0)
     costo_extraccion_descartables_ars = Column(Numeric(14, 4), default=0.0)
     costo_overhead_fijo_ars = Column(Numeric(14, 4), default=0.0)
     costo_total_protocolo_ars = Column(Numeric(14, 4), default=0.0)
-    
+
     arancel_sugerido_ars = Column(Numeric(14, 4), default=0.0)
     activo = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)

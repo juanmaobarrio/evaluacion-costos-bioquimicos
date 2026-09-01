@@ -133,6 +133,57 @@
           </div>
         </div>
       </TabPanel>
+
+      <!-- TAB 4: SECCIONES DEL LABORATORIO -->
+      <TabPanel header="Secciones del Laboratorio">
+        <div class="p-2 space-y-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-xs text-slate-400">Maestro de secciones operativas para clasificar determinaciones, autoanalizadores y reportes</p>
+              <p class="text-sm font-bold text-emerald-400 mt-1">{{ secciones.length }} Secciones Activas</p>
+            </div>
+            <button @click="openNewSeccionDialog" class="btn-primary text-xs">
+              <i class="pi pi-plus"></i>
+              <span>Nueva Sección</span>
+            </button>
+          </div>
+
+          <DataTable :value="secciones" class="text-xs">
+            <Column field="nombre" header="Nombre de la Sección" :sortable="true">
+              <template #body="{ data }">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full" :class="getColorCircleClass(data.color)"></span>
+                  <span class="font-semibold text-slate-100 text-sm">{{ data.nombre }}</span>
+                </div>
+              </template>
+            </Column>
+            <Column field="descripcion" header="Descripción / Alcance">
+              <template #body="{ data }">
+                <span class="text-slate-400">{{ data.descripcion || 'Sin descripción' }}</span>
+              </template>
+            </Column>
+            <Column field="color" header="Color Identificador" style="width: 140px">
+              <template #body="{ data }">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase border" :class="getColorBadgeClass(data.color)">
+                  {{ data.color || 'emerald' }}
+                </span>
+              </template>
+            </Column>
+            <Column header="Acciones" style="width: 100px">
+              <template #body="{ data }">
+                <div class="flex items-center gap-2">
+                  <button @click="editSeccion(data)" title="Editar" class="p-1.5 text-slate-400 hover:text-emerald-400 rounded">
+                    <i class="pi pi-pencil"></i>
+                  </button>
+                  <button @click="deleteSeccion(data)" title="Eliminar" class="p-1.5 text-slate-400 hover:text-rose-400 rounded">
+                    <i class="pi pi-trash"></i>
+                  </button>
+                </div>
+              </template>
+            </Column>
+          </DataTable>
+        </div>
+      </TabPanel>
     </TabView>
 
     <!-- Dialog Gasto Fijo -->
@@ -187,28 +238,93 @@
         </div>
       </form>
     </Dialog>
+
+    <!-- Dialog Sección Laboratorio -->
+    <Dialog v-model:visible="seccionDialog" modal :header="formSeccion.id ? 'Editar Sección' : 'Nueva Sección del Laboratorio'" :style="{ width: '480px' }">
+      <form @submit.prevent="saveSeccion" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Nombre de la Sección *</label>
+          <input v-model="formSeccion.nombre" required class="form-input text-xs" placeholder="Ej: Toxicología y Monitoreo de Drogas" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Descripción / Alcance</label>
+          <input v-model="formSeccion.descripcion" class="form-input text-xs" placeholder="Ej: Dosajes, drogas terapéuticas y de abuso" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Color Identificador</label>
+          <select v-model="formSeccion.color" class="form-input text-xs">
+            <option value="emerald">Verde Esmeralda (Química/General)</option>
+            <option value="purple">Púrpura (Hematología)</option>
+            <option value="sky">Azul Cielo (Inmunología)</option>
+            <option value="amber">Ámbar / Amarillo (Endocrinología)</option>
+            <option value="cyan">Cian (Microbiología)</option>
+            <option value="indigo">Índigo (Biología Molecular)</option>
+            <option value="rose">Rosa / Rojo (Orinas/Urgencias)</option>
+            <option value="orange">Naranja (Toxicología)</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+          <button type="button" @click="seccionDialog = false" class="btn-secondary text-xs">Cancelar</button>
+          <button type="submit" class="btn-primary text-xs">Guardar Sección</button>
+        </div>
+      </form>
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import { useConfirm } from 'primevue/useconfirm';
 import { apiClient } from '@/services/api';
-import type { GastoFijo, Insumo } from '@/types';
+import type { GastoFijo, Insumo, SeccionLaboratorio } from '@/types';
 
 const toast = useToast();
+const confirm = useConfirm();
 
 const loading = ref(false);
 const gastosFijos = ref<GastoFijo[]>([]);
 const materialesExtraccion = ref<any[]>([]);
 const parametros = ref<any[]>([]);
 const allInsumos = ref<Insumo[]>([]);
+const secciones = ref<SeccionLaboratorio[]>([]);
 
 const gastoDialog = ref(false);
 const formGasto = ref<any>({ id: null, concepto: '', categoria: 'Servicios', monto_mensual: 100000 });
 
 const materialDialog = ref(false);
 const formMaterial = ref<any>({ insumo_id: null, cantidad: 1.0 });
+
+const seccionDialog = ref(false);
+const formSeccion = ref<any>({ id: null, nombre: '', descripcion: '', color: 'emerald' });
+
+const getColorCircleClass = (c: string) => {
+  const map: any = {
+    emerald: 'bg-emerald-500',
+    purple: 'bg-purple-500',
+    sky: 'bg-sky-500',
+    amber: 'bg-amber-500',
+    cyan: 'bg-cyan-500',
+    indigo: 'bg-indigo-500',
+    rose: 'bg-rose-500',
+    orange: 'bg-orange-500'
+  };
+  return map[c] || 'bg-emerald-500';
+};
+
+const getColorBadgeClass = (c: string) => {
+  const map: any = {
+    emerald: 'bg-emerald-950 text-emerald-400 border-emerald-800',
+    purple: 'bg-purple-950 text-purple-400 border-purple-800',
+    sky: 'bg-sky-950 text-sky-400 border-sky-800',
+    amber: 'bg-amber-950 text-amber-400 border-amber-800',
+    cyan: 'bg-cyan-950 text-cyan-400 border-cyan-800',
+    indigo: 'bg-indigo-950 text-indigo-400 border-indigo-800',
+    rose: 'bg-rose-950 text-rose-400 border-rose-800',
+    orange: 'bg-orange-950 text-orange-400 border-orange-800'
+  };
+  return map[c] || 'bg-slate-800 text-slate-300 border-slate-700';
+};
 
 const formatCurrency = (val: number) => {
   return Number(val || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -239,16 +355,18 @@ const insumosDescartables = computed(() => {
 const loadData = async () => {
   loading.value = true;
   try {
-    const [resGf, resMat, resParam, resIns] = await Promise.all([
+    const [resGf, resMat, resParam, resIns, resSec] = await Promise.all([
       apiClient.get('/gastos-fijos'),
       apiClient.get('/materiales-extraccion'),
       apiClient.get('/parametros'),
-      apiClient.get('/insumos')
+      apiClient.get('/insumos'),
+      apiClient.get('/secciones')
     ]);
     gastosFijos.value = resGf.data;
     materialesExtraccion.value = resMat.data;
     parametros.value = resParam.data;
     allInsumos.value = resIns.data;
+    secciones.value = resSec.data;
   } catch (err) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los datos', life: 3000 });
   } finally {
@@ -327,6 +445,43 @@ const updateParametro = async (param: any) => {
     toast.add({ severity: 'success', summary: 'Actualizado', detail: `Parámetro ${param.clave} actualizado`, life: 3000 });
   } catch (err) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar el parámetro', life: 3000 });
+  }
+};
+
+// --- Secciones Methods ---
+const openNewSeccionDialog = () => {
+  formSeccion.value = { id: null, nombre: '', descripcion: '', color: 'emerald' };
+  seccionDialog.value = true;
+};
+
+const editSeccion = (s: SeccionLaboratorio) => {
+  formSeccion.value = { ...s };
+  seccionDialog.value = true;
+};
+
+const saveSeccion = async () => {
+  try {
+    if (formSeccion.value.id) {
+      await apiClient.put(`/secciones/${formSeccion.value.id}`, formSeccion.value);
+      toast.add({ severity: 'success', summary: 'Actualizado', detail: 'Sección actualizada correctamente', life: 3000 });
+    } else {
+      await apiClient.post('/secciones', formSeccion.value);
+      toast.add({ severity: 'success', summary: 'Creado', detail: 'Nueva sección registrada', life: 3000 });
+    }
+    seccionDialog.value = false;
+    await loadData();
+  } catch (err: any) {
+    toast.add({ severity: 'error', summary: 'Error', detail: err.response?.data?.detail || 'No se pudo guardar la sección', life: 3000 });
+  }
+};
+
+const deleteSeccion = async (s: SeccionLaboratorio) => {
+  try {
+    await apiClient.delete(`/secciones/${s.id}`);
+    toast.add({ severity: 'success', summary: 'Eliminada', detail: `Sección "${s.nombre}" eliminada`, life: 3000 });
+    await loadData();
+  } catch (err) {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar la sección', life: 3000 });
   }
 };
 

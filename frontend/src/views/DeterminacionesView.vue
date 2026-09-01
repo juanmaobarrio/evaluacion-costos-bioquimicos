@@ -33,11 +33,7 @@
         <div class="flex items-center gap-2 w-full sm:w-auto">
           <select v-model="selectedSeccion" class="form-input text-xs w-full sm:w-48">
             <option value="">Todas las Secciones</option>
-            <option value="Química Clínica">Química Clínica</option>
-            <option value="Hematología">Hematología</option>
-            <option value="Inmunología">Inmunología</option>
-            <option value="Endocrinología">Endocrinología</option>
-            <option value="Microbiología">Microbiología</option>
+            <option v-for="sec in seccionesList" :key="sec.id" :value="sec.nombre">{{ sec.nombre }}</option>
           </select>
         </div>
       </div>
@@ -226,11 +222,7 @@
           <div>
             <label class="block font-semibold text-slate-300 mb-1">Sección *</label>
             <select v-model="formDet.seccion" required class="form-input text-xs">
-              <option value="Química Clínica">Química Clínica</option>
-              <option value="Hematología">Hematología</option>
-              <option value="Inmunología">Inmunología</option>
-              <option value="Endocrinología">Endocrinología</option>
-              <option value="Microbiología">Microbiología</option>
+              <option v-for="sec in seccionesList" :key="sec.id" :value="sec.nombre">{{ sec.nombre }}</option>
             </select>
           </div>
           <div>
@@ -347,7 +339,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { apiClient } from '@/services/api';
-import type { Determinacion, Equipo, Insumo } from '@/types';
+import type { Determinacion, Equipo, Insumo, SeccionLaboratorio } from '@/types';
 
 const toast = useToast();
 const confirm = useConfirm();
@@ -357,6 +349,7 @@ const recalculando = ref(false);
 const determinaciones = ref<Determinacion[]>([]);
 const equipos = ref<Equipo[]>([]);
 const insumosList = ref<Insumo[]>([]);
+const seccionesList = ref<SeccionLaboratorio[]>([]);
 
 const searchQuery = ref('');
 const selectedSeccion = ref('');
@@ -444,14 +437,16 @@ const filteredDeterminaciones = computed(() => {
 const loadData = async () => {
   loading.value = true;
   try {
-    const [resDets, resEqs, resIns] = await Promise.all([
+    const [resDets, resEqs, resIns, resSec] = await Promise.all([
       apiClient.get('/determinaciones'),
       apiClient.get('/equipos'),
-      apiClient.get('/insumos')
+      apiClient.get('/insumos'),
+      apiClient.get('/secciones')
     ]);
     determinaciones.value = resDets.data;
     equipos.value = resEqs.data;
     insumosList.value = resIns.data;
+    seccionesList.value = resSec.data;
   } catch (err) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar las determinaciones', life: 3000 });
   } finally {

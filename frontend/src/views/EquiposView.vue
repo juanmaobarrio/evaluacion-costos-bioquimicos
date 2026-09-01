@@ -118,11 +118,7 @@
           <div>
             <label class="block font-semibold text-slate-300 mb-1">Sección de Laboratorio *</label>
             <select v-model="formEq.seccion" required class="form-input text-xs">
-              <option value="Química Clínica">Química Clínica</option>
-              <option value="Hematología">Hematología</option>
-              <option value="Inmunología">Inmunología</option>
-              <option value="Endocrinología">Endocrinología</option>
-              <option value="Microbiología">Microbiología</option>
+              <option v-for="sec in seccionesList" :key="sec.id" :value="sec.nombre">{{ sec.nombre }}</option>
             </select>
           </div>
         </div>
@@ -226,13 +222,14 @@ import { ref, computed, onMounted } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { apiClient } from '@/services/api';
-import type { Equipo } from '@/types';
+import type { Equipo, SeccionLaboratorio } from '@/types';
 
 const toast = useToast();
 const confirm = useConfirm();
 
 const loading = ref(false);
 const equipos = ref<Equipo[]>([]);
+const seccionesList = ref<SeccionLaboratorio[]>([]);
 const formDialog = ref(false);
 
 const formEq = ref<any>({
@@ -313,8 +310,12 @@ const formatNumber = (val: number | string | undefined | null) => {
 const loadEquipos = async () => {
   loading.value = true;
   try {
-    const response = await apiClient.get('/equipos');
-    equipos.value = response.data;
+    const [resEq, resSec] = await Promise.all([
+      apiClient.get('/equipos'),
+      apiClient.get('/secciones')
+    ]);
+    equipos.value = resEq.data;
+    seccionesList.value = resSec.data;
   } catch (err) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los equipos', life: 3000 });
   } finally {

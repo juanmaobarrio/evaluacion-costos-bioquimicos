@@ -6,16 +6,40 @@ from app.core.database import get_db
 from app.modules.auth.service import get_current_user, require_role
 from app.modules.auth.models import UserRole
 from app.modules.costos_generales.schemas import (
+    SeccionLaboratorioCreate, SeccionLaboratorioUpdate, SeccionLaboratorioOut,
     GastoFijoCreate, GastoFijoUpdate, GastoFijoOut,
     ParametroLaboratorioOut, ParametroLaboratorioUpdate,
     MaterialExtraccionItemCreate, MaterialExtraccionItemOut,
     ProtocoloCreate, ProtocoloUpdate, ProtocoloOut
 )
 from app.modules.costos_generales.service import (
-    GastosFijosService, ParametrosService, MaterialesExtraccionService, ProtocoloService
+    SeccionesService, GastosFijosService, ParametrosService, MaterialesExtraccionService, ProtocoloService
 )
 
 router = APIRouter(tags=["Gastos Fijos, Parámetros y Protocolos"])
+
+# --- SECCIONES DEL LABORATORIO ---
+@router.get("/secciones", response_model=List[SeccionLaboratorioOut])
+async def list_secciones(activo_only: bool = False, db: AsyncSession = Depends(get_db), current_user = Depends(get_current_user)):
+    return await SeccionesService.get_all(db, activo_only=activo_only)
+
+@router.post("/secciones", response_model=SeccionLaboratorioOut, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
+async def create_seccion(seccion_in: SeccionLaboratorioCreate, db: AsyncSession = Depends(get_db)):
+    return await SeccionesService.create(db, seccion_in)
+
+@router.put("/secciones/{seccion_id}", response_model=SeccionLaboratorioOut, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
+async def update_seccion(seccion_id: int, seccion_in: SeccionLaboratorioUpdate, db: AsyncSession = Depends(get_db)):
+    seccion = await SeccionesService.update(db, seccion_id, seccion_in)
+    if not seccion:
+        raise HTTPException(status_code=404, detail="Sección no encontrada")
+    return seccion
+
+@router.delete("/secciones/{seccion_id}", dependencies=[Depends(require_role([UserRole.ADMIN]))])
+async def delete_seccion(seccion_id: int, db: AsyncSession = Depends(get_db)):
+    deleted = await SeccionesService.delete(db, seccion_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Sección no encontrada")
+    return {"message": "Sección eliminada"}
 
 # --- GASTOS FIJOS ---
 @router.get("/gastos-fijos", response_model=List[GastoFijoOut])

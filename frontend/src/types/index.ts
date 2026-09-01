@@ -6,6 +6,15 @@ export interface User {
   is_active: boolean;
 }
 
+export interface SeccionLaboratorio {
+  id: number;
+  nombre: string;
+  descripcion?: string;
+  color?: string;
+  activo: boolean;
+  created_at?: string;
+}
+
 export interface Insumo {
   id: number;
   codigo?: string;

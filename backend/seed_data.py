@@ -7,7 +7,7 @@ from app.modules.equipos.models import Equipo, MonedaEquipo
 from app.modules.insumos.models import Insumo, TipoInsumo, BaseCalculoInsumo, Moneda
 from app.modules.determinaciones.models import Determinacion, DeterminacionInsumo
 from app.modules.costos_generales.models import (
-    GastoFijoMensual, ParametroLaboratorio, MaterialExtraccionItem, Protocolo, ProtocoloEstudio
+    SeccionLaboratorio, GastoFijoMensual, ParametroLaboratorio, MaterialExtraccionItem, Protocolo, ProtocoloEstudio
 )
 from app.modules.determinaciones.service import DeterminacionService
 
@@ -34,6 +34,20 @@ async def seed(drop_existing: bool = False):
             is_active=True
         )
         db.add_all([admin, bio])
+        await db.flush()
+
+        print("[INFO] Creando secciones del laboratorio...")
+        secciones = [
+            SeccionLaboratorio(nombre="Química Clínica", descripcion="Pruebas metabólicas, lípidos, enzimas y sustratos", color="emerald"),
+            SeccionLaboratorio(nombre="Hematología y Hemostasia", descripcion="Hemogramas, coagulograma, eritrosedimentación", color="purple"),
+            SeccionLaboratorio(nombre="Inmunología y Serología", descripcion="Inmunoensayos, anticuerpos y pruebas virales", color="sky"),
+            SeccionLaboratorio(nombre="Endocrinología", descripcion="Hormonas tiroideas, fertilidad y marcadores tumorales", color="amber"),
+            SeccionLaboratorio(nombre="Microbiología y Parasitología", descripcion="Urocultivos, hisopados, antibiogramas", color="cyan"),
+            SeccionLaboratorio(nombre="Biología Molecular", descripcion="PCR, carga viral y secuenciación", color="indigo"),
+            SeccionLaboratorio(nombre="Orinas y Medio Interno", descripcion="Sedimento urinario, gases y electrolitos", color="rose"),
+            SeccionLaboratorio(nombre="Toxicología y Monitoreo de Drogas", descripcion="Drogas terapéuticas y de abuso", color="orange"),
+        ]
+        db.add_all(secciones)
         await db.flush()
 
         print("[INFO] Creando parámetros del laboratorio...")
@@ -474,4 +488,4 @@ async def seed(drop_existing: bool = False):
     await engine.dispose()
 
 if __name__ == "__main__":
-    asyncio.run(seed())
+    asyncio.run(seed(drop_existing=True))

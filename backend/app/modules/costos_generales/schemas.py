@@ -5,6 +5,29 @@ from pydantic import BaseModel, Field
 from app.modules.insumos.schemas import InsumoOut
 from app.modules.determinaciones.schemas import DeterminacionOut
 
+# --- Secciones del Laboratorio ---
+class SeccionLaboratorioBase(BaseModel):
+    nombre: str
+    descripcion: Optional[str] = None
+    color: Optional[str] = "emerald"
+    activo: bool = True
+
+class SeccionLaboratorioCreate(SeccionLaboratorioBase):
+    pass
+
+class SeccionLaboratorioUpdate(BaseModel):
+    nombre: Optional[str] = None
+    descripcion: Optional[str] = None
+    color: Optional[str] = None
+    activo: Optional[bool] = None
+
+class SeccionLaboratorioOut(SeccionLaboratorioBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
 # --- Gastos Fijos ---
 class GastoFijoBase(BaseModel):
     concepto: str
