@@ -94,14 +94,14 @@
           <div>
             <label class="block font-semibold text-slate-200 mb-1">Cotización Oficial de Referencia (ARS) *</label>
             <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-emerald-400 text-sm">$</span>
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-emerald-400 text-sm pointer-events-none">$</span>
               <input
                 v-model.number="tempTc"
                 type="number"
                 step="1"
                 min="1"
                 required
-                class="form-input pl-8 font-mono font-bold text-sm text-emerald-400"
+                class="form-input !pl-10 font-mono font-bold text-sm text-emerald-400"
                 placeholder="1200"
               />
             </div>

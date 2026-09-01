@@ -22,12 +22,12 @@
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
       <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div class="relative w-full sm:w-80">
-          <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+          <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
           <input
             v-model="searchQuery"
             type="text"
             placeholder="Buscar por nombre o código..."
-            class="form-input pl-10 text-xs"
+            class="form-input !pl-11 text-xs"
           />
         </div>
         <div class="flex items-center gap-2 w-full sm:w-auto">

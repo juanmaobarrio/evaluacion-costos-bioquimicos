@@ -24,30 +24,18 @@
       <form @submit.prevent="handleLogin" class="space-y-4 relative z-10">
         <div>
           <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Correo Electrónico</label>
-          <div class="relative">
-            <i class="pi pi-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input
-              v-model="email"
-              type="email"
-              required
-              placeholder="admin@laboratorio.com"
-              class="form-input pl-10"
-            />
+            <div class="relative">
+              <i class="pi pi-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
+              <input v-model="email" type="email" required placeholder="admin@laboratorio.com" class="form-input !pl-11" />
+            </div>
           </div>
-        </div>
 
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Contraseña</label>
-          <div class="relative">
-            <i class="pi pi-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input
-              v-model="password"
-              type="password"
-              required
-              placeholder="••••••••"
-              class="form-input pl-10"
-            />
-          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Contraseña</label>
+            <div class="relative">
+              <i class="pi pi-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
+              <input v-model="password" type="password" required placeholder="••••••••" class="form-input !pl-11" />
+            </div>
         </div>
 
         <button
