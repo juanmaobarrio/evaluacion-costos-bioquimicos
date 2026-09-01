@@ -20,10 +20,12 @@ router = APIRouter(tags=["Gastos Fijos, Parámetros y Protocolos"])
 
 # --- SECCIONES DEL LABORATORIO ---
 @router.get("/secciones", response_model=List[SeccionLaboratorioOut])
+@router.get("/secciones/", response_model=List[SeccionLaboratorioOut], include_in_schema=False)
 async def list_secciones(activo_only: bool = False, db: AsyncSession = Depends(get_db), current_user = Depends(get_current_user)):
     return await SeccionesService.get_all(db, activo_only=activo_only)
 
 @router.post("/secciones", response_model=SeccionLaboratorioOut, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
+@router.post("/secciones/", response_model=SeccionLaboratorioOut, include_in_schema=False, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
 async def create_seccion(seccion_in: SeccionLaboratorioCreate, db: AsyncSession = Depends(get_db)):
     return await SeccionesService.create(db, seccion_in)
 
