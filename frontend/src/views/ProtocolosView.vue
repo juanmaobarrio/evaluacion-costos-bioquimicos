@@ -14,10 +14,26 @@
       </div>
     </div>
 
-    <!-- Protocols Grid / Table -->
+    <!-- Header & Search Filter -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+      <div class="relative w-full sm:w-80">
+        <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
+        <input
+          v-model="searchProtoQuery"
+          type="text"
+          placeholder="Buscar protocolo o perfil por nombre..."
+          class="form-input !pl-11 text-xs"
+        />
+      </div>
+      <div class="text-xs text-slate-400 font-medium">
+        Mostrando <span class="text-emerald-400 font-bold">{{ filteredProtocolos.length }}</span> perfiles / protocolos
+      </div>
+    </div>
+
+    <!-- Protocols Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
-        v-for="proto in protocolos"
+        v-for="proto in filteredProtocolos"
         :key="proto.id"
         class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-5 shadow-xl transition-all flex flex-col justify-between"
       >
@@ -91,7 +107,7 @@
     </div>
 
     <!-- Dialog Form Protocolo -->
-    <Dialog v-model:visible="formDialog" modal :header="formProt.id ? 'Editar Protocolo' : 'Nuevo Protocolo'" :style="{ width: '600px' }">
+    <Dialog v-model:visible="formDialog" modal :header="formProt.id ? 'Editar Protocolo / Perfil' : 'Nuevo Protocolo / Perfil'" :style="{ width: '680px' }">
       <form @submit.prevent="saveProtocolo" class="space-y-4 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -99,29 +115,67 @@
             <input v-model="formProt.nombre" required class="form-input text-xs" placeholder="Ej: Perfil Tiroideo Completo" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Código</label>
+            <label class="block font-semibold text-slate-300 mb-1">Código Interno</label>
             <input v-model="formProt.codigo" class="form-input text-xs" placeholder="Ej: PROT-002" />
           </div>
         </div>
 
-        <div>
-          <label class="block font-semibold text-slate-300 mb-1">Descripción</label>
-          <textarea v-model="formProt.descripcion" rows="2" class="form-input text-xs" placeholder="Detalle clínico o administrativo..."></textarea>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Descripción / Indicación</label>
+            <input v-model="formProt.descripcion" class="form-input text-xs" placeholder="Detalle clínico o administrativo..." />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Arancel Sugerido de Venta (ARS) *</label>
+            <input v-model.number="formProt.arancel_sugerido_ars" type="number" step="any" required class="form-input text-xs font-mono font-bold text-emerald-400" />
+          </div>
         </div>
 
-        <div>
-          <label class="block font-semibold text-slate-300 mb-1">Arancel Sugerido (ARS)</label>
-          <input v-model.number="formProt.arancel_sugerido_ars" type="number" step="any" class="form-input text-xs" />
-        </div>
+        <!-- Selección y Buscador de Determinaciones -->
+        <div class="pt-2 border-t border-slate-800 space-y-2.5">
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="font-bold text-slate-200 block">Determinaciones que Componen el Perfil</span>
+              <span class="text-[10px] text-slate-400">
+                Seleccionadas: <strong class="text-emerald-400 font-mono">{{ formProt.determinacion_ids.length }}</strong> prácticas
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" @click="toggleSelectAllFiltered" class="text-[11px] text-sky-400 hover:text-sky-300 font-medium">
+                {{ allFilteredSelected ? 'Deseleccionar filtradas' : 'Seleccionar filtradas' }}
+              </button>
+            </div>
+          </div>
 
-        <!-- Selección de Determinaciones -->
-        <div class="pt-2 border-t border-slate-800">
-          <label class="block font-bold text-slate-200 mb-2">Seleccionar Determinaciones que componen este protocolo:</label>
-          <div class="max-h-48 overflow-y-auto space-y-1.5 p-2 bg-slate-950 rounded-xl border border-slate-800">
+          <!-- Barra de Búsqueda y Filtro de Sección dentro del modal -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div class="sm:col-span-2 relative">
+              <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-xs"></i>
+              <input
+                v-model="searchDetModalQuery"
+                type="text"
+                placeholder="Buscar práctica por nombre o código..."
+                class="form-input !pl-10 text-xs py-1.5"
+              />
+            </div>
+            <div>
+              <select v-model="selectedModalSeccion" class="form-input text-xs py-1.5">
+                <option value="">Todas las Secciones</option>
+                <option v-for="sec in uniqueSecciones" :key="sec" :value="sec">{{ sec }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Lista Filtrada de Determinaciones con Checkboxes -->
+          <div class="max-h-52 overflow-y-auto space-y-1 p-2 bg-slate-950 rounded-xl border border-slate-800">
+            <div v-if="filteredModalDeterminaciones.length === 0" class="p-4 text-center text-slate-500">
+              No se encontraron determinaciones que coincidan con la búsqueda.
+            </div>
             <label
-              v-for="det in allDeterminaciones"
+              v-for="det in filteredModalDeterminaciones"
               :key="det.id"
-              class="flex items-center gap-2.5 p-2 rounded hover:bg-slate-800/60 cursor-pointer transition-colors"
+              class="flex items-center gap-2.5 p-2 rounded-lg hover:bg-slate-900 cursor-pointer transition-colors border border-transparent"
+              :class="{ 'bg-slate-900/90 border-slate-700/60': formProt.determinacion_ids.includes(det.id) }"
             >
               <input
                 type="checkbox"
@@ -129,11 +183,36 @@
                 v-model="formProt.determinacion_ids"
                 class="rounded border-slate-700 text-emerald-600 focus:ring-emerald-500 bg-slate-900"
               />
-              <div class="flex-1">
-                <div class="font-semibold text-slate-200">{{ det.nombre }}</div>
-                <div class="text-[10px] text-slate-400">{{ det.seccion }} • Costo: ${{ formatCurrency(det.costo_unitario_total_ars) }}</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-semibold text-slate-200 truncate">{{ det.nombre }}</span>
+                  <span class="font-mono text-emerald-400 font-bold shrink-0">${{ formatCurrency(det.costo_unitario_total_ars) }}</span>
+                </div>
+                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                  <span class="font-mono">{{ det.codigo || '-' }}</span> • <span>{{ det.seccion }}</span>
+                </div>
               </div>
             </label>
+          </div>
+
+          <!-- Resumen de Costo en Vivo del Protocolo -->
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 text-xs">
+            <div class="flex justify-between text-slate-400 text-[11px]">
+              <span>Costo Determinaciones ({{ formProt.determinacion_ids.length }}):</span>
+              <span class="text-slate-200 font-mono font-semibold">${{ formatCurrency(selectedDetsTotalCost) }}</span>
+            </div>
+            <div class="flex justify-between text-slate-400 text-[11px]">
+              <span>Kit Extracción / Descartables:</span>
+              <span class="text-slate-200 font-mono font-semibold">${{ formatCurrency(costoExtraccionBase) }}</span>
+            </div>
+            <div class="flex justify-between text-slate-400 text-[11px]">
+              <span>Overhead Fijo por Paciente:</span>
+              <span class="text-sky-400 font-mono font-semibold">${{ formatCurrency(overheadBase) }}</span>
+            </div>
+            <div class="flex justify-between pt-1.5 border-t border-slate-800 font-bold text-rose-400 text-xs">
+              <span>Costo Total Estimado Paciente:</span>
+              <span class="font-mono text-sm">${{ formatCurrency(selectedDetsTotalCost + costoExtraccionBase + overheadBase) }}</span>
+            </div>
           </div>
         </div>
 
@@ -147,7 +226,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { apiClient } from '@/services/api';
@@ -159,6 +238,13 @@ const confirm = useConfirm();
 const loading = ref(false);
 const protocolos = ref<Protocolo[]>([]);
 const allDeterminaciones = ref<Determinacion[]>([]);
+const materialesExtraccion = ref<any[]>([]);
+const gastosFijos = ref<any[]>([]);
+const parametros = ref<any[]>([]);
+
+const searchProtoQuery = ref('');
+const searchDetModalQuery = ref('');
+const selectedModalSeccion = ref('');
 
 const formDialog = ref(false);
 const formProt = ref<any>({
@@ -170,19 +256,90 @@ const formProt = ref<any>({
   determinacion_ids: []
 });
 
-const formatCurrency = (val: number) => {
+const formatCurrency = (val: number | string | undefined | null) => {
   return Number(val || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
+
+const uniqueSecciones = computed(() => {
+  const set = new Set<string>();
+  allDeterminaciones.value.forEach((d) => {
+    if (d.seccion) set.add(d.seccion);
+  });
+  return Array.from(set);
+});
+
+const filteredProtocolos = computed(() => {
+  if (!searchProtoQuery.value) return protocolos.value;
+  const q = searchProtoQuery.value.toLowerCase();
+  return protocolos.value.filter((p) =>
+    p.nombre.toLowerCase().includes(q) ||
+    (p.codigo && p.codigo.toLowerCase().includes(q)) ||
+    (p.descripcion && p.descripcion.toLowerCase().includes(q))
+  );
+});
+
+const filteredModalDeterminaciones = computed(() => {
+  return allDeterminaciones.value.filter((d) => {
+    const matchesSearch = !searchDetModalQuery.value ||
+      d.nombre.toLowerCase().includes(searchDetModalQuery.value.toLowerCase()) ||
+      (d.codigo && d.codigo.toLowerCase().includes(searchDetModalQuery.value.toLowerCase()));
+    const matchesSeccion = !selectedModalSeccion.value || d.seccion === selectedModalSeccion.value;
+    return matchesSearch && matchesSeccion;
+  });
+});
+
+const allFilteredSelected = computed(() => {
+  if (filteredModalDeterminaciones.value.length === 0) return false;
+  return filteredModalDeterminaciones.value.every((d) => formProt.value.determinacion_ids.includes(d.id));
+});
+
+const toggleSelectAllFiltered = () => {
+  const filteredIds = filteredModalDeterminaciones.value.map((d) => d.id);
+  if (allFilteredSelected.value) {
+    // Deseleccionar las filtradas
+    formProt.value.determinacion_ids = formProt.value.determinacion_ids.filter(
+      (id: number) => !filteredIds.includes(id)
+    );
+  } else {
+    // Agregar todas las filtradas
+    const set = new Set([...formProt.value.determinacion_ids, ...filteredIds]);
+    formProt.value.determinacion_ids = Array.from(set);
+  }
+};
+
+const selectedDetsTotalCost = computed(() => {
+  const ids = formProt.value.determinacion_ids || [];
+  return allDeterminaciones.value
+    .filter((d) => ids.includes(d.id))
+    .reduce((acc, d) => acc + Number(d.costo_unitario_total_ars || 0), 0);
+});
+
+const costoExtraccionBase = computed(() => {
+  return materialesExtraccion.value.reduce((acc, m) => acc + Number(m.costo_subtotal_ars || 0), 0);
+});
+
+const overheadBase = computed(() => {
+  const totalFijo = gastosFijos.value.filter((g) => g.activo).reduce((acc, g) => acc + Number(g.monto_mensual || 0), 0);
+  const p = parametros.value.find((x) => x.clave === 'PACIENTES_MENSUALES_ESTIMADOS');
+  const pac = p ? Number(p.valor_numerico) : 1500;
+  return totalFijo / Math.max(pac, 1);
+});
 
 const loadData = async () => {
   loading.value = true;
   try {
-    const [resProt, resDet] = await Promise.all([
+    const [resProt, resDet, resMat, resGf, resParam] = await Promise.all([
       apiClient.get('/protocolos'),
-      apiClient.get('/determinaciones')
+      apiClient.get('/determinaciones'),
+      apiClient.get('/materiales-extraccion'),
+      apiClient.get('/gastos-fijos'),
+      apiClient.get('/parametros')
     ]);
     protocolos.value = resProt.data;
     allDeterminaciones.value = resDet.data;
+    materialesExtraccion.value = resMat.data;
+    gastosFijos.value = resGf.data;
+    parametros.value = resParam.data;
   } catch (err) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los protocolos', life: 3000 });
   } finally {
@@ -199,6 +356,8 @@ const openNewDialog = () => {
     arancel_sugerido_ars: 15000,
     determinacion_ids: []
   };
+  searchDetModalQuery.value = '';
+  selectedModalSeccion.value = '';
   formDialog.value = true;
 };
 
@@ -209,8 +368,10 @@ const editProtocolo = (proto: Protocolo) => {
     codigo: proto.codigo,
     descripcion: proto.descripcion,
     arancel_sugerido_ars: proto.arancel_sugerido_ars,
-    determinacion_ids: proto.estudios.map((e) => e.determinacion_id)
+    determinacion_ids: (proto.estudios || []).map((e) => e.determinacion_id)
   };
+  searchDetModalQuery.value = '';
+  selectedModalSeccion.value = '';
   formDialog.value = true;
 };
 
@@ -232,7 +393,7 @@ const saveProtocolo = async () => {
 
 const confirmDelete = (proto: Protocolo) => {
   confirm.require({
-    message: `¿Está seguro de eliminar el protocolo \"${proto.nombre}\"?`,
+    message: `¿Está seguro de eliminar el protocolo "${proto.nombre}"?`,
     header: 'Confirmar Eliminación',
     icon: 'pi pi-exclamation-triangle',
     acceptClass: 'p-button-danger',
