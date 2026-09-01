@@ -22,16 +22,21 @@ from app.modules.costos_generales.router import router as costos_generales_route
 from app.modules.costos.router import router as costos_router
 from app.modules.produccion.router import router as produccion_router
 
+from app.core.migration import run_auto_migrations
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     setup_logging()
     log.info("Iniciando Sistema de Costos Bioquímicos...")
-    # Crear tablas si no existen
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    log.info("Base de datos y esquemas inicializados correctamente.")
 
-    # Auto-seed si la base de datos es nueva (primer despliegue en Docker / ZimaBoard)
+    # 1. Ejecutar migraciones automáticas de esquema (agrega tablas y columnas faltantes)
+    try:
+        await run_auto_migrations()
+        log.info("Migraciones de base de datos verificadas y aplicadas.")
+    except Exception as e:
+        log.error(f"Error en migraciones automáticas: {e}")
+
+    # 2. Auto-seed si la base de datos es nueva (primer despliegue en Docker / ZimaBoard)
     try:
         from app.core.database import AsyncSessionLocal
         from app.modules.auth.models import User
