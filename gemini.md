@@ -21,13 +21,18 @@
 
 ### Flujo de despliegue
 1. El asistente desarrolla y verifica en **local** (build del frontend / arranque del backend sin errores).
-2. **Al finalizar cada cambio, el asistente DEBE cerrar el trabajo con `git add` de los archivos modificados y `git commit`** con un mensaje descriptivo en formato Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, etc.) que resuma los cambios realizados.
-3. El usuario hace `git pull` en el servidor Zima y reconstruye los contenedores. Por eso el commit debe dejar el repositorio en un estado desplegable y **seguro para los datos de producción**.
+2. **Al finalizar cada cambio, el asistente DEBE cerrar el trabajo con `git add` de los archivos modificados, `git commit` y `git push origin main`** con un mensaje descriptivo en formato Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, etc.) que resuma los cambios realizados. El push es obligatorio: el trabajo no se considera terminado hasta que `main` esté sincronizado con `origin/main`.
+3. El usuario hace `git pull` en el servidor Zima y reconstruye los contenedores. Por eso cada push debe dejar el repositorio remoto en un estado desplegable y **seguro para los datos de producción**.
+
+### Repositorio remoto
+- `origin` → `https://github.com/juanmaobarrio/evaluacion-costos-bioquimicos.git`, rama `main`.
+- Verificar tras el push que `git status -sb` muestre `## main...origin/main` sin `[ahead N]`.
 
 ### Reglas del commit
 - Commitear sólo los archivos relacionados con la tarea realizada (no arrastrar cambios ajenos que estén sin commitear; avisar al usuario si existen).
 - No commitear artefactos: capturas `screenshot_*.png`, logs, `dist/`, `node_modules/`, bases de datos `.db`.
 - Si el cambio afecta el esquema de la base de datos, indicar explícitamente en el mensaje del commit que la migración es no destructiva.
+- Si el push falla (rechazo por divergencia, credenciales, etc.), **no forzar** (`--force`) ni hacer `reset` del remoto: informar al usuario y esperar indicaciones.
 
 ---
 
