@@ -18,30 +18,38 @@ from app.modules.costos_generales.service import (
 
 router = APIRouter(tags=["Gastos Fijos, Parámetros y Protocolos"])
 
-# --- SECCIONES DEL LABORATORIO ---
+# --- SECCIONES / SERVICIOS DEL LABORATORIO ---
 @router.get("/secciones", response_model=List[SeccionLaboratorioOut])
 @router.get("/secciones/", response_model=List[SeccionLaboratorioOut], include_in_schema=False)
+@router.get("/servicios", response_model=List[SeccionLaboratorioOut])
+@router.get("/servicios/", response_model=List[SeccionLaboratorioOut], include_in_schema=False)
+@router.get("/servicios-laboratorio", response_model=List[SeccionLaboratorioOut], include_in_schema=False)
+@router.get("/servicios-laboratorio/", response_model=List[SeccionLaboratorioOut], include_in_schema=False)
 async def list_secciones(activo_only: bool = False, db: AsyncSession = Depends(get_db), current_user = Depends(get_current_user)):
     return await SeccionesService.get_all(db, activo_only=activo_only)
 
 @router.post("/secciones", response_model=SeccionLaboratorioOut, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
 @router.post("/secciones/", response_model=SeccionLaboratorioOut, include_in_schema=False, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
+@router.post("/servicios", response_model=SeccionLaboratorioOut, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
+@router.post("/servicios/", response_model=SeccionLaboratorioOut, include_in_schema=False, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
 async def create_seccion(seccion_in: SeccionLaboratorioCreate, db: AsyncSession = Depends(get_db)):
     return await SeccionesService.create(db, seccion_in)
 
 @router.put("/secciones/{seccion_id}", response_model=SeccionLaboratorioOut, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
+@router.put("/servicios/{seccion_id}", response_model=SeccionLaboratorioOut, include_in_schema=False, dependencies=[Depends(require_role([UserRole.ADMIN, UserRole.BIOQUIMICO]))])
 async def update_seccion(seccion_id: int, seccion_in: SeccionLaboratorioUpdate, db: AsyncSession = Depends(get_db)):
     seccion = await SeccionesService.update(db, seccion_id, seccion_in)
     if not seccion:
-        raise HTTPException(status_code=404, detail="Sección no encontrada")
+        raise HTTPException(status_code=404, detail="Sección / Servicio no encontrado")
     return seccion
 
 @router.delete("/secciones/{seccion_id}", dependencies=[Depends(require_role([UserRole.ADMIN]))])
+@router.delete("/servicios/{seccion_id}", include_in_schema=False, dependencies=[Depends(require_role([UserRole.ADMIN]))])
 async def delete_seccion(seccion_id: int, db: AsyncSession = Depends(get_db)):
     deleted = await SeccionesService.delete(db, seccion_id)
     if not deleted:
-        raise HTTPException(status_code=404, detail="Sección no encontrada")
-    return {"message": "Sección eliminada"}
+        raise HTTPException(status_code=404, detail="Sección / Servicio no encontrado")
+    return {"message": "Sección / Servicio eliminado"}
 
 # --- GASTOS FIJOS ---
 @router.get("/gastos-fijos", response_model=List[GastoFijoOut])
