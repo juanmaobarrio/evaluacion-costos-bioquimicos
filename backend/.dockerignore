@@ -1,0 +1,9 @@
+# Nunca copiar la DB ni logs de desarrollo dentro de la imagen de produccion
+*.db
+*.db-journal
+data/
+logs/
+__pycache__/
+*.pyc
+.env
+*.log

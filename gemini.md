@@ -28,6 +28,15 @@
 - `origin` → `https://github.com/juanmaobarrio/evaluacion-costos-bioquimicos.git`, rama `main`.
 - Verificar tras el push que `git status -sb` muestre `## main...origin/main` sin `[ahead N]`.
 
+### Despliegue en Zima (comandos del usuario)
+```bash
+git pull
+sudo DOCKER_CONFIG=/tmp/.docker docker compose up -d --build
+```
+- `build` solo genera la imagen; hace falta `up -d` (o `--force-recreate`) para que el contenedor use la imagen nueva.
+- **El volumen `backend_data` se monta ÚNICAMENTE en `/app/data`** (donde vive `costos_bioquimica.db`). **Jamás montarlo en `/app`**: taparía el código de la imagen y los rebuilds dejarían de aplicarse en el backend (bug histórico que provocaba 404 en endpoints nuevos).
+- `docker compose down -v` está **PROHIBIDO** en Zima: borra el volumen y con él toda la base de datos de producción.
+
 ### Reglas del commit
 - Commitear sólo los archivos relacionados con la tarea realizada (no arrastrar cambios ajenos que estén sin commitear; avisar al usuario si existen).
 - No commitear artefactos: capturas `screenshot_*.png`, logs, `dist/`, `node_modules/`, bases de datos `.db`.

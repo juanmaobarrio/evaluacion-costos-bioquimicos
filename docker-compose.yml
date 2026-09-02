@@ -10,11 +10,17 @@ services:
     ports:
       - "8001:8001"
     environment:
-      - DATABASE_URL=sqlite+aiosqlite:///./costos_bioquimica.db
+      # Ruta absoluta dentro del volumen de datos (4 barras = path absoluto en SQLite)
+      - DATABASE_URL=sqlite+aiosqlite:////app/data/costos_bioquimica.db
       - SECRET_KEY=super_secret_costos_bioquimica_key_change_in_production_2025
       - USD_EXCHANGE_RATE=1200.0
     volumes:
-      - backend_data:/app
+      # IMPORTANTE: el volumen se monta SOLO en /app/data, nunca en /app.
+      # Si se monta en /app, el volumen tapa el codigo de la imagen y los
+      # rebuilds no se aplican (el backend sigue corriendo codigo viejo).
+      # El mismo volumen 'backend_data' se reutiliza: la DB que estaba en la
+      # raiz del volumen queda ahora en /app/data/costos_bioquimica.db.
+      - backend_data:/app/data
 
   frontend:
     build:
