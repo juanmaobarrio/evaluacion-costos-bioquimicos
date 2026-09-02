@@ -149,6 +149,13 @@
                     :class="getTipoBadgeClass(item.insumo?.tipo || 'otro')">
                     {{ formatTipo(item.insumo?.tipo || 'otro') }}
                   </span>
+                  <span
+                    v-if="Number(item.cantidad_requerida) !== 1"
+                    class="text-[9px] px-1.5 py-0.2 rounded border font-bold font-mono bg-amber-950 text-amber-300 border-amber-800"
+                    title="Cantidad utilizada por determinación"
+                  >
+                    ×{{ formatNumber(item.cantidad_requerida) }}
+                  </span>
                 </div>
                 <div class="text-[10px] text-slate-400 font-mono">
                   Fórmula: ({{ item.insumo?.moneda }} ${{ formatCurrency(item.insumo?.costo_presentacion) }} × {{ formatNumber(item.insumo?.unidades_compradas_periodo || 1) }}) ÷ {{ formatNumber(item.insumo?.determinaciones_periodo || 1) }} tests
@@ -250,7 +257,7 @@
           <div class="flex justify-between items-center">
             <div>
               <span class="font-bold text-slate-200 block">Componentes Utilizados (Reactivos, Calibradores, Controles, Lavados)</span>
-              <span class="text-[10px] text-slate-400">Buscá y seleccioná los insumos que intervienen en esta determinación</span>
+              <span class="text-[10px] text-slate-400">Buscá y seleccioná los insumos que intervienen y ajustá la cantidad que consume cada determinación (por defecto 1)</span>
             </div>
             <div v-if="selectedInsumoIds.length > 0" class="text-right">
               <span class="text-[10px] text-slate-400 block">Total Reactivos:</span>
@@ -306,9 +313,27 @@
                 </span>
               </div>
               <div class="flex items-center gap-3">
-                <span class="font-mono text-emerald-400 font-bold">
-                  USD ${{ formatHighPrecision(ins.costo_por_determinacion_usd) }}
-                </span>
+                <!-- Cantidad utilizada por determinación -->
+                <div class="flex items-center gap-1.5" title="Cantidad de unidades de este componente que consume una determinación (ej: 2 tubos)">
+                  <span class="text-[10px] text-slate-400 uppercase tracking-wider">Cant.</span>
+                  <input
+                    type="number"
+                    step="any"
+                    min="0.0001"
+                    :value="getCantidad(ins.id)"
+                    @input="setCantidad(ins.id, ($event.target as HTMLInputElement).value)"
+                    class="form-input !w-20 !py-1 !px-2 text-center font-mono font-bold text-xs text-white"
+                    :class="getCantidad(ins.id) !== 1 ? '!border-amber-500/60 !text-amber-300' : ''"
+                  />
+                </div>
+                <div class="text-right min-w-[110px]">
+                  <span class="font-mono text-emerald-400 font-bold block">
+                    USD ${{ formatHighPrecision(Number(ins.costo_por_determinacion_usd || 0) * getCantidad(ins.id)) }}
+                  </span>
+                  <span v-if="getCantidad(ins.id) !== 1" class="text-[10px] font-mono text-slate-500 block">
+                    {{ formatNumber(getCantidad(ins.id)) }} × ${{ formatHighPrecision(ins.costo_por_determinacion_usd) }}
+                  </span>
+                </div>
                 <button
                   type="button"
                   @click="removeInsumoId(ins.id)"
@@ -335,7 +360,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { apiClient } from '@/services/api';
@@ -369,21 +394,45 @@ const formDet = ref<any>({
 });
 
 const selectedInsumoIds = ref<number[]>([]);
+// Cantidad requerida por insumo (insumo_id -> cantidad). Default 1.
+const insumoCantidades = ref<Record<number, number>>({});
+
+const getCantidad = (id: number): number => {
+  const c = Number(insumoCantidades.value[id]);
+  return c > 0 ? c : 1;
+};
+
+const setCantidad = (id: number, val: number | string) => {
+  const n = Number(val);
+  insumoCantidades.value[id] = n > 0 ? n : 1;
+};
+
+// Al agregar insumos desde el MultiSelect, inicializar cantidad 1 si no tienen
+watch(selectedInsumoIds, (ids) => {
+  ids.forEach((id) => {
+    if (!insumoCantidades.value[id]) insumoCantidades.value[id] = 1;
+  });
+});
 
 const selectedInsumosDetails = computed(() => {
   return insumosList.value.filter(ins => selectedInsumoIds.value.includes(ins.id));
 });
 
 const formCostoTotalInsumosUsd = computed(() => {
-  return selectedInsumosDetails.value.reduce((acc, curr) => acc + Number(curr.costo_por_determinacion_usd || 0), 0);
+  return selectedInsumosDetails.value.reduce(
+    (acc, curr) => acc + Number(curr.costo_por_determinacion_usd || 0) * getCantidad(curr.id), 0
+  );
 });
 
 const formCostoTotalInsumosArs = computed(() => {
-  return selectedInsumosDetails.value.reduce((acc, curr) => acc + Number(curr.costo_unitario_ars || 0), 0);
+  return selectedInsumosDetails.value.reduce(
+    (acc, curr) => acc + Number(curr.costo_unitario_ars || 0) * getCantidad(curr.id), 0
+  );
 });
 
 const removeInsumoId = (id: number) => {
   selectedInsumoIds.value = selectedInsumoIds.value.filter(insId => insId !== id);
+  delete insumoCantidades.value[id];
 };
 
 const formatCurrency = (val: number | string | undefined | null) => {
@@ -483,6 +532,7 @@ const openNewDialog = () => {
     arancel_referencia_ars: 5200,
   };
   selectedInsumoIds.value = [];
+  insumoCantidades.value = {};
   formDialog.value = true;
 };
 
@@ -496,7 +546,11 @@ const editDeterminacion = (det: Determinacion) => {
     tiempo_proceso_minutos: det.tiempo_proceso_minutos,
     arancel_referencia_ars: det.arancel_referencia_ars,
   };
-  selectedInsumoIds.value = (det.insumos_asociados || []).map((i) => i.insumo_id);
+  const asociados = det.insumos_asociados || [];
+  insumoCantidades.value = Object.fromEntries(
+    asociados.map((i) => [i.insumo_id, Number(i.cantidad_requerida) > 0 ? Number(i.cantidad_requerida) : 1])
+  );
+  selectedInsumoIds.value = asociados.map((i) => i.insumo_id);
   formDialog.value = true;
 };
 
@@ -506,7 +560,7 @@ const saveDeterminacion = async () => {
       ...formDet.value,
       insumos: selectedInsumoIds.value.map(id => ({
         insumo_id: id,
-        cantidad_requerida: 1.0
+        cantidad_requerida: getCantidad(id)
       }))
     };
     if (formDet.value.id) {
