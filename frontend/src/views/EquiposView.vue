@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-white">Equipos y Autoanalizadores</h1>
-        <p class="text-sm text-slate-400">Prorrateo de costos fijos mensuales (alquiler, mantenimiento oficial, amortización) por volumen de determinaciones</p>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Equipos y Autoanalizadores</h1>
+        <p class="text-sm text-slate-500">Prorrateo de costos fijos mensuales (alquiler, mantenimiento oficial, amortización) por volumen de determinaciones</p>
       </div>
       <div class="flex items-center gap-3">
         <button @click="openNewDialog" class="btn-primary text-xs">
@@ -15,21 +15,21 @@
     </div>
 
     <!-- Info Banner Explicativo -->
-    <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-2xl flex items-start gap-3 shadow-lg">
-      <i class="pi pi-info-circle text-sky-400 text-lg mt-0.5"></i>
-      <div class="text-xs text-slate-300 space-y-1">
-        <span class="font-bold text-white block">¿Cómo se computa el costo del equipo?</span>
-        <p class="text-slate-400 leading-relaxed">
-          En esta pantalla se cargan exclusivamente los <strong class="text-slate-200">costos fijos del autoanalizador</strong> (Alquiler/Comodato mensual, Abono de Service Técnico Oficial, Amortización contable y Abono de Calibración/QC). La suma mensual se divide por el volumen de tests mensual que procesa el equipo.
+    <div class="p-4 bg-white border border-slate-200 rounded-2xl flex items-start gap-3 shadow-lg">
+      <i class="pi pi-info-circle text-sky-600 text-lg mt-0.5"></i>
+      <div class="text-xs text-slate-600 space-y-1">
+        <span class="font-bold text-slate-900 block">¿Cómo se computa el costo del equipo?</span>
+        <p class="text-slate-500 leading-relaxed">
+          En esta pantalla se cargan exclusivamente los <strong class="text-slate-800">costos fijos del autoanalizador</strong> (Alquiler/Comodato mensual, Abono de Service Técnico Oficial, Amortización contable y Abono de Calibración/QC). La suma mensual se divide por el volumen de tests mensual que procesa el equipo.
         </p>
-        <p class="text-slate-400">
-          💡 <span class="text-emerald-400 font-semibold">Consumibles y Reactivos:</span> Las soluciones de lavado (Wash Solutions), cubetas de reacción, reactivos y calibradores se costean con exactitud lote a lote en la tabla de <router-link to="/insumos" class="text-emerald-400 underline font-semibold">Insumos</router-link>.
+        <p class="text-slate-500">
+          💡 <span class="text-brand-600 font-semibold">Consumibles y Reactivos:</span> Las soluciones de lavado (Wash Solutions), cubetas de reacción, reactivos y calibradores se costean con exactitud lote a lote en la tabla de <router-link to="/insumos" class="text-brand-600 underline font-semibold">Insumos</router-link>.
         </p>
       </div>
     </div>
 
     <!-- Table Container -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
       <DataTable
         :value="equipos"
         :paginator="true"
@@ -40,31 +40,31 @@
       >
         <Column field="nombre" header="Analizador / Equipo" :sortable="true">
           <template #body="{ data }">
-            <div class="font-semibold text-slate-100 text-sm">{{ data.nombre }}</div>
-            <div class="text-[11px] text-slate-400">{{ data.marca || 'Sin marca' }} {{ data.modelo || '' }} • <span class="text-emerald-400 font-medium">{{ data.seccion }}</span></div>
+            <div class="font-semibold text-slate-900 text-sm">{{ data.nombre }}</div>
+            <div class="text-[11px] text-slate-500">{{ data.marca || 'Sin marca' }} {{ data.modelo || '' }} • <span class="text-brand-600 font-medium">{{ data.seccion }}</span></div>
           </template>
         </Column>
 
         <Column field="volumen_mensual_estimado" header="Volumen Mensual" :sortable="true" style="width: 160px">
           <template #body="{ data }">
-            <span class="font-mono text-slate-200 font-semibold">{{ formatNumber(data.volumen_mensual_estimado) }} tests/mes</span>
+            <span class="font-mono text-slate-800 font-semibold">{{ formatNumber(data.volumen_mensual_estimado) }} tests/mes</span>
           </template>
         </Column>
 
         <Column header="Costos Fijos Mensuales">
           <template #body="{ data }">
-            <div class="space-y-0.5 text-[11px] font-mono text-slate-300">
+            <div class="space-y-0.5 text-[11px] font-mono text-slate-600">
               <div v-if="data.costo_alquiler_mensual > 0">
-                <span class="text-slate-400">Alquiler:</span> {{ data.moneda || 'USD' }} ${{ formatCurrency(data.costo_alquiler_mensual) }}
+                <span class="text-slate-500">Alquiler:</span> {{ data.moneda || 'USD' }} ${{ formatCurrency(data.costo_alquiler_mensual) }}
               </div>
               <div v-if="data.costo_mantenimiento_mensual > 0">
-                <span class="text-slate-400">Mantenimiento:</span> {{ data.moneda || 'USD' }} ${{ formatCurrency(data.costo_mantenimiento_mensual) }}
+                <span class="text-slate-500">Mantenimiento:</span> {{ data.moneda || 'USD' }} ${{ formatCurrency(data.costo_mantenimiento_mensual) }}
               </div>
               <div v-if="data.costo_amortizacion_mensual > 0">
-                <span class="text-slate-400">Amortización:</span> {{ data.moneda || 'USD' }} ${{ formatCurrency(data.costo_amortizacion_mensual) }}
+                <span class="text-slate-500">Amortización:</span> {{ data.moneda || 'USD' }} ${{ formatCurrency(data.costo_amortizacion_mensual) }}
               </div>
               <div v-if="data.costo_calibracion_controles_mensual > 0">
-                <span class="text-slate-400">Serv. Calibración:</span> {{ data.moneda || 'USD' }} ${{ formatCurrency(data.costo_calibracion_controles_mensual) }}
+                <span class="text-slate-500">Serv. Calibración:</span> {{ data.moneda || 'USD' }} ${{ formatCurrency(data.costo_calibracion_controles_mensual) }}
               </div>
             </div>
           </template>
@@ -72,10 +72,10 @@
 
         <Column field="costo_total_mensual" header="Gasto Mensual Total" :sortable="true" style="width: 180px">
           <template #body="{ data }">
-            <div class="font-bold text-sky-400 font-mono text-sm">
+            <div class="font-bold text-sky-600 font-mono text-sm">
               USD ${{ formatCurrency(data.costo_total_mensual_usd) }}
             </div>
-            <div class="text-[10px] text-slate-400 font-mono">
+            <div class="text-[10px] text-slate-500 font-mono">
               ARS ${{ formatCurrency(data.costo_total_mensual) }}
             </div>
           </template>
@@ -83,10 +83,10 @@
 
         <Column field="costo_unitario_por_test" header="Costo / Test" :sortable="true" style="width: 180px">
           <template #body="{ data }">
-            <div class="font-bold text-emerald-400 font-mono text-sm">
+            <div class="font-bold text-brand-600 font-mono text-sm">
               USD ${{ formatHighPrecision(data.costo_unitario_por_test_usd) }}
             </div>
-            <div class="text-[10px] text-slate-400 font-mono">
+            <div class="text-[10px] text-slate-500 font-mono">
               ARS ${{ formatCurrency(data.costo_unitario_por_test) }}/test
             </div>
           </template>
@@ -95,10 +95,10 @@
         <Column header="Acciones" style="width: 100px">
           <template #body="{ data }">
             <div class="flex items-center gap-2">
-              <button @click="editEquipo(data)" title="Editar" class="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded">
+              <button @click="editEquipo(data)" title="Editar" class="p-1.5 text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded">
                 <i class="pi pi-pencil"></i>
               </button>
-              <button @click="confirmDelete(data)" title="Eliminar" class="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded">
+              <button @click="confirmDelete(data)" title="Eliminar" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded">
                 <i class="pi pi-trash"></i>
               </button>
             </div>
@@ -112,11 +112,11 @@
       <form @submit.prevent="saveEquipo" class="space-y-4 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Nombre Analizador / Equipo *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Nombre Analizador / Equipo *</label>
             <input v-model="formEq.nombre" required class="form-input text-xs" placeholder="Ej: Beckman Coulter AU480" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Sección de Laboratorio *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Sección de Laboratorio *</label>
             <select v-model="formEq.seccion" required class="form-input text-xs">
               <option v-for="sec in seccionesList" :key="sec.id" :value="sec.nombre">{{ sec.nombre }}</option>
             </select>
@@ -125,90 +125,90 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Marca / Fabricante</label>
+            <label class="block font-semibold text-slate-600 mb-1">Marca / Fabricante</label>
             <input v-model="formEq.marca" class="form-input text-xs" placeholder="Ej: Beckman Coulter, Roche" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Modelo</label>
+            <label class="block font-semibold text-slate-600 mb-1">Modelo</label>
             <input v-model="formEq.modelo" class="form-input text-xs" placeholder="Ej: AU480, c311" />
           </div>
         </div>
 
         <!-- Moneda y Tipo de Cambio -->
-        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-brand-600 flex items-center gap-1.5">
             <i class="pi pi-dollar"></i>
             <span>Moneda de los Contratos y Tipo de Cambio</span>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Moneda de los Costos *</label>
+              <label class="block font-semibold text-slate-600 mb-1">Moneda de los Costos *</label>
               <select v-model="formEq.moneda" class="form-input text-xs font-semibold">
                 <option value="USD">USD (Dólares)</option>
                 <option value="ARS">ARS (Pesos)</option>
               </select>
             </div>
             <div>
-              <label class="block font-semibold text-amber-400 mb-1">Tipo de Cambio USD/ARS *</label>
+              <label class="block font-semibold text-amber-600 mb-1">Tipo de Cambio USD/ARS *</label>
               <input v-model.number="formEq.tipo_cambio_al_costear" type="number" step="any" required class="form-input text-xs" />
             </div>
           </div>
         </div>
 
         <!-- Costos Fijos Mensuales del Equipo -->
-        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-sky-600 flex items-center gap-1.5">
             <i class="pi pi-server"></i>
             <span>Costos Fijos Propios del Analizador (en {{ formEq.moneda }})</span>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Alquiler / Comodato Mensual</label>
+              <label class="block font-semibold text-slate-600 mb-1">Alquiler / Comodato Mensual</label>
               <input v-model.number="formEq.costo_alquiler_mensual" type="number" step="any" class="form-input text-xs" placeholder="0.00" />
             </div>
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Service Técnico / Mantenimiento Mensual</label>
+              <label class="block font-semibold text-slate-600 mb-1">Service Técnico / Mantenimiento Mensual</label>
               <input v-model.number="formEq.costo_mantenimiento_mensual" type="number" step="any" class="form-input text-xs" placeholder="0.00" />
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Amortización Mensual (si es propio)</label>
+              <label class="block font-semibold text-slate-600 mb-1">Amortización Mensual (si es propio)</label>
               <input v-model.number="formEq.costo_amortizacion_mensual" type="number" step="any" class="form-input text-xs" placeholder="0.00" />
             </div>
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Abono Servicio Calibración Técnica Oficial</label>
+              <label class="block font-semibold text-slate-600 mb-1">Abono Servicio Calibración Técnica Oficial</label>
               <input v-model.number="formEq.costo_calibracion_controles_mensual" type="number" step="any" class="form-input text-xs" placeholder="0.00" />
             </div>
           </div>
 
           <div>
-            <label class="block font-semibold text-emerald-400 mb-1">Volumen Mensual de Determinaciones Procesadas *</label>
+            <label class="block font-semibold text-brand-600 mb-1">Volumen Mensual de Determinaciones Procesadas *</label>
             <input v-model.number="formEq.volumen_mensual_estimado" type="number" min="1" required class="form-input text-xs" placeholder="Ej: 30000 tests/mes" />
             <p class="text-[10px] text-slate-500 mt-0.5">Cantidad total de determinaciones que procesa este analizador por mes para prorratear el costo</p>
           </div>
 
           <!-- Live Preview Box -->
-          <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-700/60 flex items-center justify-between text-xs">
+          <div class="p-2.5 bg-white rounded-lg border border-slate-200 flex items-center justify-between text-xs">
             <div>
-              <span class="text-slate-400 block text-[11px]">Gasto Fijo Total Mensual:</span>
-              <span class="text-sky-400 font-bold font-mono text-xs">
-                USD ${{ previewTotalMensualUsd }} <span class="text-slate-400 font-normal">(${{ previewTotalMensualArs }} ARS)</span>
+              <span class="text-slate-500 block text-[11px]">Gasto Fijo Total Mensual:</span>
+              <span class="text-sky-600 font-bold font-mono text-xs">
+                USD ${{ previewTotalMensualUsd }} <span class="text-slate-500 font-normal">(${{ previewTotalMensualArs }} ARS)</span>
               </span>
             </div>
             <div class="text-right">
-              <span class="text-slate-400 block text-[10px]">Costo Fijo Prorrateado / Test:</span>
-              <span class="text-emerald-400 font-black font-mono text-sm">
-                USD ${{ previewCostoTestUsd }} <span class="text-xs text-slate-400">(${{ previewCostoTestArs }} ARS)</span>
+              <span class="text-slate-500 block text-[10px]">Costo Fijo Prorrateado / Test:</span>
+              <span class="text-brand-600 font-black font-mono text-sm">
+                USD ${{ previewCostoTestUsd }} <span class="text-xs text-slate-500">(${{ previewCostoTestArs }} ARS)</span>
               </span>
             </div>
           </div>
         </div>
 
-        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200">
           <button type="button" @click="formDialog = false" class="btn-secondary text-xs">Cancelar</button>
           <button type="submit" class="btn-primary text-xs">Guardar Analizador</button>
         </div>

@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-white">Insumos y Reactivos de Laboratorio</h1>
-        <p class="text-sm text-slate-400">Maestro de reactivos específicos, calibradores compartidos, controles globales y soluciones de lavado</p>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Insumos y Reactivos de Laboratorio</h1>
+        <p class="text-sm text-slate-500">Maestro de reactivos específicos, calibradores compartidos, controles globales y soluciones de lavado</p>
       </div>
       <div class="flex items-center gap-3">
         <button @click="openNewDialog" class="btn-primary text-xs">
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Table Container -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
       <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div class="relative w-full sm:w-80">
           <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
@@ -55,14 +55,14 @@
       >
         <Column field="codigo" header="Código" :sortable="true" style="width: 110px">
           <template #body="{ data }">
-            <span class="font-mono text-emerald-400 font-bold">{{ data.codigo || '-' }}</span>
+            <span class="font-mono text-brand-600 font-bold">{{ data.codigo || '-' }}</span>
           </template>
         </Column>
 
         <Column field="nombre" header="Insumo / Reactivo" :sortable="true">
           <template #body="{ data }">
-            <div class="font-semibold text-slate-100">{{ data.nombre }}</div>
-            <div class="text-[11px] text-slate-400">{{ data.marca_proveedor || 'Sin marca' }} • {{ data.presentacion || 'Unidad' }}</div>
+            <div class="font-semibold text-slate-900">{{ data.nombre }}</div>
+            <div class="text-[11px] text-slate-500">{{ data.marca_proveedor || 'Sin marca' }} • {{ data.presentacion || 'Unidad' }}</div>
           </template>
         </Column>
 
@@ -77,7 +77,7 @@
               <div>
                 <span
                   class="text-[9px] px-1.5 py-0.2 rounded font-semibold uppercase font-mono"
-                  :class="data.base_calculo === 'paciente' ? 'bg-purple-950/80 text-purple-300 border border-purple-800' : 'bg-slate-800 text-slate-300 border border-slate-700'">
+                  :class="data.base_calculo === 'paciente' ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-slate-100 text-slate-600 border border-slate-300'">
                   {{ data.base_calculo === 'paciente' ? 'Base: Paciente' : 'Base: Tests' }}
                 </span>
               </div>
@@ -87,10 +87,10 @@
 
         <Column field="costo_presentacion" header="Costo Compra" :sortable="true">
           <template #body="{ data }">
-            <span class="font-semibold text-slate-200">
+            <span class="font-semibold text-slate-800">
               {{ data.moneda === 'USD' ? 'USD $' : '$' }}{{ formatCurrency(data.costo_presentacion) }}
             </span>
-            <span v-if="data.moneda === 'USD'" class="block text-[10px] text-amber-400 font-mono">
+            <span v-if="data.moneda === 'USD'" class="block text-[10px] text-amber-600 font-mono">
               (TC: ${{ formatCurrency(data.tipo_cambio_al_costear) }})
             </span>
           </template>
@@ -98,9 +98,9 @@
 
         <Column header="Período (Consumo / Volumen)" :sortable="true" field="determinaciones_periodo">
           <template #body="{ data }">
-            <div class="text-slate-300 font-mono text-[11px]">
-              <span class="text-amber-400 font-semibold">{{ formatNumber(data.unidades_compradas_periodo || 1) }} compradas</span> /
-              <span class="text-sky-400 font-semibold">
+            <div class="text-slate-600 font-mono text-[11px]">
+              <span class="text-amber-600 font-semibold">{{ formatNumber(data.unidades_compradas_periodo || 1) }} compradas</span> /
+              <span class="text-sky-600 font-semibold">
                 {{ formatNumber(data.determinaciones_periodo || 1) }} {{ data.base_calculo === 'paciente' ? 'pacientes' : 'tests' }}
               </span>
             </div>
@@ -109,10 +109,10 @@
 
         <Column field="costo_por_determinacion_usd" header="Costo Unitario" :sortable="true">
           <template #body="{ data }">
-            <div class="font-bold font-mono text-emerald-400 text-sm">
+            <div class="font-bold font-mono text-brand-600 text-sm">
               USD ${{ formatHighPrecision(data.costo_por_determinacion_usd) }}
             </div>
-            <div class="text-[10px] text-slate-400 font-mono">
+            <div class="text-[10px] text-slate-500 font-mono">
               ARS ${{ formatHighPrecision(data.costo_unitario_ars) }} <span class="text-slate-500">/ {{ data.base_calculo === 'paciente' ? 'paciente' : 'test' }}</span>
             </div>
           </template>
@@ -121,10 +121,10 @@
         <Column header="Acciones" style="width: 100px">
           <template #body="{ data }">
             <div class="flex items-center gap-2">
-              <button @click="editInsumo(data)" title="Editar" class="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded">
+              <button @click="editInsumo(data)" title="Editar" class="p-1.5 text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded">
                 <i class="pi pi-pencil"></i>
               </button>
-              <button @click="confirmDelete(data)" title="Eliminar" class="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded">
+              <button @click="confirmDelete(data)" title="Eliminar" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded">
                 <i class="pi pi-trash"></i>
               </button>
             </div>
@@ -138,11 +138,11 @@
       <form @submit.prevent="saveInsumo" class="space-y-4 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Nombre Insumo / Reactivo *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Nombre Insumo / Reactivo *</label>
             <input v-model="formIns.nombre" required class="form-input text-xs" placeholder="Ej: Reactivo Colesterol Total" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Código del Fabricante / Interno</label>
+            <label class="block font-semibold text-slate-600 mb-1">Código del Fabricante / Interno</label>
             <input v-model="formIns.codigo" class="form-input text-xs" placeholder="Ej: OSR6216, BKDR0070-1" />
           </div>
         </div>
@@ -150,7 +150,7 @@
         <!-- Base de Cálculo y Tipo -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Tipo de Insumo *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Tipo de Insumo *</label>
             <select v-model="formIns.tipo" required class="form-input text-xs">
               <option value="reactivo">Reactivo Específico</option>
               <option value="calibrador">Calibrador Multi-analito / Específico</option>
@@ -162,7 +162,7 @@
             </select>
           </div>
           <div>
-            <label class="block font-semibold text-amber-400 mb-1">Base de Cálculo / Rendimiento *</label>
+            <label class="block font-semibold text-amber-600 mb-1">Base de Cálculo / Rendimiento *</label>
             <select v-model="formIns.base_calculo" required class="form-input text-xs font-semibold">
               <option value="test">Por Tests / Determinaciones (Reactivos, Calibradores, Lavados)</option>
               <option value="paciente">Por Paciente / Extracciones (Tubos, Agujas, Algodón, Descartables)</option>
@@ -172,56 +172,56 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Marca / Proveedor / Fabricante</label>
+            <label class="block font-semibold text-slate-600 mb-1">Marca / Proveedor / Fabricante</label>
             <input v-model="formIns.marca_proveedor" class="form-input text-xs" placeholder="Ej: Beckman Coulter AU / BD Vacutainer" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Presentación Comercial</label>
+            <label class="block font-semibold text-slate-600 mb-1">Presentación Comercial</label>
             <input v-model="formIns.presentacion" class="form-input text-xs" placeholder="Ej: Kit x 100 tests, Caja x 100 tubos" />
           </div>
         </div>
 
         <!-- Costos y Moneda de Compra -->
-        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-brand-600 flex items-center gap-1.5">
             <i class="pi pi-dollar"></i>
             <span>Costo de Compra del Insumo</span>
           </div>
 
           <div class="grid grid-cols-3 gap-3">
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Moneda *</label>
+              <label class="block font-semibold text-slate-600 mb-1">Moneda *</label>
               <select v-model="formIns.moneda" class="form-input text-xs">
                 <option value="USD">USD (Dólares)</option>
                 <option value="ARS">ARS (Pesos)</option>
               </select>
             </div>
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Costo Compra Unitario *</label>
+              <label class="block font-semibold text-slate-600 mb-1">Costo Compra Unitario *</label>
               <input v-model.number="formIns.costo_presentacion" type="number" step="any" min="0.0001" required class="form-input text-xs" />
             </div>
             <div>
-              <label class="block font-semibold text-amber-400 mb-1">Tipo de Cambio USD/ARS</label>
+              <label class="block font-semibold text-amber-600 mb-1">Tipo de Cambio USD/ARS</label>
               <input v-model.number="formIns.tipo_cambio_al_costear" type="number" step="any" class="form-input text-xs" />
             </div>
           </div>
         </div>
 
         <!-- Parámetros del Período Real (Fórmula Exacta) -->
-        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-sky-600 flex items-center gap-1.5">
             <i class="pi pi-chart-line"></i>
             <span>Parámetros del Período Real (Cálculo {{ formIns.base_calculo === 'paciente' ? 'por Paciente' : 'por Test' }})</span>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Unidades Compradas / Consumidas *</label>
+              <label class="block font-semibold text-slate-600 mb-1">Unidades Compradas / Consumidas *</label>
               <input v-model.number="formIns.unidades_compradas_periodo" type="number" step="any" min="0.0001" required class="form-input text-xs" placeholder="Ej: 4" />
               <p class="text-[10px] text-slate-500 mt-0.5">Cantidad de reactivos/cajas consumidos en el período</p>
             </div>
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">
+              <label class="block font-semibold text-slate-600 mb-1">
                 {{ formIns.base_calculo === 'paciente' ? 'Pacientes Atendidos en el Período *' : 'Determinaciones Entregadas en el Período *' }}
               </label>
               <input v-model.number="formIns.determinaciones_periodo" type="number" step="any" min="1" required class="form-input text-xs" :placeholder="formIns.base_calculo === 'paciente' ? 'Ej: 1500 pacientes' : 'Ej: 31445 tests'" />
@@ -232,23 +232,23 @@
           </div>
 
           <!-- Live Preview Card -->
-          <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-700/60 flex items-center justify-between text-xs">
+          <div class="p-2.5 bg-white rounded-lg border border-slate-200 flex items-center justify-between text-xs">
             <div>
-              <span class="text-slate-400 block text-[11px]">Fórmula Resultante:</span>
-              <span class="text-slate-300 font-mono text-[11px]">
+              <span class="text-slate-500 block text-[11px]">Fórmula Resultante:</span>
+              <span class="text-slate-600 font-mono text-[11px]">
                 ({{ formIns.moneda }} ${{ formIns.costo_presentacion }} × {{ formIns.unidades_compradas_periodo }}) ÷ {{ Number(formIns.determinaciones_periodo || 1).toLocaleString('es-AR') }} {{ formIns.base_calculo === 'paciente' ? 'pacientes' : 'tests' }}
               </span>
             </div>
             <div class="text-right">
-              <span class="text-slate-400 block text-[10px]">Costo Unitario / {{ formIns.base_calculo === 'paciente' ? 'Paciente' : 'Test' }}:</span>
-              <span class="text-emerald-400 font-black font-mono text-sm">
-                USD ${{ previewCostoUsd }} <span class="text-xs text-slate-400">(${{ previewCostoArs }} ARS)</span>
+              <span class="text-slate-500 block text-[10px]">Costo Unitario / {{ formIns.base_calculo === 'paciente' ? 'Paciente' : 'Test' }}:</span>
+              <span class="text-brand-600 font-black font-mono text-sm">
+                USD ${{ previewCostoUsd }} <span class="text-xs text-slate-500">(${{ previewCostoArs }} ARS)</span>
               </span>
             </div>
           </div>
         </div>
 
-        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200">
           <button type="button" @click="formDialog = false" class="btn-secondary text-xs">Cancelar</button>
           <button type="submit" class="btn-primary text-xs">Guardar Insumo</button>
         </div>
@@ -346,15 +346,15 @@ const formatTipo = (t: string) => {
 
 const getTipoBadgeClass = (t: string) => {
   const map: any = {
-    reactivo: 'bg-emerald-950 text-emerald-400 border-emerald-800',
-    calibrador: 'bg-purple-950 text-purple-400 border-purple-800',
-    control: 'bg-amber-950 text-amber-400 border-amber-800',
-    solucion_lavado: 'bg-cyan-950 text-cyan-400 border-cyan-800',
-    descartable_extraccion: 'bg-blue-950 text-blue-400 border-blue-800',
-    descartable_equipo: 'bg-slate-800 text-slate-300 border-slate-700',
-    otro: 'bg-slate-800 text-slate-400 border-slate-700'
+    reactivo: 'bg-brand-50 text-brand-600 border-brand-200',
+    calibrador: 'bg-purple-50 text-purple-600 border-purple-200',
+    control: 'bg-amber-50 text-amber-600 border-amber-200',
+    solucion_lavado: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+    descartable_extraccion: 'bg-blue-50 text-blue-600 border-blue-200',
+    descartable_equipo: 'bg-slate-100 text-slate-600 border-slate-300',
+    otro: 'bg-slate-100 text-slate-500 border-slate-300'
   };
-  return map[t] || 'bg-slate-800 text-slate-300 border-slate-700';
+  return map[t] || 'bg-slate-100 text-slate-600 border-slate-300';
 };
 
 const filteredInsumos = computed(() => {

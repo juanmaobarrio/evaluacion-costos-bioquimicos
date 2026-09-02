@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 min-h-screen selection:bg-emerald-500 selection:text-white;
+    @apply bg-slate-100 text-slate-800 min-h-screen selection:bg-brand-500 selection:text-white;
   }
 }
 
@@ -14,68 +14,68 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #94a3b8;
 }
 
 @layer components {
-  /* PrimeVue Custom Dark Theme Overrides for Clean Modern Look */
+  /* PrimeVue Custom Light Theme Overrides (paleta corporativa azul) */
   .p-component {
     font-family: inherit;
   }
 
   .p-datatable {
-    @apply bg-slate-900 rounded-xl overflow-hidden border border-slate-800 text-slate-200 text-sm;
+    @apply bg-white rounded-xl overflow-hidden border border-slate-200 text-slate-700 text-sm shadow-sm;
   }
   .p-datatable .p-datatable-header {
-    @apply bg-slate-900 border-b border-slate-800 p-4 text-slate-100;
+    @apply bg-white border-b border-slate-200 p-4 text-slate-800;
   }
   .p-datatable .p-datatable-thead > tr > th {
-    @apply bg-slate-800/80 text-slate-300 font-semibold px-4 py-3 border-b border-slate-700 text-xs tracking-wider uppercase;
+    @apply bg-brand-50 text-brand-900 font-semibold px-4 py-3 border-b border-brand-100 text-xs tracking-wider uppercase;
   }
   .p-datatable .p-datatable-tbody > tr {
-    @apply bg-slate-900/50 border-b border-slate-800/60 hover:bg-slate-800/50 transition-colors;
+    @apply bg-white border-b border-slate-100 hover:bg-brand-50/60 transition-colors;
   }
   .p-datatable .p-datatable-tbody > tr > td {
-    @apply px-4 py-3 text-slate-200 border-none;
+    @apply px-4 py-3 text-slate-700 border-none;
   }
   .p-paginator {
-    @apply bg-slate-900 border-t border-slate-800 p-2 text-slate-300;
+    @apply bg-white border-t border-slate-200 p-2 text-slate-600;
   }
   .p-dialog {
-    @apply bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl text-slate-100;
+    @apply bg-white border border-slate-200 rounded-2xl shadow-2xl text-slate-800;
   }
   .p-dialog .p-dialog-header {
-    @apply bg-slate-900 border-b border-slate-800 p-5 rounded-t-2xl text-slate-100 font-bold;
+    @apply bg-white border-b border-slate-200 p-5 rounded-t-2xl text-slate-900 font-bold;
   }
   .p-dialog .p-dialog-content {
-    @apply bg-slate-900 p-6;
+    @apply bg-white p-6;
   }
   .p-dialog .p-dialog-footer {
-    @apply bg-slate-900 border-t border-slate-800 p-4 rounded-b-2xl;
+    @apply bg-white border-t border-slate-200 p-4 rounded-b-2xl;
   }
 
   /* Inputs & Form Controls */
   .form-input {
-    @apply w-full bg-slate-950/80 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all;
+    @apply w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-900/50 transition-all duration-200 disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow-md shadow-brand-600/25 hover:shadow-brand-700/30 transition-all duration-200 disabled:opacity-50;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded-lg border border-slate-700 transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 font-medium rounded-lg border border-slate-300 transition-all duration-200;
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-medium rounded-lg transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-lg transition-all duration-200;
   }
   .card-stat {
-    @apply bg-slate-900/90 border border-slate-800 rounded-2xl p-5 backdrop-blur-md shadow-xl hover:border-slate-700 transition-all;
+    @apply bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:border-brand-300 hover:shadow-md transition-all;
   }
 
   /* PrimeVue MultiSelect & Dropdown filter fix */
@@ -85,10 +85,10 @@
   }
   .p-multiselect-panel .p-multiselect-filter,
   .p-dropdown-panel .p-dropdown-filter {
-    @apply w-full bg-slate-950 border border-slate-700 rounded-lg pl-10 pr-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 !important;
+    @apply w-full bg-white border border-slate-300 rounded-lg pl-10 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-500 !important;
   }
   .p-multiselect-panel .p-multiselect-filter-icon,
   .p-dropdown-panel .p-dropdown-filter-icon {
-    @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-xs;
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs;
   }
 }

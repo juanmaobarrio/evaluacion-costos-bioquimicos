@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-screen bg-slate-950 overflow-hidden">
+  <div class="flex h-screen bg-slate-50 overflow-hidden">
     <!-- Sidebar -->
     <aside
-      class="relative bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0 transition-[width] duration-300 ease-in-out"
+      class="relative bg-brand-900 border-r border-brand-800 flex flex-col justify-between shrink-0 transition-[width] duration-300 ease-in-out"
       :class="collapsed ? 'w-[72px]' : 'w-64'"
     >
       <!-- Toggle Button -->
@@ -10,20 +10,20 @@
         @click="toggleSidebar"
         :title="collapsed ? 'Expandir menú' : 'Colapsar menú'"
         :aria-label="collapsed ? 'Expandir menú' : 'Colapsar menú'"
-        class="absolute -right-3 top-7 z-10 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-emerald-600 hover:border-emerald-500 flex items-center justify-center shadow-md transition-colors"
+        class="absolute -right-3 top-7 z-10 w-6 h-6 rounded-full bg-white border border-slate-300 text-brand-700 hover:text-white hover:bg-brand-600 hover:border-brand-600 flex items-center justify-center shadow-md transition-colors"
       >
         <i class="pi text-[10px]" :class="collapsed ? 'pi-chevron-right' : 'pi-chevron-left'"></i>
       </button>
 
       <div class="overflow-hidden">
         <!-- Logo & Title -->
-        <div class="h-[81px] border-b border-slate-800 flex items-center gap-3 overflow-hidden" :class="collapsed ? 'justify-center px-0' : 'px-5'">
-          <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-950">
+        <div class="h-[81px] border-b border-brand-800 flex items-center gap-3 overflow-hidden" :class="collapsed ? 'justify-center px-0' : 'px-5'">
+          <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-tr from-brand-500 to-brand-300 flex items-center justify-center shadow-md shadow-brand-950/40">
             <i class="pi pi-chart-line text-white text-xl"></i>
           </div>
           <div v-show="!collapsed" class="whitespace-nowrap">
             <h1 class="font-bold text-base tracking-wide text-white">BioCostos</h1>
-            <p class="text-xs text-slate-400">Auditoría Bioquímica</p>
+            <p class="text-xs text-brand-300">Auditoría Bioquímica</p>
           </div>
         </div>
 
@@ -38,8 +38,8 @@
             :class="[
               collapsed ? 'justify-center px-0' : 'px-3.5',
               $route.path === item.path
-                ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                ? 'bg-brand-600 text-white shadow-md shadow-brand-950/40'
+                : 'text-brand-200 hover:text-white hover:bg-brand-800'
             ]"
           >
             <i :class="[item.icon, 'text-base shrink-0 group-hover:scale-110 transition-transform']"></i>
@@ -49,18 +49,18 @@
       </div>
 
       <!-- Bottom User Card -->
-      <div class="border-t border-slate-800 bg-slate-900/50" :class="collapsed ? 'p-3' : 'p-4'">
+      <div class="border-t border-brand-800 bg-brand-950/40" :class="collapsed ? 'p-3' : 'p-4'">
         <div class="flex items-center gap-2" :class="collapsed ? 'flex-col' : 'justify-between'">
           <div class="flex items-center gap-3 overflow-hidden">
             <div
-              class="w-9 h-9 shrink-0 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 font-bold"
+              class="w-9 h-9 shrink-0 rounded-full bg-brand-800 border border-brand-700 flex items-center justify-center text-white font-bold"
               :title="collapsed ? `${authStore.user?.full_name || 'Usuario'} (${authStore.user?.role || 'Consulta'})` : undefined"
             >
               {{ authStore.user?.full_name?.charAt(0) || 'U' }}
             </div>
             <div v-show="!collapsed" class="truncate">
-              <p class="text-xs font-semibold text-slate-200 truncate">{{ authStore.user?.full_name || 'Usuario' }}</p>
-              <span class="inline-block text-[10px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-800/60">
+              <p class="text-xs font-semibold text-white truncate">{{ authStore.user?.full_name || 'Usuario' }}</p>
+              <span class="inline-block text-[10px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider bg-brand-800 text-brand-200 border border-brand-700">
                 {{ authStore.user?.role || 'Consulta' }}
               </span>
             </div>
@@ -68,7 +68,7 @@
           <button
             @click="handleLogout"
             title="Cerrar sesión"
-            class="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition-colors"
+            class="p-2 text-brand-300 hover:text-rose-300 hover:bg-brand-800 rounded-lg transition-colors"
           >
             <i class="pi pi-sign-out text-lg"></i>
           </button>
@@ -80,25 +80,25 @@
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
       <!-- Topbar -->
       <header
-        class="h-16 bg-slate-900/70 backdrop-blur-md border-b border-slate-800 px-6 flex items-center justify-between shrink-0">
+        class="h-16 bg-white backdrop-blur-md border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2">
-          <h2 class="text-lg font-bold text-slate-100 capitalize">{{ currentRouteTitle }}</h2>
+          <h2 class="text-lg font-bold text-slate-900 capitalize">{{ currentRouteTitle }}</h2>
         </div>
         <div class="flex items-center gap-4">
           <!-- TC Button / Dialog trigger -->
           <button
             @click="openTcDialog"
             title="Hacé clic para modificar la tasa de cambio de referencia"
-            class="flex items-center gap-2 px-3 py-1.5 bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 rounded-lg text-xs transition-all cursor-pointer group"
+            class="flex items-center gap-2 px-3 py-1.5 bg-brand-50 hover:bg-brand-100 border border-brand-200 hover:border-brand-400 rounded-lg text-xs transition-all cursor-pointer group"
           >
-            <i class="pi pi-dollar text-emerald-400 group-hover:scale-110 transition-transform"></i>
-            <span class="text-slate-400">TC Referencia:</span>
-            <span class="font-bold text-emerald-400">${{ formatCurrency(tcValue) }} ARS/USD</span>
-            <i class="pi pi-pencil text-[10px] text-slate-500 group-hover:text-emerald-400 ml-1"></i>
+            <i class="pi pi-dollar text-brand-600 group-hover:scale-110 transition-transform"></i>
+            <span class="text-slate-500">TC Referencia:</span>
+            <span class="font-bold text-brand-600">${{ formatCurrency(tcValue) }} ARS/USD</span>
+            <i class="pi pi-pencil text-[10px] text-slate-500 group-hover:text-brand-600 ml-1"></i>
           </button>
-          <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded-lg text-xs">
+          <div class="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span class="text-slate-300">Motor de Cálculo: Activo</span>
+            <span class="text-slate-600">Motor de Cálculo: Activo</span>
           </div>
         </div>
       </header>
@@ -106,25 +106,25 @@
       <!-- Modal Rápido Tipo de Cambio -->
       <Dialog v-model:visible="tcDialog" modal header="Tasa de Cambio de Referencia (USD / ARS)" :style="{ width: '420px' }">
         <form @submit.prevent="saveTc" class="space-y-4 text-xs">
-          <p class="text-slate-400">
+          <p class="text-slate-500">
             Esta tasa se utiliza como valor por defecto para costear insumos cotizados en dólares y calcular márgenes.
           </p>
           <div>
-            <label class="block font-semibold text-slate-200 mb-1">Cotización Oficial de Referencia (ARS) *</label>
+            <label class="block font-semibold text-slate-800 mb-1">Cotización Oficial de Referencia (ARS) *</label>
             <div class="relative">
-              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-emerald-400 text-sm pointer-events-none">$</span>
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-brand-600 text-sm pointer-events-none">$</span>
               <input
                 v-model.number="tempTc"
                 type="number"
                 step="1"
                 min="1"
                 required
-                class="form-input !pl-10 font-mono font-bold text-sm text-emerald-400"
+                class="form-input !pl-10 font-mono font-bold text-sm text-brand-600"
                 placeholder="1200"
               />
             </div>
           </div>
-          <div class="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <div class="flex justify-end gap-2 pt-3 border-t border-slate-200">
             <button type="button" @click="tcDialog = false" class="btn-secondary text-xs">Cancelar</button>
             <button type="submit" :disabled="savingTc" class="btn-primary text-xs">
               <i class="pi pi-check" :class="{ 'pi-spin': savingTc }"></i>
@@ -135,7 +135,7 @@
       </Dialog>
 
       <!-- Scrollable View Body -->
-      <main class="flex-1 overflow-y-auto p-6 bg-slate-950">
+      <main class="flex-1 overflow-y-auto p-6 bg-slate-50">
         <router-view />
       </main>
     </div>

@@ -10,7 +10,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice';
 
 // PrimeVue styles & Icons
-import 'primevue/resources/themes/aura-dark-green/theme.css';
+import 'primevue/resources/themes/aura-light-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 

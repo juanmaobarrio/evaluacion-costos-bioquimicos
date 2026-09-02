@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-white">Simulador de Escenarios "¿Qué pasa si?"</h1>
-        <p class="text-sm text-slate-400">Análisis de sensibilidad y estrés financiero ante variaciones macroeconómicas o de volumen</p>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Simulador de Escenarios "¿Qué pasa si?"</h1>
+        <p class="text-sm text-slate-500">Análisis de sensibilidad y estrés financiero ante variaciones macroeconómicas o de volumen</p>
       </div>
       <div class="flex items-center gap-3">
         <button @click="resetearEscenario" class="btn-secondary text-xs">
@@ -19,18 +19,18 @@
     </div>
 
     <!-- Sliders and Inputs Panel -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
-      <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-2">
-        <i class="pi pi-cog text-emerald-400"></i>
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xl space-y-6">
+      <h3 class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-2">
+        <i class="pi pi-cog text-brand-600"></i>
         Variables y Palancas de Estrés Financiero
       </h3>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- 1. Variación USD -->
-        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
           <div class="flex justify-between items-center text-xs">
-            <span class="font-semibold text-slate-200">Devaluación USD</span>
-            <span class="font-bold font-mono" :class="params.variacion_usd_porcentaje > 0 ? 'text-amber-400' : 'text-slate-400'">
+            <span class="font-semibold text-slate-800">Devaluación USD</span>
+            <span class="font-bold font-mono" :class="params.variacion_usd_porcentaje > 0 ? 'text-amber-600' : 'text-slate-500'">
               {{ params.variacion_usd_porcentaje > 0 ? '+' : '' }}{{ params.variacion_usd_porcentaje }}%
             </span>
           </div>
@@ -39,10 +39,10 @@
         </div>
 
         <!-- 2. Variación Reactivos -->
-        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
           <div class="flex justify-between items-center text-xs">
-            <span class="font-semibold text-slate-200">Inflación Reactivos</span>
-            <span class="font-bold font-mono" :class="params.variacion_reactivos_porcentaje > 0 ? 'text-rose-400' : 'text-slate-400'">
+            <span class="font-semibold text-slate-800">Inflación Reactivos</span>
+            <span class="font-bold font-mono" :class="params.variacion_reactivos_porcentaje > 0 ? 'text-rose-600' : 'text-slate-500'">
               {{ params.variacion_reactivos_porcentaje > 0 ? '+' : '' }}{{ params.variacion_reactivos_porcentaje }}%
             </span>
           </div>
@@ -51,10 +51,10 @@
         </div>
 
         <!-- 3. Variación Gastos Fijos -->
-        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
           <div class="flex justify-between items-center text-xs">
-            <span class="font-semibold text-slate-200">Suba Gastos Fijos</span>
-            <span class="font-bold font-mono" :class="params.variacion_fijos_porcentaje > 0 ? 'text-rose-400' : 'text-slate-400'">
+            <span class="font-semibold text-slate-800">Suba Gastos Fijos</span>
+            <span class="font-bold font-mono" :class="params.variacion_fijos_porcentaje > 0 ? 'text-rose-600' : 'text-slate-500'">
               {{ params.variacion_fijos_porcentaje > 0 ? '+' : '' }}{{ params.variacion_fijos_porcentaje }}%
             </span>
           </div>
@@ -63,10 +63,10 @@
         </div>
 
         <!-- 4. Variación Volumen de Pacientes -->
-        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
           <div class="flex justify-between items-center text-xs">
-            <span class="font-semibold text-slate-200">Volumen Pacientes</span>
-            <span class="font-bold font-mono" :class="params.variacion_volumen_pacientes_porcentaje < 0 ? 'text-rose-400' : 'text-emerald-400'">
+            <span class="font-semibold text-slate-800">Volumen Pacientes</span>
+            <span class="font-bold font-mono" :class="params.variacion_volumen_pacientes_porcentaje < 0 ? 'text-rose-600' : 'text-emerald-600'">
               {{ params.variacion_volumen_pacientes_porcentaje > 0 ? '+' : '' }}{{ params.variacion_volumen_pacientes_porcentaje }}%
             </span>
           </div>
@@ -79,8 +79,8 @@
     <!-- Simulation Results Summary -->
     <div v-if="resultado" class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="card-stat">
-        <div class="text-xs text-slate-400 uppercase font-semibold">Gastos Fijos Simulados</div>
-        <div class="text-2xl font-bold text-sky-400 mt-1">
+        <div class="text-xs text-slate-500 uppercase font-semibold">Gastos Fijos Simulados</div>
+        <div class="text-2xl font-bold text-sky-600 mt-1">
           ${{ formatCurrency(resultado.gastos_fijos_simulados) }}
         </div>
         <div class="text-xs text-slate-500 mt-1">
@@ -89,8 +89,8 @@
       </div>
 
       <div class="card-stat">
-        <div class="text-xs text-slate-400 uppercase font-semibold">Pacientes Mensuales Proyectados</div>
-        <div class="text-2xl font-bold text-white mt-1">
+        <div class="text-xs text-slate-500 uppercase font-semibold">Pacientes Mensuales Proyectados</div>
+        <div class="text-2xl font-bold text-slate-900 mt-1">
           {{ resultado.volumen_pacientes_simulado }} pacientes
         </div>
         <div class="text-xs text-slate-500 mt-1">
@@ -99,8 +99,8 @@
       </div>
 
       <div class="card-stat">
-        <div class="text-xs text-slate-400 uppercase font-semibold">Nuevo Overhead Unitario</div>
-        <div class="text-2xl font-bold mt-1" :class="resultado.delta_overhead_porcentaje > 0 ? 'text-rose-400' : 'text-emerald-400'">
+        <div class="text-xs text-slate-500 uppercase font-semibold">Nuevo Overhead Unitario</div>
+        <div class="text-2xl font-bold mt-1" :class="resultado.delta_overhead_porcentaje > 0 ? 'text-rose-600' : 'text-emerald-600'">
           ${{ formatCurrency(resultado.overhead_por_paciente_simulado) }}
         </div>
         <div class="text-xs text-slate-500 mt-1">
@@ -110,15 +110,15 @@
     </div>
 
     <!-- Simulation Detailed Table -->
-    <div v-if="resultado" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
-      <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">
+    <div v-if="resultado" class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
+      <h3 class="text-xs font-bold text-slate-600 uppercase tracking-wider">
         Impacto Unitario en Todas las Determinaciones
       </h3>
 
       <DataTable :value="resultado.determinaciones" :paginator="true" :rows="10" class="text-xs">
         <Column field="codigo" header="Código" style="width: 100px">
           <template #body="{ data }">
-            <span class="font-mono text-emerald-400 font-semibold">{{ data.codigo || '-' }}</span>
+            <span class="font-mono text-brand-600 font-semibold">{{ data.codigo || '-' }}</span>
           </template>
         </Column>
 
@@ -126,19 +126,19 @@
 
         <Column field="costo_original" header="Costo Base">
           <template #body="{ data }">
-            <span class="text-slate-400">${{ formatCurrency(data.costo_original) }}</span>
+            <span class="text-slate-500">${{ formatCurrency(data.costo_original) }}</span>
           </template>
         </Column>
 
         <Column field="costo_simulado" header="Costo Simulado">
           <template #body="{ data }">
-            <span class="font-bold text-rose-400">${{ formatCurrency(data.costo_simulado) }}</span>
+            <span class="font-bold text-rose-600">${{ formatCurrency(data.costo_simulado) }}</span>
           </template>
         </Column>
 
         <Column field="delta_porcentaje" header="Variación Costo">
           <template #body="{ data }">
-            <span class="font-semibold font-mono" :class="data.delta_porcentaje > 0 ? 'text-rose-400' : 'text-emerald-400'">
+            <span class="font-semibold font-mono" :class="data.delta_porcentaje > 0 ? 'text-rose-600' : 'text-emerald-600'">
               {{ data.delta_porcentaje > 0 ? '+' : '' }}{{ data.delta_porcentaje }}%
             </span>
           </template>
@@ -146,7 +146,7 @@
 
         <Column field="arancel_referencia" header="Arancel Ref.">
           <template #body="{ data }">
-            <span class="text-slate-300">${{ formatCurrency(data.arancel_referencia) }}</span>
+            <span class="text-slate-600">${{ formatCurrency(data.arancel_referencia) }}</span>
           </template>
         </Column>
 
@@ -154,7 +154,7 @@
           <template #body="{ data }">
             <span
               class="px-2 py-0.5 rounded-full font-bold text-[11px]"
-              :class="data.nuevo_margen_porcentaje < 40 ? 'bg-rose-950 text-rose-400 border border-rose-800' : 'bg-emerald-950 text-emerald-400 border border-emerald-800'"
+              :class="data.nuevo_margen_porcentaje < 40 ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'"
             >
               {{ data.nuevo_margen_porcentaje }}%
             </span>

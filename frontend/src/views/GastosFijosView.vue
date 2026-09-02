@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-white">Gastos Fijos y Parámetros Operativos</h1>
-        <p class="text-sm text-slate-400">Estructura fija mensual (Overhead), parámetros de costeo y kit de extracción</p>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Gastos Fijos y Parámetros Operativos</h1>
+        <p class="text-sm text-slate-500">Estructura fija mensual (Overhead), parámetros de costeo y kit de extracción</p>
       </div>
       <div class="flex items-center gap-3">
         <button @click="openNewGastoDialog" class="btn-primary text-xs">
@@ -15,47 +15,47 @@
     </div>
 
     <!-- Tabs Container -->
-    <TabView class="bg-slate-900 border border-slate-800 rounded-2xl p-2 shadow-xl">
+    <TabView class="bg-white border border-slate-200 rounded-2xl p-2 shadow-xl">
       <!-- TAB 1: GASTOS FIJOS MENSUALES -->
       <TabPanel header="Gastos Fijos Mensuales (Overhead)">
         <div class="p-2 space-y-4">
-          <div class="flex justify-between items-center p-4 bg-slate-950 rounded-xl border border-slate-800">
+          <div class="flex justify-between items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
             <div>
-              <div class="text-xs text-slate-400">Total Gastos Fijos Mensuales Activos</div>
-              <div class="text-2xl font-bold text-sky-400">${{ formatCurrency(totalGastosFijos) }}</div>
+              <div class="text-xs text-slate-500">Total Gastos Fijos Mensuales Activos</div>
+              <div class="text-2xl font-bold text-sky-600">${{ formatCurrency(totalGastosFijos) }}</div>
             </div>
             <div class="text-right">
-              <div class="text-xs text-slate-400">Overhead por Paciente (Base {{ pacientesEstimados }} pac/mes)</div>
-              <div class="text-xl font-bold text-emerald-400">${{ formatCurrency(overheadPorPaciente) }}</div>
+              <div class="text-xs text-slate-500">Overhead por Paciente (Base {{ pacientesEstimados }} pac/mes)</div>
+              <div class="text-xl font-bold text-brand-600">${{ formatCurrency(overheadPorPaciente) }}</div>
             </div>
           </div>
 
           <DataTable :value="gastosFijos" :loading="loading" class="text-xs">
             <Column field="concepto" header="Concepto / Gasto" :sortable="true">
               <template #body="{ data }">
-                <span class="font-semibold text-slate-100">{{ data.concepto }}</span>
+                <span class="font-semibold text-slate-900">{{ data.concepto }}</span>
               </template>
             </Column>
             <Column field="categoria" header="Categoría" :sortable="true">
               <template #body="{ data }">
                 <span
-                  class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-800 text-slate-300 border border-slate-700">
+                  class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-slate-600 border border-slate-300">
                   {{ data.categoria }}
                 </span>
               </template>
             </Column>
             <Column field="monto_mensual" header="Monto Mensual (ARS)" :sortable="true">
               <template #body="{ data }">
-                <span class="font-bold text-slate-100">${{ formatCurrency(data.monto_mensual) }}</span>
+                <span class="font-bold text-slate-900">${{ formatCurrency(data.monto_mensual) }}</span>
               </template>
             </Column>
             <Column header="Acciones" style="width: 100px">
               <template #body="{ data }">
                 <div class="flex items-center gap-2">
-                  <button @click="editGasto(data)" class="p-1.5 text-slate-400 hover:text-emerald-400 rounded">
+                  <button @click="editGasto(data)" class="p-1.5 text-slate-500 hover:text-brand-600 rounded">
                     <i class="pi pi-pencil"></i>
                   </button>
-                  <button @click="deleteGasto(data)" class="p-1.5 text-slate-400 hover:text-rose-400 rounded">
+                  <button @click="deleteGasto(data)" class="p-1.5 text-slate-500 hover:text-rose-600 rounded">
                     <i class="pi pi-trash"></i>
                   </button>
                 </div>
@@ -70,8 +70,8 @@
         <div class="p-2 space-y-4">
           <div class="flex justify-between items-center">
             <div>
-              <p class="text-xs text-slate-400">Materiales estándar computados en cada toma de muestra / atención de paciente</p>
-              <p class="text-sm font-bold text-emerald-400 mt-1">Costo Total Kit: ${{ formatCurrency(costoKitExtraccion) }}</p>
+              <p class="text-xs text-slate-500">Materiales estándar computados en cada toma de muestra / atención de paciente</p>
+              <p class="text-sm font-bold text-brand-600 mt-1">Costo Total Kit: ${{ formatCurrency(costoKitExtraccion) }}</p>
             </div>
             <button @click="openAddMaterialDialog" class="btn-secondary text-xs">
               <i class="pi pi-plus"></i>
@@ -82,8 +82,8 @@
           <DataTable :value="materialesExtraccion" class="text-xs">
             <Column header="Insumo / Descartable">
               <template #body="{ data }">
-                <div class="font-semibold text-slate-100">{{ data.insumo?.nombre }}</div>
-                <div class="text-[10px] text-slate-400">{{ data.insumo?.marca_proveedor }}</div>
+                <div class="font-semibold text-slate-900">{{ data.insumo?.nombre }}</div>
+                <div class="text-[10px] text-slate-500">{{ data.insumo?.marca_proveedor }}</div>
               </template>
             </Column>
             <Column field="cantidad" header="Cantidad por Paciente" style="width: 160px">
@@ -98,12 +98,12 @@
             </Column>
             <Column field="costo_subtotal_ars" header="Subtotal">
               <template #body="{ data }">
-                <span class="font-bold text-slate-200">${{ formatCurrency(data.costo_subtotal_ars) }}</span>
+                <span class="font-bold text-slate-800">${{ formatCurrency(data.costo_subtotal_ars) }}</span>
               </template>
             </Column>
             <Column header="Acciones" style="width: 80px">
               <template #body="{ data }">
-                <button @click="deleteMaterial(data)" class="p-1.5 text-rose-400 hover:bg-slate-800 rounded">
+                <button @click="deleteMaterial(data)" class="p-1.5 text-rose-600 hover:bg-slate-100 rounded">
                   <i class="pi pi-trash"></i>
                 </button>
               </template>
@@ -115,10 +115,10 @@
       <!-- TAB 3: PARÁMETROS OPERATIVOS -->
       <TabPanel header="Parámetros del Laboratorio">
         <div class="p-2 space-y-4 max-w-2xl">
-          <div v-for="param in parametros" :key="param.id" class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between">
+          <div v-for="param in parametros" :key="param.id" class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
             <div>
-              <div class="font-bold text-slate-200 text-xs">{{ param.clave }}</div>
-              <div class="text-[11px] text-slate-400 mt-0.5">{{ param.descripcion }}</div>
+              <div class="font-bold text-slate-800 text-xs">{{ param.clave }}</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">{{ param.descripcion }}</div>
             </div>
             <div class="flex items-center gap-2">
               <input
@@ -139,8 +139,8 @@
         <div class="p-2 space-y-4">
           <div class="flex justify-between items-center">
             <div>
-              <p class="text-xs text-slate-400">Maestro de secciones operativas para clasificar determinaciones, autoanalizadores y reportes</p>
-              <p class="text-sm font-bold text-emerald-400 mt-1">{{ secciones.length }} Secciones Activas</p>
+              <p class="text-xs text-slate-500">Maestro de secciones operativas para clasificar determinaciones, autoanalizadores y reportes</p>
+              <p class="text-sm font-bold text-brand-600 mt-1">{{ secciones.length }} Secciones Activas</p>
             </div>
             <button @click="openNewSeccionDialog" class="btn-primary text-xs">
               <i class="pi pi-plus"></i>
@@ -153,13 +153,13 @@
               <template #body="{ data }">
                 <div class="flex items-center gap-2">
                   <span class="w-2.5 h-2.5 rounded-full" :class="getColorCircleClass(data.color)"></span>
-                  <span class="font-semibold text-slate-100 text-sm">{{ data.nombre }}</span>
+                  <span class="font-semibold text-slate-900 text-sm">{{ data.nombre }}</span>
                 </div>
               </template>
             </Column>
             <Column field="descripcion" header="Descripción / Alcance">
               <template #body="{ data }">
-                <span class="text-slate-400">{{ data.descripcion || 'Sin descripción' }}</span>
+                <span class="text-slate-500">{{ data.descripcion || 'Sin descripción' }}</span>
               </template>
             </Column>
             <Column field="color" header="Color Identificador" style="width: 140px">
@@ -172,10 +172,10 @@
             <Column header="Acciones" style="width: 100px">
               <template #body="{ data }">
                 <div class="flex items-center gap-2">
-                  <button @click="editSeccion(data)" title="Editar" class="p-1.5 text-slate-400 hover:text-emerald-400 rounded">
+                  <button @click="editSeccion(data)" title="Editar" class="p-1.5 text-slate-500 hover:text-brand-600 rounded">
                     <i class="pi pi-pencil"></i>
                   </button>
-                  <button @click="deleteSeccion(data)" title="Eliminar" class="p-1.5 text-slate-400 hover:text-rose-400 rounded">
+                  <button @click="deleteSeccion(data)" title="Eliminar" class="p-1.5 text-slate-500 hover:text-rose-600 rounded">
                     <i class="pi pi-trash"></i>
                   </button>
                 </div>
@@ -190,12 +190,12 @@
     <Dialog v-model:visible="gastoDialog" modal :header="formGasto.id ? 'Editar Gasto Fijo' : 'Nuevo Gasto Fijo'" :style="{ width: '450px' }">
       <form @submit.prevent="saveGasto" class="space-y-4 text-xs">
         <div>
-          <label class="block font-semibold text-slate-300 mb-1">Concepto *</label>
+          <label class="block font-semibold text-slate-600 mb-1">Concepto *</label>
           <input v-model="formGasto.concepto" required class="form-input text-xs" placeholder="Ej: Alquiler Sede Central" />
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Categoría *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Categoría *</label>
             <select v-model="formGasto.categoria" required class="form-input text-xs">
               <option value="Alquileres">Alquileres</option>
               <option value="Sueldos">Sueldos</option>
@@ -206,11 +206,11 @@
             </select>
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Monto Mensual (ARS) *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Monto Mensual (ARS) *</label>
             <input v-model.number="formGasto.monto_mensual" type="number" step="any" required class="form-input text-xs" />
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200">
           <button type="button" @click="gastoDialog = false" class="btn-secondary text-xs">Cancelar</button>
           <button type="submit" class="btn-primary text-xs">Guardar</button>
         </div>
@@ -221,7 +221,7 @@
     <Dialog v-model:visible="materialDialog" modal header="Agregar Insumo a Extracción" :style="{ width: '450px' }">
       <form @submit.prevent="saveMaterialExtraccion" class="space-y-4 text-xs">
         <div>
-          <label class="block font-semibold text-slate-300 mb-1">Insumo Descartable *</label>
+          <label class="block font-semibold text-slate-600 mb-1">Insumo Descartable *</label>
           <select v-model="formMaterial.insumo_id" required class="form-input text-xs">
             <option v-for="ins in insumosDescartables" :key="ins.id" :value="ins.id">
               {{ ins.nombre }} (${{ formatCurrency(ins.costo_unitario_ars) }}/{{ ins.unidad_medida }})
@@ -229,10 +229,10 @@
           </select>
         </div>
         <div>
-          <label class="block font-semibold text-slate-300 mb-1">Cantidad por Paciente *</label>
+          <label class="block font-semibold text-slate-600 mb-1">Cantidad por Paciente *</label>
           <input v-model.number="formMaterial.cantidad" type="number" step="any" min="0.01" required class="form-input text-xs" />
         </div>
-        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200">
           <button type="button" @click="materialDialog = false" class="btn-secondary text-xs">Cancelar</button>
           <button type="submit" class="btn-primary text-xs">Agregar</button>
         </div>
@@ -243,15 +243,15 @@
     <Dialog v-model:visible="seccionDialog" modal :header="formSeccion.id ? 'Editar Sección' : 'Nueva Sección del Laboratorio'" :style="{ width: '480px' }">
       <form @submit.prevent="saveSeccion" class="space-y-4 text-xs">
         <div>
-          <label class="block font-semibold text-slate-300 mb-1">Nombre de la Sección *</label>
+          <label class="block font-semibold text-slate-600 mb-1">Nombre de la Sección *</label>
           <input v-model="formSeccion.nombre" required class="form-input text-xs" placeholder="Ej: Toxicología y Monitoreo de Drogas" />
         </div>
         <div>
-          <label class="block font-semibold text-slate-300 mb-1">Descripción / Alcance</label>
+          <label class="block font-semibold text-slate-600 mb-1">Descripción / Alcance</label>
           <input v-model="formSeccion.descripcion" class="form-input text-xs" placeholder="Ej: Dosajes, drogas terapéuticas y de abuso" />
         </div>
         <div>
-          <label class="block font-semibold text-slate-300 mb-1">Color Identificador</label>
+          <label class="block font-semibold text-slate-600 mb-1">Color Identificador</label>
           <select v-model="formSeccion.color" class="form-input text-xs">
             <option value="emerald">Verde Esmeralda (Química/General)</option>
             <option value="purple">Púrpura (Hematología)</option>
@@ -263,7 +263,7 @@
             <option value="orange">Naranja (Toxicología)</option>
           </select>
         </div>
-        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200">
           <button type="button" @click="seccionDialog = false" class="btn-secondary text-xs">Cancelar</button>
           <button type="submit" class="btn-primary text-xs">Guardar Sección</button>
         </div>
@@ -300,7 +300,7 @@ const formSeccion = ref<any>({ id: null, nombre: '', descripcion: '', color: 'em
 
 const getColorCircleClass = (c: string) => {
   const map: any = {
-    emerald: 'bg-emerald-500',
+    emerald: 'bg-brand-500',
     purple: 'bg-purple-500',
     sky: 'bg-sky-500',
     amber: 'bg-amber-500',
@@ -309,21 +309,21 @@ const getColorCircleClass = (c: string) => {
     rose: 'bg-rose-500',
     orange: 'bg-orange-500'
   };
-  return map[c] || 'bg-emerald-500';
+  return map[c] || 'bg-brand-500';
 };
 
 const getColorBadgeClass = (c: string) => {
   const map: any = {
-    emerald: 'bg-emerald-950 text-emerald-400 border-emerald-800',
-    purple: 'bg-purple-950 text-purple-400 border-purple-800',
-    sky: 'bg-sky-950 text-sky-400 border-sky-800',
-    amber: 'bg-amber-950 text-amber-400 border-amber-800',
-    cyan: 'bg-cyan-950 text-cyan-400 border-cyan-800',
-    indigo: 'bg-indigo-950 text-indigo-400 border-indigo-800',
-    rose: 'bg-rose-950 text-rose-400 border-rose-800',
-    orange: 'bg-orange-950 text-orange-400 border-orange-800'
+    emerald: 'bg-brand-50 text-brand-600 border-brand-200',
+    purple: 'bg-purple-50 text-purple-600 border-purple-200',
+    sky: 'bg-sky-50 text-sky-600 border-sky-200',
+    amber: 'bg-amber-50 text-amber-600 border-amber-200',
+    cyan: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+    indigo: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+    rose: 'bg-rose-50 text-rose-600 border-rose-200',
+    orange: 'bg-orange-50 text-orange-600 border-orange-200'
   };
-  return map[c] || 'bg-slate-800 text-slate-300 border-slate-700';
+  return map[c] || 'bg-slate-100 text-slate-600 border-slate-300';
 };
 
 const formatCurrency = (val: number) => {

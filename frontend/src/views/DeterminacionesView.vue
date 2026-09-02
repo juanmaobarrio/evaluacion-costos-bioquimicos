@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-white">Catálogo de Determinaciones</h1>
-        <p class="text-sm text-slate-400">Modelado analítico de costos unitarios directos e indirectos por práctica bioquímica</p>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Catálogo de Determinaciones</h1>
+        <p class="text-sm text-slate-500">Modelado analítico de costos unitarios directos e indirectos por práctica bioquímica</p>
       </div>
       <div class="flex items-center gap-3">
         <button @click="recalcularTodos" :disabled="recalculando" class="btn-secondary text-xs">
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Filters & Table -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
       <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div class="relative w-full sm:w-80">
           <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
@@ -49,21 +49,21 @@
       >
         <Column field="codigo" header="Código" style="width: 100px">
           <template #body="{ data }">
-            <span class="font-mono text-emerald-400 font-bold">{{ data.codigo || '-' }}</span>
+            <span class="font-mono text-brand-600 font-bold">{{ data.codigo || '-' }}</span>
           </template>
         </Column>
 
         <Column field="nombre" header="Determinación / Estudio" :sortable="true">
           <template #body="{ data }">
-            <div class="font-semibold text-slate-100 text-sm">{{ data.nombre }}</div>
-            <div class="text-[11px] text-slate-400">{{ data.seccion }}</div>
+            <div class="font-semibold text-slate-900 text-sm">{{ data.nombre }}</div>
+            <div class="text-[11px] text-slate-500">{{ data.seccion }}</div>
           </template>
         </Column>
 
         <Column field="equipo.nombre" header="Equipo" :sortable="true" style="width: 200px">
           <template #body="{ data }">
-            <div class="font-medium text-slate-200 flex items-center gap-1.5">
-              <i class="pi pi-server text-emerald-400 text-xs"></i>
+            <div class="font-medium text-slate-800 flex items-center gap-1.5">
+              <i class="pi pi-server text-brand-600 text-xs"></i>
               <span>{{ data.equipo?.nombre || 'Manual / Sin Equipo' }}</span>
             </div>
             <div v-if="data.equipo" class="text-[10px] text-slate-500 font-mono">
@@ -74,10 +74,10 @@
 
         <Column field="costo_unitario_total_ars" header="Costo Total" :sortable="true" style="width: 180px">
           <template #body="{ data }">
-            <div class="font-bold text-rose-400 font-mono text-sm">
+            <div class="font-bold text-rose-600 font-mono text-sm">
               USD ${{ formatHighPrecision(data.costo_unitario_total_usd) }}
             </div>
-            <div class="text-[10px] text-slate-400 font-mono">
+            <div class="text-[10px] text-slate-500 font-mono">
               ARS ${{ formatCurrency(data.costo_unitario_total_ars) }}
             </div>
           </template>
@@ -85,10 +85,10 @@
 
         <Column field="arancel_referencia_ars" header="Arancel de Referencia" style="width: 180px">
           <template #body="{ data }">
-            <div class="font-semibold text-slate-100 font-mono text-sm">
+            <div class="font-semibold text-slate-900 font-mono text-sm">
               ${{ formatCurrency(data.arancel_referencia_ars) }}
             </div>
-            <div class="text-[10px] text-emerald-400 font-mono">
+            <div class="text-[10px] text-brand-600 font-mono">
               Margen: {{ data.margen_estimado_porcentaje }}%
             </div>
           </template>
@@ -97,13 +97,13 @@
         <Column header="Acciones" style="width: 120px">
           <template #body="{ data }">
             <div class="flex items-center gap-1.5">
-              <button @click="verDetalle(data)" title="Ver Desglose Exacto" class="p-1.5 text-slate-400 hover:text-sky-400 hover:bg-slate-800 rounded">
+              <button @click="verDetalle(data)" title="Ver Desglose Exacto" class="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-slate-100 rounded">
                 <i class="pi pi-eye"></i>
               </button>
-              <button @click="editDeterminacion(data)" title="Editar" class="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded">
+              <button @click="editDeterminacion(data)" title="Editar" class="p-1.5 text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded">
                 <i class="pi pi-pencil"></i>
               </button>
-              <button @click="confirmDelete(data)" title="Eliminar" class="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded">
+              <button @click="confirmDelete(data)" title="Eliminar" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded">
                 <i class="pi pi-trash"></i>
               </button>
             </div>
@@ -115,57 +115,57 @@
     <!-- Modal Desglose de Costos (Drill-down) -->
     <Dialog v-model:visible="detalleDialog" modal header="Desglose Analítico y Exacto de Costo" :style="{ width: '680px' }">
       <div v-if="selectedDetalle" class="space-y-4 text-xs">
-        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex justify-between items-center">
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
           <div>
-            <div class="text-sm font-bold text-slate-100">{{ selectedDetalle.nombre }}</div>
-            <div class="text-slate-400 mt-0.5">Código: {{ selectedDetalle.codigo || 'N/A' }} | Sección: {{ selectedDetalle.seccion }}</div>
+            <div class="text-sm font-bold text-slate-900">{{ selectedDetalle.nombre }}</div>
+            <div class="text-slate-500 mt-0.5">Código: {{ selectedDetalle.codigo || 'N/A' }} | Sección: {{ selectedDetalle.seccion }}</div>
           </div>
           <div class="text-right">
-            <span class="text-[10px] uppercase font-bold text-slate-400 block">Equipo Asignado</span>
-            <span class="font-semibold text-emerald-400">{{ selectedDetalle.equipo?.nombre || 'Manual' }}</span>
+            <span class="text-[10px] uppercase font-bold text-slate-500 block">Equipo Asignado</span>
+            <span class="font-semibold text-brand-600">{{ selectedDetalle.equipo?.nombre || 'Manual' }}</span>
           </div>
         </div>
 
         <!-- Lista de Insumos y Consumibles Utilizados -->
         <div class="space-y-2">
           <div class="flex justify-between items-center">
-            <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
-              <i class="pi pi-list text-emerald-400"></i>
+            <h4 class="font-bold text-slate-600 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+              <i class="pi pi-list text-brand-600"></i>
               <span>Reactivos, Calibradores, Controles y Lavados ({{ selectedDetalle.insumos_asociados?.length || 0 }})</span>
             </h4>
-            <span class="text-[11px] font-mono text-emerald-400 font-bold">
+            <span class="text-[11px] font-mono text-brand-600 font-bold">
               Total Insumos: USD ${{ formatHighPrecision(selectedDetalle.costo_reactivos_usd) }} (ARS ${{ formatCurrency(selectedDetalle.costo_reactivos_ars) }})
             </span>
           </div>
 
           <div class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
             <div v-for="item in selectedDetalle.insumos_asociados" :key="item.id"
-              class="p-2.5 bg-slate-950 rounded-xl border border-slate-800/80 flex items-center justify-between">
+              class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
               <div class="space-y-0.5">
                 <div class="flex items-center gap-2">
-                  <span class="font-mono text-xs font-bold text-slate-200">{{ item.insumo?.codigo || '-' }}</span>
-                  <span class="font-semibold text-white">{{ item.insumo?.nombre }}</span>
+                  <span class="font-mono text-xs font-bold text-slate-800">{{ item.insumo?.codigo || '-' }}</span>
+                  <span class="font-semibold text-slate-900">{{ item.insumo?.nombre }}</span>
                   <span class="text-[9px] px-1.5 py-0.2 rounded border font-bold uppercase"
                     :class="getTipoBadgeClass(item.insumo?.tipo || 'otro')">
                     {{ formatTipo(item.insumo?.tipo || 'otro') }}
                   </span>
                   <span
                     v-if="Number(item.cantidad_requerida) !== 1"
-                    class="text-[9px] px-1.5 py-0.2 rounded border font-bold font-mono bg-amber-950 text-amber-300 border-amber-800"
+                    class="text-[9px] px-1.5 py-0.2 rounded border font-bold font-mono bg-amber-50 text-amber-700 border-amber-200"
                     title="Cantidad utilizada por determinación"
                   >
                     ×{{ formatNumber(item.cantidad_requerida) }}
                   </span>
                 </div>
-                <div class="text-[10px] text-slate-400 font-mono">
+                <div class="text-[10px] text-slate-500 font-mono">
                   Fórmula: ({{ item.insumo?.moneda }} ${{ formatCurrency(item.insumo?.costo_presentacion) }} × {{ formatNumber(item.insumo?.unidades_compradas_periodo || 1) }}) ÷ {{ formatNumber(item.insumo?.determinaciones_periodo || 1) }} tests
                 </div>
               </div>
               <div class="text-right">
-                <div class="font-mono font-bold text-emerald-400 text-xs">
+                <div class="font-mono font-bold text-brand-600 text-xs">
                   USD ${{ formatHighPrecision(item.costo_subtotal_usd) }}
                 </div>
-                <div class="text-[10px] font-mono text-slate-400">
+                <div class="text-[10px] font-mono text-slate-500">
                   ARS ${{ formatCurrency(item.costo_subtotal_ars) }}
                 </div>
               </div>
@@ -174,38 +174,38 @@
         </div>
 
         <!-- Estructura del Costo Total -->
-        <div class="space-y-2 pt-2 border-t border-slate-800">
-          <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Resumen de Costo Unitario</h4>
+        <div class="space-y-2 pt-2 border-t border-slate-200">
+          <h4 class="font-bold text-slate-600 uppercase tracking-wider text-[10px]">Resumen de Costo Unitario</h4>
 
           <div class="grid grid-cols-2 gap-2">
-            <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 flex justify-between items-center">
-              <span class="text-slate-400">1. Insumos y Reactivos:</span>
-              <span class="font-semibold text-slate-200 font-mono">USD ${{ formatHighPrecision(selectedDetalle.costo_reactivos_usd) }}</span>
+            <div class="p-2.5 bg-white rounded-lg border border-slate-200 flex justify-between items-center">
+              <span class="text-slate-500">1. Insumos y Reactivos:</span>
+              <span class="font-semibold text-slate-800 font-mono">USD ${{ formatHighPrecision(selectedDetalle.costo_reactivos_usd) }}</span>
             </div>
-            <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 flex justify-between items-center">
-              <span class="text-slate-400">2. Autoanalizador / Test:</span>
-              <span class="font-semibold text-slate-200 font-mono">USD ${{ formatHighPrecision(selectedDetalle.costo_equipo_usd) }}</span>
+            <div class="p-2.5 bg-white rounded-lg border border-slate-200 flex justify-between items-center">
+              <span class="text-slate-500">2. Autoanalizador / Test:</span>
+              <span class="font-semibold text-slate-800 font-mono">USD ${{ formatHighPrecision(selectedDetalle.costo_equipo_usd) }}</span>
             </div>
           </div>
 
-          <div class="flex justify-between items-center p-3 bg-rose-950/40 rounded-xl border border-rose-900/60 font-bold text-sm text-rose-300">
+          <div class="flex justify-between items-center p-3 bg-rose-50 rounded-xl border border-rose-200 font-bold text-sm text-rose-700">
             <span>Costo Unitario Total por Determinación</span>
             <div class="text-right">
               <div>USD ${{ formatHighPrecision(selectedDetalle.costo_unitario_total_usd) }}</div>
-              <div class="text-xs font-normal text-rose-400/80">ARS ${{ formatCurrency(selectedDetalle.costo_unitario_total_ars) }}</div>
+              <div class="text-xs font-normal text-rose-600/80">ARS ${{ formatCurrency(selectedDetalle.costo_unitario_total_ars) }}</div>
             </div>
           </div>
         </div>
 
         <!-- Rentabilidad -->
-        <div class="p-3 bg-emerald-950/30 rounded-xl border border-emerald-900/60 flex justify-between items-center">
+        <div class="p-3 bg-brand-50/30 rounded-xl border border-brand-100/60 flex justify-between items-center">
           <div>
-            <div class="text-[11px] text-emerald-400 font-semibold">Arancel Referencia: ${{ formatCurrency(selectedDetalle.arancel_referencia_ars) }} (USD ${{ formatCurrency(selectedDetalle.arancel_referencia_usd) }})</div>
-            <div class="text-xs text-slate-300 font-bold">Margen Bruto por Test: ${{ formatCurrency(selectedDetalle.margen_bruto_ars) }}</div>
+            <div class="text-[11px] text-brand-600 font-semibold">Arancel Referencia: ${{ formatCurrency(selectedDetalle.arancel_referencia_ars) }} (USD ${{ formatCurrency(selectedDetalle.arancel_referencia_usd) }})</div>
+            <div class="text-xs text-slate-600 font-bold">Margen Bruto por Test: ${{ formatCurrency(selectedDetalle.margen_bruto_ars) }}</div>
           </div>
           <div class="text-right">
-            <div class="text-lg font-black text-emerald-400">{{ selectedDetalle.margen_estimado_porcentaje }}%</div>
-            <div class="text-[10px] text-slate-400">Rentabilidad Bruta</div>
+            <div class="text-lg font-black text-emerald-600">{{ selectedDetalle.margen_estimado_porcentaje }}%</div>
+            <div class="text-[10px] text-slate-500">Rentabilidad Bruta</div>
           </div>
         </div>
       </div>
@@ -216,24 +216,24 @@
       <form @submit.prevent="saveDeterminacion" class="space-y-4 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Nombre de la Práctica *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Nombre de la Práctica *</label>
             <input v-model="formDet.nombre" required class="form-input text-xs" placeholder="Ej: Colesterol Total" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Código Interno</label>
+            <label class="block font-semibold text-slate-600 mb-1">Código Interno</label>
             <input v-model="formDet.codigo" class="form-input text-xs" placeholder="Ej: DET-004" />
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Sección *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Sección *</label>
             <select v-model="formDet.seccion" required class="form-input text-xs">
               <option v-for="sec in seccionesList" :key="sec.id" :value="sec.nombre">{{ sec.nombre }}</option>
             </select>
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Equipo Asociado</label>
+            <label class="block font-semibold text-slate-600 mb-1">Equipo Asociado</label>
             <select v-model="formDet.equipo_id" class="form-input text-xs">
               <option :value="null">Ninguno / Manual (Sin prorrateo de equipo)</option>
               <option v-for="eq in equipos" :key="eq.id" :value="eq.id">{{ eq.nombre }} ({{ eq.seccion }})</option>
@@ -243,26 +243,26 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Arancel de Venta Ref. (ARS) *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Arancel de Venta Ref. (ARS) *</label>
             <input v-model.number="formDet.arancel_referencia_ars" type="number" step="any" required class="form-input text-xs" placeholder="Ej: 5200" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Tiempo de Proceso Técnico (min)</label>
+            <label class="block font-semibold text-slate-600 mb-1">Tiempo de Proceso Técnico (min)</label>
             <input v-model.number="formDet.tiempo_proceso_minutos" type="number" step="any" class="form-input text-xs" />
           </div>
         </div>
 
         <!-- Insumos Receta con MultiSelect Buscable -->
-        <div class="pt-2 border-t border-slate-800 space-y-3">
+        <div class="pt-2 border-t border-slate-200 space-y-3">
           <div class="flex justify-between items-center">
             <div>
-              <span class="font-bold text-slate-200 block">Componentes Utilizados (Reactivos, Calibradores, Controles, Lavados)</span>
-              <span class="text-[10px] text-slate-400">Buscá y seleccioná los insumos que intervienen y ajustá la cantidad que consume cada determinación (por defecto 1)</span>
+              <span class="font-bold text-slate-800 block">Componentes Utilizados (Reactivos, Calibradores, Controles, Lavados)</span>
+              <span class="text-[10px] text-slate-500">Buscá y seleccioná los insumos que intervienen y ajustá la cantidad que consume cada determinación (por defecto 1)</span>
             </div>
             <div v-if="selectedInsumoIds.length > 0" class="text-right">
-              <span class="text-[10px] text-slate-400 block">Total Reactivos:</span>
-              <span class="font-mono text-xs font-bold text-emerald-400">
-                USD ${{ formatHighPrecision(formCostoTotalInsumosUsd) }} <span class="text-[10px] text-slate-400">(${{ formatCurrency(formCostoTotalInsumosArs) }} ARS)</span>
+              <span class="text-[10px] text-slate-500 block">Total Reactivos:</span>
+              <span class="font-mono text-xs font-bold text-brand-600">
+                USD ${{ formatHighPrecision(formCostoTotalInsumosUsd) }} <span class="text-[10px] text-slate-500">(${{ formatCurrency(formCostoTotalInsumosArs) }} ARS)</span>
               </span>
             </div>
           </div>
@@ -284,13 +284,13 @@
               <template #option="{ option }">
                 <div class="flex items-center justify-between w-full py-1 text-xs">
                   <div class="flex items-center gap-2">
-                    <span class="font-mono font-bold text-emerald-400">{{ option.codigo || '-' }}</span>
-                    <span class="text-slate-100 font-medium">{{ option.nombre }}</span>
+                    <span class="font-mono font-bold text-brand-600">{{ option.codigo || '-' }}</span>
+                    <span class="text-slate-900 font-medium">{{ option.nombre }}</span>
                     <span class="text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase" :class="getTipoBadgeClass(option.tipo)">
                       {{ formatTipo(option.tipo) }}
                     </span>
                   </div>
-                  <div class="font-mono text-emerald-400 font-semibold ml-4">
+                  <div class="font-mono text-brand-600 font-semibold ml-4">
                     USD ${{ formatHighPrecision(option.costo_por_determinacion_usd) }}
                   </div>
                 </div>
@@ -303,11 +303,11 @@
             <div
               v-for="ins in selectedInsumosDetails"
               :key="ins.id"
-              class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between text-xs"
+              class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs"
             >
               <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-bold text-emerald-400">{{ ins.codigo || '-' }}</span>
-                <span class="font-semibold text-slate-200">{{ ins.nombre }}</span>
+                <span class="font-mono text-xs font-bold text-brand-600">{{ ins.codigo || '-' }}</span>
+                <span class="font-semibold text-slate-800">{{ ins.nombre }}</span>
                 <span class="text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase" :class="getTipoBadgeClass(ins.tipo)">
                   {{ formatTipo(ins.tipo) }}
                 </span>
@@ -315,19 +315,19 @@
               <div class="flex items-center gap-3">
                 <!-- Cantidad utilizada por determinación -->
                 <div class="flex items-center gap-1.5" title="Cantidad de unidades de este componente que consume una determinación (ej: 2 tubos)">
-                  <span class="text-[10px] text-slate-400 uppercase tracking-wider">Cant.</span>
+                  <span class="text-[10px] text-slate-500 uppercase tracking-wider">Cant.</span>
                   <input
                     type="number"
                     step="any"
                     min="0.0001"
                     :value="getCantidad(ins.id)"
                     @input="setCantidad(ins.id, ($event.target as HTMLInputElement).value)"
-                    class="form-input !w-20 !py-1 !px-2 text-center font-mono font-bold text-xs text-white"
-                    :class="getCantidad(ins.id) !== 1 ? '!border-amber-500/60 !text-amber-300' : ''"
+                    class="form-input !w-20 !py-1 !px-2 text-center font-mono font-bold text-xs text-slate-900"
+                    :class="getCantidad(ins.id) !== 1 ? '!border-amber-500/60 !text-amber-700' : ''"
                   />
                 </div>
                 <div class="text-right min-w-[110px]">
-                  <span class="font-mono text-emerald-400 font-bold block">
+                  <span class="font-mono text-brand-600 font-bold block">
                     USD ${{ formatHighPrecision(Number(ins.costo_por_determinacion_usd || 0) * getCantidad(ins.id)) }}
                   </span>
                   <span v-if="getCantidad(ins.id) !== 1" class="text-[10px] font-mono text-slate-500 block">
@@ -338,19 +338,19 @@
                   type="button"
                   @click="removeInsumoId(ins.id)"
                   title="Quitar componente"
-                  class="p-1 text-slate-500 hover:text-rose-400 rounded hover:bg-slate-900"
+                  class="p-1 text-slate-500 hover:text-rose-600 rounded hover:bg-white"
                 >
                   <i class="pi pi-times text-xs"></i>
                 </button>
               </div>
             </div>
           </div>
-          <div v-else class="p-4 text-center text-slate-500 bg-slate-950 rounded-xl border border-dashed border-slate-800">
+          <div v-else class="p-4 text-center text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-200">
             No has seleccionado insumos para esta determinación. Abrí el buscador arriba para agregar reactivos y consumibles.
           </div>
         </div>
 
-        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200">
           <button type="button" @click="formDialog = false" class="btn-secondary text-xs">Cancelar</button>
           <button type="submit" class="btn-primary text-xs">Guardar Determinación</button>
         </div>
@@ -462,15 +462,15 @@ const formatTipo = (t: string) => {
 
 const getTipoBadgeClass = (t: string) => {
   const map: any = {
-    reactivo: 'bg-emerald-950 text-emerald-400 border-emerald-800',
-    calibrador: 'bg-purple-950 text-purple-400 border-purple-800',
-    control: 'bg-amber-950 text-amber-400 border-amber-800',
-    solucion_lavado: 'bg-cyan-950 text-cyan-400 border-cyan-800',
-    descartable_extraccion: 'bg-blue-950 text-blue-400 border-blue-800',
-    descartable_equipo: 'bg-slate-800 text-slate-300 border-slate-700',
-    otro: 'bg-slate-800 text-slate-400 border-slate-700'
+    reactivo: 'bg-brand-50 text-brand-600 border-brand-200',
+    calibrador: 'bg-purple-50 text-purple-600 border-purple-200',
+    control: 'bg-amber-50 text-amber-600 border-amber-200',
+    solucion_lavado: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+    descartable_extraccion: 'bg-blue-50 text-blue-600 border-blue-200',
+    descartable_equipo: 'bg-slate-100 text-slate-600 border-slate-300',
+    otro: 'bg-slate-100 text-slate-500 border-slate-300'
   };
-  return map[t] || 'bg-slate-800 text-slate-300 border-slate-700';
+  return map[t] || 'bg-slate-100 text-slate-600 border-slate-300';
 };
 
 const filteredDeterminaciones = computed(() => {

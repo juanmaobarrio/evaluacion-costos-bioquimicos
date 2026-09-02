@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-white">Protocolos y Costo por Paciente</h1>
-        <p class="text-sm text-slate-400">Cálculo integral por orden/atención: Determinaciones + Kit de Extracción + Overhead Fijo</p>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Protocolos y Costo por Paciente</h1>
+        <p class="text-sm text-slate-500">Cálculo integral por orden/atención: Determinaciones + Kit de Extracción + Overhead Fijo</p>
       </div>
       <div class="flex items-center gap-3">
         <button @click="openNewDialog" class="btn-primary text-xs">
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Header & Search Filter -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+    <div class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white border border-slate-200 rounded-2xl p-4 shadow-xl">
       <div class="relative w-full sm:w-80">
         <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
         <input
@@ -25,8 +25,8 @@
           class="form-input !pl-11 text-xs"
         />
       </div>
-      <div class="text-xs text-slate-400 font-medium">
-        Mostrando <span class="text-emerald-400 font-bold">{{ filteredProtocolos.length }}</span> perfiles / protocolos
+      <div class="text-xs text-slate-500 font-medium">
+        Mostrando <span class="text-brand-600 font-bold">{{ filteredProtocolos.length }}</span> perfiles / protocolos
       </div>
     </div>
 
@@ -35,46 +35,46 @@
       <div
         v-for="proto in filteredProtocolos"
         :key="proto.id"
-        class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-5 shadow-xl transition-all flex flex-col justify-between"
+        class="bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-5 shadow-xl transition-all flex flex-col justify-between"
       >
         <div>
           <!-- Top Tag & Code -->
           <div class="flex items-center justify-between mb-2">
-            <span class="font-mono text-xs font-bold text-emerald-400">{{ proto.codigo || 'PROT' }}</span>
-            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
+            <span class="font-mono text-xs font-bold text-brand-600">{{ proto.codigo || 'PROT' }}</span>
+            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
               {{ proto.estudios.length }} Estudios
             </span>
           </div>
 
-          <h3 class="text-base font-bold text-white mb-1">{{ proto.nombre }}</h3>
-          <p class="text-xs text-slate-400 mb-4 line-clamp-2">{{ proto.descripcion || 'Sin descripción' }}</p>
+          <h3 class="text-base font-bold text-slate-900 mb-1">{{ proto.nombre }}</h3>
+          <p class="text-xs text-slate-500 mb-4 line-clamp-2">{{ proto.descripcion || 'Sin descripción' }}</p>
 
           <!-- Studies badges -->
           <div class="flex flex-wrap gap-1.5 mb-4">
             <span
               v-for="est in proto.estudios"
               :key="est.id"
-              class="text-[11px] px-2 py-0.5 rounded bg-slate-800/80 text-slate-300 border border-slate-700/60"
+              class="text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200"
             >
               {{ est.determinacion?.nombre }}
             </span>
           </div>
 
           <!-- Cost Breakdown Tree -->
-          <div class="space-y-1.5 p-3 bg-slate-950 rounded-xl border border-slate-800/80 text-xs mb-4">
-            <div class="flex justify-between text-slate-400">
+          <div class="space-y-1.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs mb-4">
+            <div class="flex justify-between text-slate-500">
               <span>Determinaciones ({{ proto.estudios.length }}):</span>
-              <span class="text-slate-200 font-semibold">${{ formatCurrency(proto.costo_determinaciones_ars) }}</span>
+              <span class="text-slate-800 font-semibold">${{ formatCurrency(proto.costo_determinaciones_ars) }}</span>
             </div>
-            <div class="flex justify-between text-slate-400">
+            <div class="flex justify-between text-slate-500">
               <span>Kit de Extracción / Descartables:</span>
-              <span class="text-slate-200 font-semibold">${{ formatCurrency(proto.costo_extraccion_descartables_ars) }}</span>
+              <span class="text-slate-800 font-semibold">${{ formatCurrency(proto.costo_extraccion_descartables_ars) }}</span>
             </div>
-            <div class="flex justify-between text-slate-400">
+            <div class="flex justify-between text-slate-500">
               <span>Overhead Fijo por Paciente:</span>
-              <span class="text-sky-400 font-semibold">${{ formatCurrency(proto.costo_overhead_fijo_ars) }}</span>
+              <span class="text-sky-600 font-semibold">${{ formatCurrency(proto.costo_overhead_fijo_ars) }}</span>
             </div>
-            <div class="flex justify-between pt-2 border-t border-slate-800 font-bold text-rose-400">
+            <div class="flex justify-between pt-2 border-t border-slate-200 font-bold text-rose-600">
               <span>Costo Total Paciente:</span>
               <span>${{ formatCurrency(proto.costo_total_protocolo_ars) }}</span>
             </div>
@@ -83,22 +83,22 @@
 
         <!-- Profit & Actions -->
         <div>
-          <div class="flex items-center justify-between p-2.5 bg-emerald-950/40 rounded-xl border border-emerald-900/60 mb-3">
+          <div class="flex items-center justify-between p-2.5 bg-brand-50/40 rounded-xl border border-brand-100/60 mb-3">
             <div>
-              <div class="text-[10px] text-slate-400">Arancel Sugerido</div>
-              <div class="text-xs font-bold text-slate-200">${{ formatCurrency(proto.arancel_sugerido_ars) }}</div>
+              <div class="text-[10px] text-slate-500">Arancel Sugerido</div>
+              <div class="text-xs font-bold text-slate-800">${{ formatCurrency(proto.arancel_sugerido_ars) }}</div>
             </div>
             <div class="text-right">
-              <div class="text-sm font-black text-emerald-400">{{ proto.margen_estimado_porcentaje }}%</div>
-              <div class="text-[10px] text-slate-400">Margen (${{ formatCurrency(proto.margen_bruto_ars) }})</div>
+              <div class="text-sm font-black text-emerald-600">{{ proto.margen_estimado_porcentaje }}%</div>
+              <div class="text-[10px] text-slate-500">Margen (${{ formatCurrency(proto.margen_bruto_ars) }})</div>
             </div>
           </div>
 
           <div class="flex items-center justify-end gap-2">
-            <button @click="editProtocolo(proto)" class="p-2 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded-lg text-xs">
+            <button @click="editProtocolo(proto)" class="p-2 text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded-lg text-xs">
               <i class="pi pi-pencil"></i>
             </button>
-            <button @click="confirmDelete(proto)" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg text-xs">
+            <button @click="confirmDelete(proto)" class="p-2 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded-lg text-xs">
               <i class="pi pi-trash"></i>
             </button>
           </div>
@@ -111,37 +111,37 @@
       <form @submit.prevent="saveProtocolo" class="space-y-4 text-xs">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Nombre Protocolo / Perfil *</label>
+            <label class="block font-semibold text-slate-600 mb-1">Nombre Protocolo / Perfil *</label>
             <input v-model="formProt.nombre" required class="form-input text-xs" placeholder="Ej: Perfil Tiroideo Completo" />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Código Interno</label>
+            <label class="block font-semibold text-slate-600 mb-1">Código Interno</label>
             <input v-model="formProt.codigo" class="form-input text-xs" placeholder="Ej: PROT-002" />
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Descripción / Indicación</label>
+            <label class="block font-semibold text-slate-600 mb-1">Descripción / Indicación</label>
             <input v-model="formProt.descripcion" class="form-input text-xs" placeholder="Detalle clínico o administrativo..." />
           </div>
           <div>
-            <label class="block font-semibold text-slate-300 mb-1">Arancel Sugerido de Venta (ARS) *</label>
-            <input v-model.number="formProt.arancel_sugerido_ars" type="number" step="any" required class="form-input text-xs font-mono font-bold text-emerald-400" />
+            <label class="block font-semibold text-slate-600 mb-1">Arancel Sugerido de Venta (ARS) *</label>
+            <input v-model.number="formProt.arancel_sugerido_ars" type="number" step="any" required class="form-input text-xs font-mono font-bold text-brand-600" />
           </div>
         </div>
 
         <!-- Selección y Buscador de Determinaciones -->
-        <div class="pt-2 border-t border-slate-800 space-y-2.5">
+        <div class="pt-2 border-t border-slate-200 space-y-2.5">
           <div class="flex justify-between items-center">
             <div>
-              <span class="font-bold text-slate-200 block">Determinaciones que Componen el Perfil</span>
-              <span class="text-[10px] text-slate-400">
-                Seleccionadas: <strong class="text-emerald-400 font-mono">{{ formProt.determinacion_ids.length }}</strong> prácticas
+              <span class="font-bold text-slate-800 block">Determinaciones que Componen el Perfil</span>
+              <span class="text-[10px] text-slate-500">
+                Seleccionadas: <strong class="text-brand-600 font-mono">{{ formProt.determinacion_ids.length }}</strong> prácticas
               </span>
             </div>
             <div class="flex items-center gap-2">
-              <button type="button" @click="toggleSelectAllFiltered" class="text-[11px] text-sky-400 hover:text-sky-300 font-medium">
+              <button type="button" @click="toggleSelectAllFiltered" class="text-[11px] text-sky-600 hover:text-sky-700 font-medium">
                 {{ allFilteredSelected ? 'Deseleccionar filtradas' : 'Seleccionar filtradas' }}
               </button>
             </div>
@@ -167,28 +167,28 @@
           </div>
 
           <!-- Lista Filtrada de Determinaciones con Checkboxes -->
-          <div class="max-h-52 overflow-y-auto space-y-1 p-2 bg-slate-950 rounded-xl border border-slate-800">
+          <div class="max-h-52 overflow-y-auto space-y-1 p-2 bg-slate-50 rounded-xl border border-slate-200">
             <div v-if="filteredModalDeterminaciones.length === 0" class="p-4 text-center text-slate-500">
               No se encontraron determinaciones que coincidan con la búsqueda.
             </div>
             <label
               v-for="det in filteredModalDeterminaciones"
               :key="det.id"
-              class="flex items-center gap-2.5 p-2 rounded-lg hover:bg-slate-900 cursor-pointer transition-colors border border-transparent"
-              :class="{ 'bg-slate-900/90 border-slate-700/60': formProt.determinacion_ids.includes(det.id) }"
+              class="flex items-center gap-2.5 p-2 rounded-lg hover:bg-white cursor-pointer transition-colors border border-transparent"
+              :class="{ 'bg-white border-slate-200': formProt.determinacion_ids.includes(det.id) }"
             >
               <input
                 type="checkbox"
                 :value="det.id"
                 v-model="formProt.determinacion_ids"
-                class="rounded border-slate-700 text-emerald-600 focus:ring-emerald-500 bg-slate-900"
+                class="rounded border-slate-300 text-brand-600 focus:ring-brand-500 bg-white"
               />
               <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between gap-2">
-                  <span class="font-semibold text-slate-200 truncate">{{ det.nombre }}</span>
-                  <span class="font-mono text-emerald-400 font-bold shrink-0">${{ formatCurrency(det.costo_unitario_total_ars) }}</span>
+                  <span class="font-semibold text-slate-800 truncate">{{ det.nombre }}</span>
+                  <span class="font-mono text-brand-600 font-bold shrink-0">${{ formatCurrency(det.costo_unitario_total_ars) }}</span>
                 </div>
-                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                <div class="flex items-center gap-2 text-[10px] text-slate-500">
                   <span class="font-mono">{{ det.codigo || '-' }}</span> • <span>{{ det.seccion }}</span>
                 </div>
               </div>
@@ -196,27 +196,27 @@
           </div>
 
           <!-- Resumen de Costo en Vivo del Protocolo -->
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 text-xs">
-            <div class="flex justify-between text-slate-400 text-[11px]">
+          <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-1.5 text-xs">
+            <div class="flex justify-between text-slate-500 text-[11px]">
               <span>Costo Determinaciones ({{ formProt.determinacion_ids.length }}):</span>
-              <span class="text-slate-200 font-mono font-semibold">${{ formatCurrency(selectedDetsTotalCost) }}</span>
+              <span class="text-slate-800 font-mono font-semibold">${{ formatCurrency(selectedDetsTotalCost) }}</span>
             </div>
-            <div class="flex justify-between text-slate-400 text-[11px]">
+            <div class="flex justify-between text-slate-500 text-[11px]">
               <span>Kit Extracción / Descartables:</span>
-              <span class="text-slate-200 font-mono font-semibold">${{ formatCurrency(costoExtraccionBase) }}</span>
+              <span class="text-slate-800 font-mono font-semibold">${{ formatCurrency(costoExtraccionBase) }}</span>
             </div>
-            <div class="flex justify-between text-slate-400 text-[11px]">
+            <div class="flex justify-between text-slate-500 text-[11px]">
               <span>Overhead Fijo por Paciente:</span>
-              <span class="text-sky-400 font-mono font-semibold">${{ formatCurrency(overheadBase) }}</span>
+              <span class="text-sky-600 font-mono font-semibold">${{ formatCurrency(overheadBase) }}</span>
             </div>
-            <div class="flex justify-between pt-1.5 border-t border-slate-800 font-bold text-rose-400 text-xs">
+            <div class="flex justify-between pt-1.5 border-t border-slate-200 font-bold text-rose-600 text-xs">
               <span>Costo Total Estimado Paciente:</span>
               <span class="font-mono text-sm">${{ formatCurrency(selectedDetsTotalCost + costoExtraccionBase + overheadBase) }}</span>
             </div>
           </div>
         </div>
 
-        <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200">
           <button type="button" @click="formDialog = false" class="btn-secondary text-xs">Cancelar</button>
           <button type="submit" class="btn-primary text-xs">Guardar Protocolo</button>
         </div>

@@ -3,16 +3,16 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-white">Conciliación de Compras y Producción</h1>
-        <p class="text-sm text-slate-400">Control de desvíos: Consumo Teórico proyectado por determinaciones ejecutadas vs. Compras Reales</p>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Conciliación de Compras y Producción</h1>
+        <p class="text-sm text-slate-500">Control de desvíos: Consumo Teórico proyectado por determinaciones ejecutadas vs. Compras Reales</p>
       </div>
       <div class="flex items-center gap-3">
-        <div class="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs">
-          <span class="text-slate-400">Período:</span>
-          <select v-model.number="mes" class="bg-transparent text-slate-200 focus:outline-none">
+        <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs">
+          <span class="text-slate-500">Período:</span>
+          <select v-model.number="mes" class="bg-transparent text-slate-800 focus:outline-none">
             <option v-for="m in 12" :key="m" :value="m">{{ getNombreMes(m) }}</option>
           </select>
-          <select v-model.number="anio" class="bg-transparent text-slate-200 focus:outline-none">
+          <select v-model.number="anio" class="bg-transparent text-slate-800 focus:outline-none">
             <option :value="2024">2024</option>
             <option :value="2025">2025</option>
           </select>
@@ -25,11 +25,11 @@
     </div>
 
     <!-- Summary Banner -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Auditoría de Insumos - {{ getNombreMes(mes) }} {{ anio }}</h3>
-          <p class="text-xs text-slate-400 mt-0.5">Se marcan alertas rojas en desvíos superiores al ±15% entre compras e insumos proyectados por el LIS</p>
+          <h3 class="text-xs font-bold text-slate-600 uppercase tracking-wider">Auditoría de Insumos - {{ getNombreMes(mes) }} {{ anio }}</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Se marcan alertas rojas en desvíos superiores al ±15% entre compras e insumos proyectados por el LIS</p>
         </div>
       </div>
 
@@ -37,27 +37,27 @@
       <DataTable :value="conciliacionItems" :loading="loading" class="text-xs">
         <Column field="insumo_nombre" header="Insumo / Reactivo">
           <template #body="{ data }">
-            <span class="font-semibold text-slate-100">{{ data.insumo_nombre }}</span>
+            <span class="font-semibold text-slate-900">{{ data.insumo_nombre }}</span>
           </template>
         </Column>
 
         <Column field="consumo_teorico_unidades" header="Consumo Teórico (LIS)">
           <template #body="{ data }">
-            <div class="font-mono text-slate-300">{{ data.consumo_teorico_unidades }} un.</div>
+            <div class="font-mono text-slate-600">{{ data.consumo_teorico_unidades }} un.</div>
             <div class="text-[10px] text-slate-500">${{ formatCurrency(data.consumo_teorico_ars) }}</div>
           </template>
         </Column>
 
         <Column field="compras_reales_unidades" header="Compras Registradas">
           <template #body="{ data }">
-            <div class="font-mono text-slate-300">{{ data.compras_reales_unidades }} un.</div>
+            <div class="font-mono text-slate-600">{{ data.compras_reales_unidades }} un.</div>
             <div class="text-[10px] text-slate-500">${{ formatCurrency(data.compras_reales_ars) }}</div>
           </template>
         </Column>
 
         <Column field="desvio_unidades" header="Desvío Físico">
           <template #body="{ data }">
-            <span :class="data.desvio_unidades > 0 ? 'text-amber-400' : 'text-slate-400'">
+            <span :class="data.desvio_unidades > 0 ? 'text-amber-600' : 'text-slate-500'">
               {{ data.desvio_unidades > 0 ? '+' : '' }}{{ data.desvio_unidades }} un.
             </span>
           </template>
@@ -67,7 +67,7 @@
           <template #body="{ data }">
             <span
               class="px-2 py-0.5 rounded-full font-bold text-[11px]"
-              :class="data.alerta ? 'bg-rose-950 text-rose-400 border border-rose-800' : 'bg-emerald-950 text-emerald-400 border border-emerald-800'"
+              :class="data.alerta ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'"
             >
               {{ data.desvio_porcentaje > 0 ? '+' : '' }}{{ data.desvio_porcentaje }}%
             </span>
@@ -76,10 +76,10 @@
 
         <Column header="Estado Auditoría" style="width: 140px">
           <template #body="{ data }">
-            <span v-if="data.alerta" class="flex items-center gap-1 text-rose-400 font-bold text-[11px]">
+            <span v-if="data.alerta" class="flex items-center gap-1 text-rose-600 font-bold text-[11px]">
               <i class="pi pi-exclamation-triangle"></i> Desvío Crítico
             </span>
-            <span v-else class="flex items-center gap-1 text-emerald-400 font-medium text-[11px]">
+            <span v-else class="flex items-center gap-1 text-brand-600 font-medium text-[11px]">
               <i class="pi pi-check-circle"></i> Dentro de Norma
             </span>
           </template>

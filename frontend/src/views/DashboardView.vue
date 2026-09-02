@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-white">Dashboard Financiero y Costos</h1>
-        <p class="text-sm text-slate-400">Resumen integral de costos operativos, overhead y márgenes por determinación</p>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Dashboard Financiero y Costos</h1>
+        <p class="text-sm text-slate-500">Resumen integral de costos operativos, overhead y márgenes por determinación</p>
       </div>
       <div class="flex items-center gap-3">
         <button @click="loadData" class="btn-secondary text-xs">
@@ -17,52 +17,52 @@
     <!-- Stat Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="card-stat">
-        <div class="flex items-center justify-between text-slate-400 mb-2">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
           <span class="text-xs font-semibold uppercase tracking-wider">Determinaciones</span>
-          <i class="pi pi-list text-emerald-400"></i>
+          <i class="pi pi-list text-brand-600"></i>
         </div>
-        <div class="text-2xl font-bold text-white">{{ stats.total_determinaciones || 0 }}</div>
-        <div class="text-xs text-slate-400 mt-1">Prácticas activas costeadas</div>
+        <div class="text-2xl font-bold text-slate-900">{{ stats.total_determinaciones || 0 }}</div>
+        <div class="text-xs text-slate-500 mt-1">Prácticas activas costeadas</div>
       </div>
 
       <div class="card-stat">
-        <div class="flex items-center justify-between text-slate-400 mb-2">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
           <span class="text-xs font-semibold uppercase tracking-wider">Autoanalizadores</span>
-          <i class="pi pi-server text-teal-400"></i>
+          <i class="pi pi-server text-brand-400"></i>
         </div>
-        <div class="text-2xl font-bold text-white">{{ stats.total_equipos || 0 }}</div>
-        <div class="text-xs text-slate-400 mt-1">Equipos con prorrateo</div>
+        <div class="text-2xl font-bold text-slate-900">{{ stats.total_equipos || 0 }}</div>
+        <div class="text-xs text-slate-500 mt-1">Equipos con prorrateo</div>
       </div>
 
       <div class="card-stat">
-        <div class="flex items-center justify-between text-slate-400 mb-2">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
           <span class="text-xs font-semibold uppercase tracking-wider">Gastos Fijos Mensuales</span>
-          <i class="pi pi-building text-sky-400"></i>
+          <i class="pi pi-building text-sky-600"></i>
         </div>
-        <div class="text-2xl font-bold text-sky-400">
+        <div class="text-2xl font-bold text-sky-600">
           ${{ formatCurrency(stats.total_gastos_fijos_mensuales || 0) }}
         </div>
-        <div class="text-xs text-slate-400 mt-1">Overhead estructural del laboratorio</div>
+        <div class="text-xs text-slate-500 mt-1">Overhead estructural del laboratorio</div>
       </div>
 
       <div class="card-stat">
-        <div class="flex items-center justify-between text-slate-400 mb-2">
+        <div class="flex items-center justify-between text-slate-500 mb-2">
           <span class="text-xs font-semibold uppercase tracking-wider">Overhead por Paciente</span>
-          <i class="pi pi-user text-amber-400"></i>
+          <i class="pi pi-user text-amber-600"></i>
         </div>
-        <div class="text-2xl font-bold text-amber-400">
+        <div class="text-2xl font-bold text-amber-600">
           ${{ formatCurrency(stats.overhead_promedio_por_paciente || 0) }}
         </div>
-        <div class="text-xs text-slate-400 mt-1">Base {{ stats.volumen_pacientes_estimado || 1500 }} pacientes/mes</div>
+        <div class="text-xs text-slate-500 mt-1">Base {{ stats.volumen_pacientes_estimado || 1500 }} pacientes/mes</div>
       </div>
     </div>
 
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Gastos Fijos Por Categoría -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-        <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <i class="pi pi-chart-pie text-emerald-400"></i>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
+        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="pi pi-chart-pie text-brand-600"></i>
           Distribución de Gastos Fijos (Overhead)
         </h3>
         <div class="h-64 flex items-center justify-center">
@@ -71,9 +71,9 @@
       </div>
 
       <!-- Costo Promedio por Sección -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-        <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <i class="pi pi-chart-bar text-sky-400"></i>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
+        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="pi pi-chart-bar text-sky-600"></i>
           Costo Promedio por Sección de Laboratorio
         </h3>
         <div class="h-64 flex items-center justify-center">
@@ -85,25 +85,25 @@
     <!-- Tables: Top Costosas vs Menor Margen -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Top Costosas -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-        <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <i class="pi pi-sort-amount-down text-rose-400"></i>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
+        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="pi pi-sort-amount-down text-rose-600"></i>
           Top 5 Determinaciones de Mayor Costo
         </h3>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
-              <tr class="text-slate-400 border-b border-slate-800 pb-2">
+              <tr class="text-slate-500 border-b border-slate-200 pb-2">
                 <th class="pb-2">Estudio</th>
                 <th class="pb-2">Sección</th>
                 <th class="pb-2 text-right">Costo Unitario</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800/60">
-              <tr v-for="item in stats.top_mas_costosas" :key="item.nombre" class="hover:bg-slate-800/40">
-                <td class="py-2.5 font-medium text-slate-200">{{ item.nombre }}</td>
-                <td class="py-2.5 text-slate-400">{{ item.seccion }}</td>
-                <td class="py-2.5 text-right font-bold text-rose-400">${{ formatCurrency(item.costo) }}</td>
+            <tbody class="divide-y divide-slate-200/60">
+              <tr v-for="item in stats.top_mas_costosas" :key="item.nombre" class="hover:bg-slate-100">
+                <td class="py-2.5 font-medium text-slate-800">{{ item.nombre }}</td>
+                <td class="py-2.5 text-slate-500">{{ item.seccion }}</td>
+                <td class="py-2.5 text-right font-bold text-rose-600">${{ formatCurrency(item.costo) }}</td>
               </tr>
             </tbody>
           </table>
@@ -111,27 +111,27 @@
       </div>
 
       <!-- Menor Margen -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-        <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <i class="pi pi-exclamation-triangle text-amber-400"></i>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
+        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="pi pi-exclamation-triangle text-amber-600"></i>
           Determinaciones con Menor Margen (%)
         </h3>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
-              <tr class="text-slate-400 border-b border-slate-800 pb-2">
+              <tr class="text-slate-500 border-b border-slate-200 pb-2">
                 <th class="pb-2">Estudio</th>
                 <th class="pb-2 text-right">Costo</th>
                 <th class="pb-2 text-right">Arancel</th>
                 <th class="pb-2 text-right">Margen</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800/60">
-              <tr v-for="item in stats.top_menor_margen" :key="item.nombre" class="hover:bg-slate-800/40">
-                <td class="py-2.5 font-medium text-slate-200">{{ item.nombre }}</td>
-                <td class="py-2.5 text-right text-slate-400">${{ formatCurrency(item.costo) }}</td>
-                <td class="py-2.5 text-right font-semibold text-slate-200">${{ formatCurrency(item.arancel) }}</td>
-                <td class="py-2.5 text-right font-bold" :class="item.margen_pct < 50 ? 'text-rose-400' : 'text-amber-400'">
+            <tbody class="divide-y divide-slate-200/60">
+              <tr v-for="item in stats.top_menor_margen" :key="item.nombre" class="hover:bg-slate-100">
+                <td class="py-2.5 font-medium text-slate-800">{{ item.nombre }}</td>
+                <td class="py-2.5 text-right text-slate-500">${{ formatCurrency(item.costo) }}</td>
+                <td class="py-2.5 text-right font-semibold text-slate-800">${{ formatCurrency(item.arancel) }}</td>
+                <td class="py-2.5 text-right font-bold" :class="item.margen_pct < 50 ? 'text-rose-600' : 'text-amber-600'">
                   {{ item.margen_pct.toFixed(1) }}%
                 </td>
               </tr>
