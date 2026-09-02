@@ -7,27 +7,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Paleta corporativa (azules). Para ajustar al azul exacto de la empresa,
+        // Paleta corporativa (azul marino). Para ajustar al azul exacto de la empresa,
         // basta con cambiar estos valores: toda la UI usa `brand-*`.
+        // Tono principal: brand-700 (#1f3a68). Botones: brand-600. Sidebar: brand-900.
         brand: {
-          50:  '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
+          50:  '#f1f5fa',
+          100: '#dfe7f3',
+          200: '#bfcfe6',
+          300: '#8eaad3',
+          400: '#5a82bb',
+          500: '#35609f',
+          600: '#28497f',
+          700: '#1f3a68',
+          800: '#1a3156',
+          900: '#172a49',
+          950: '#0f1c31',
         },
         primary: {
-          50:  '#eff6ff',
-          100: '#dbeafe',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
+          50:  '#f1f5fa',
+          100: '#dfe7f3',
+          500: '#35609f',
+          600: '#28497f',
+          700: '#1f3a68',
         },
       }
     },

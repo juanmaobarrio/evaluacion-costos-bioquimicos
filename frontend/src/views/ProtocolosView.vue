@@ -72,7 +72,7 @@
             </div>
             <div class="flex justify-between text-slate-500">
               <span>Overhead Fijo por Paciente:</span>
-              <span class="text-sky-600 font-semibold">${{ formatCurrency(proto.costo_overhead_fijo_ars) }}</span>
+              <span class="text-brand-600 font-semibold">${{ formatCurrency(proto.costo_overhead_fijo_ars) }}</span>
             </div>
             <div class="flex justify-between pt-2 border-t border-slate-200 font-bold text-rose-600">
               <span>Costo Total Paciente:</span>
@@ -141,7 +141,7 @@
               </span>
             </div>
             <div class="flex items-center gap-2">
-              <button type="button" @click="toggleSelectAllFiltered" class="text-[11px] text-sky-600 hover:text-sky-700 font-medium">
+              <button type="button" @click="toggleSelectAllFiltered" class="text-[11px] text-brand-600 hover:text-brand-700 font-medium">
                 {{ allFilteredSelected ? 'Deseleccionar filtradas' : 'Seleccionar filtradas' }}
               </button>
             </div>
@@ -207,7 +207,7 @@
             </div>
             <div class="flex justify-between text-slate-500 text-[11px]">
               <span>Overhead Fijo por Paciente:</span>
-              <span class="text-sky-600 font-mono font-semibold">${{ formatCurrency(overheadBase) }}</span>
+              <span class="text-brand-600 font-mono font-semibold">${{ formatCurrency(overheadBase) }}</span>
             </div>
             <div class="flex justify-between pt-1.5 border-t border-slate-200 font-bold text-rose-600 text-xs">
               <span>Costo Total Estimado Paciente:</span>

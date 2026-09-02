@@ -100,7 +100,7 @@
           <template #body="{ data }">
             <div class="text-slate-600 font-mono text-[11px]">
               <span class="text-amber-600 font-semibold">{{ formatNumber(data.unidades_compradas_periodo || 1) }} compradas</span> /
-              <span class="text-sky-600 font-semibold">
+              <span class="text-brand-600 font-semibold">
                 {{ formatNumber(data.determinaciones_periodo || 1) }} {{ data.base_calculo === 'paciente' ? 'pacientes' : 'tests' }}
               </span>
             </div>
@@ -209,7 +209,7 @@
 
         <!-- Parámetros del Período Real (Fórmula Exacta) -->
         <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-sky-600 flex items-center gap-1.5">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-brand-600 flex items-center gap-1.5">
             <i class="pi pi-chart-line"></i>
             <span>Parámetros del Período Real (Cálculo {{ formIns.base_calculo === 'paciente' ? 'por Paciente' : 'por Test' }})</span>
           </div>

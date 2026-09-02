@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Dashboard Financiero y Costos</h1>
+        <h1 class="text-2xl font-black tracking-tight text-slate-900">Dashboard Financiero y Costos</h1>
         <p class="text-sm text-slate-500">Resumen integral de costos operativos, overhead y márgenes por determinación</p>
       </div>
       <div class="flex items-center gap-3">
@@ -21,7 +21,7 @@
           <span class="text-xs font-semibold uppercase tracking-wider">Determinaciones</span>
           <i class="pi pi-list text-brand-600"></i>
         </div>
-        <div class="text-2xl font-bold text-slate-800">{{ stats.total_determinaciones || 0 }}</div>
+        <div class="text-2xl font-bold text-slate-900">{{ stats.total_determinaciones || 0 }}</div>
         <div class="text-xs text-slate-500 mt-1">Prácticas activas costeadas</div>
       </div>
 
@@ -30,16 +30,16 @@
           <span class="text-xs font-semibold uppercase tracking-wider">Autoanalizadores</span>
           <i class="pi pi-server text-brand-400"></i>
         </div>
-        <div class="text-2xl font-bold text-slate-800">{{ stats.total_equipos || 0 }}</div>
+        <div class="text-2xl font-bold text-slate-900">{{ stats.total_equipos || 0 }}</div>
         <div class="text-xs text-slate-500 mt-1">Equipos con prorrateo</div>
       </div>
 
       <div class="card-stat">
         <div class="flex items-center justify-between text-slate-500 mb-2">
           <span class="text-xs font-semibold uppercase tracking-wider">Gastos Fijos Mensuales</span>
-          <i class="pi pi-building text-sky-600"></i>
+          <i class="pi pi-building text-brand-600"></i>
         </div>
-        <div class="text-2xl font-bold text-sky-600">
+        <div class="text-2xl font-bold text-brand-600">
           ${{ formatCurrency(stats.total_gastos_fijos_mensuales || 0) }}
         </div>
         <div class="text-xs text-slate-500 mt-1">Overhead estructural del laboratorio</div>
@@ -60,7 +60,7 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Gastos Fijos Por Categoría -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
           <i class="pi pi-chart-pie text-brand-600"></i>
           Distribución de Gastos Fijos (Overhead)
@@ -71,9 +71,9 @@
       </div>
 
       <!-- Costo Promedio por Sección -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <i class="pi pi-chart-bar text-sky-600"></i>
+          <i class="pi pi-chart-bar text-brand-600"></i>
           Costo Promedio por Sección de Laboratorio
         </h3>
         <div class="h-64 flex items-center justify-center">
@@ -85,7 +85,7 @@
     <!-- Tables: Top Costosas vs Menor Margen -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Top Costosas -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
           <i class="pi pi-sort-amount-down text-rose-600"></i>
           Top 5 Determinaciones de Mayor Costo
@@ -111,7 +111,7 @@
       </div>
 
       <!-- Menor Margen -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
           <i class="pi pi-exclamation-triangle text-amber-600"></i>
           Determinaciones con Menor Margen (%)
@@ -179,8 +179,8 @@ const renderCharts = () => {
         labels,
         datasets: [{
           data,
-          // Gama corporativa de azules + acentos complementarios (tema claro)
-          backgroundColor: ['#1d4ed8', '#3b82f6', '#60a5fa', '#0ea5e9', '#6366f1', '#94a3b8'],
+          // Gama corporativa azul marino (brand-800 → brand-300) + acentos complementarios
+          backgroundColor: ['#1a3156', '#28497f', '#35609f', '#5a82bb', '#8eaad3', '#0f766e', '#94a3b8'],
           borderColor: '#ffffff',
           borderWidth: 2,
           hoverBorderColor: '#ffffff',
@@ -209,8 +209,8 @@ const renderCharts = () => {
         datasets: [{
           label: 'Costo Promedio (ARS)',
           data,
-          backgroundColor: '#3b82f6',
-          hoverBackgroundColor: '#2563eb',
+          backgroundColor: '#35609f',
+          hoverBackgroundColor: '#28497f',
           borderRadius: 6
         }]
       },

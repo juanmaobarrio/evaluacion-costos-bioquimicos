@@ -18,7 +18,7 @@
       <div class="overflow-hidden">
         <!-- Logo & Title -->
         <div class="h-[81px] border-b border-brand-800 flex items-center gap-3 overflow-hidden" :class="collapsed ? 'justify-center px-0' : 'px-5'">
-          <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-tr from-brand-500 to-brand-300 flex items-center justify-center shadow-md shadow-brand-950/40">
+          <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-400 flex items-center justify-center shadow-md shadow-brand-950/40">
             <i class="pi pi-chart-line text-white text-xl"></i>
           </div>
           <div v-show="!collapsed" class="whitespace-nowrap">

@@ -80,7 +80,7 @@
     <div v-if="resultado" class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="card-stat">
         <div class="text-xs text-slate-500 uppercase font-semibold">Gastos Fijos Simulados</div>
-        <div class="text-2xl font-bold text-sky-600 mt-1">
+        <div class="text-2xl font-bold text-brand-600 mt-1">
           ${{ formatCurrency(resultado.gastos_fijos_simulados) }}
         </div>
         <div class="text-xs text-slate-500 mt-1">

@@ -16,7 +16,7 @@
 
     <!-- Info Banner Explicativo -->
     <div class="p-4 bg-white border border-slate-200 rounded-2xl flex items-start gap-3 shadow-lg">
-      <i class="pi pi-info-circle text-sky-600 text-lg mt-0.5"></i>
+      <i class="pi pi-info-circle text-brand-600 text-lg mt-0.5"></i>
       <div class="text-xs text-slate-600 space-y-1">
         <span class="font-bold text-slate-800 block">¿Cómo se computa el costo del equipo?</span>
         <p class="text-slate-500 leading-relaxed">
@@ -72,7 +72,7 @@
 
         <Column field="costo_total_mensual" header="Gasto Mensual Total" :sortable="true" style="width: 180px">
           <template #body="{ data }">
-            <div class="font-bold text-sky-600 font-mono text-sm">
+            <div class="font-bold text-brand-600 font-mono text-sm">
               USD ${{ formatCurrency(data.costo_total_mensual_usd) }}
             </div>
             <div class="text-[10px] text-slate-500 font-mono">
@@ -158,7 +158,7 @@
 
         <!-- Costos Fijos Mensuales del Equipo -->
         <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-sky-600 flex items-center gap-1.5">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-brand-600 flex items-center gap-1.5">
             <i class="pi pi-server"></i>
             <span>Costos Fijos Propios del Analizador (en {{ formEq.moneda }})</span>
           </div>
@@ -195,7 +195,7 @@
           <div class="p-2.5 bg-white rounded-lg border border-slate-200 flex items-center justify-between text-xs">
             <div>
               <span class="text-slate-500 block text-[11px]">Gasto Fijo Total Mensual:</span>
-              <span class="text-sky-600 font-bold font-mono text-xs">
+              <span class="text-brand-600 font-bold font-mono text-xs">
                 USD ${{ previewTotalMensualUsd }} <span class="text-slate-500 font-normal">(${{ previewTotalMensualArs }} ARS)</span>
               </span>
             </div>

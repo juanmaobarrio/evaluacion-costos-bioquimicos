@@ -22,7 +22,7 @@
           <div class="flex justify-between items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
             <div>
               <div class="text-xs text-slate-500">Total Gastos Fijos Mensuales Activos</div>
-              <div class="text-2xl font-bold text-sky-600">${{ formatCurrency(totalGastosFijos) }}</div>
+              <div class="text-2xl font-bold text-brand-600">${{ formatCurrency(totalGastosFijos) }}</div>
             </div>
             <div class="text-right">
               <div class="text-xs text-slate-500">Overhead por Paciente (Base {{ pacientesEstimados }} pac/mes)</div>

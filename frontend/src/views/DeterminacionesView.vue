@@ -97,7 +97,7 @@
         <Column header="Acciones" style="width: 120px">
           <template #body="{ data }">
             <div class="flex items-center gap-1.5">
-              <button @click="verDetalle(data)" title="Ver Desglose Exacto" class="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-slate-100 rounded">
+              <button @click="verDetalle(data)" title="Ver Desglose Exacto" class="p-1.5 text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded">
                 <i class="pi pi-eye"></i>
               </button>
               <button @click="editDeterminacion(data)" title="Editar" class="p-1.5 text-slate-500 hover:text-brand-600 hover:bg-slate-100 rounded">
