@@ -1,14 +1,27 @@
 <template>
   <div class="flex h-screen bg-slate-950 overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0">
-      <div>
+    <aside
+      class="relative bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0 transition-[width] duration-300 ease-in-out"
+      :class="collapsed ? 'w-[72px]' : 'w-64'"
+    >
+      <!-- Toggle Button -->
+      <button
+        @click="toggleSidebar"
+        :title="collapsed ? 'Expandir menú' : 'Colapsar menú'"
+        :aria-label="collapsed ? 'Expandir menú' : 'Colapsar menú'"
+        class="absolute -right-3 top-7 z-10 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-emerald-600 hover:border-emerald-500 flex items-center justify-center shadow-md transition-colors"
+      >
+        <i class="pi text-[10px]" :class="collapsed ? 'pi-chevron-right' : 'pi-chevron-left'"></i>
+      </button>
+
+      <div class="overflow-hidden">
         <!-- Logo & Title -->
-        <div class="p-5 border-b border-slate-800 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-950">
+        <div class="h-[81px] border-b border-slate-800 flex items-center gap-3 overflow-hidden" :class="collapsed ? 'justify-center px-0' : 'px-5'">
+          <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-950">
             <i class="pi pi-chart-line text-white text-xl"></i>
           </div>
-          <div>
+          <div v-show="!collapsed" class="whitespace-nowrap">
             <h1 class="font-bold text-base tracking-wide text-white">BioCostos</h1>
             <p class="text-xs text-slate-400">Auditoría Bioquímica</p>
           </div>
@@ -20,27 +33,32 @@
             v-for="item in navItems"
             :key="item.path"
             :to="item.path"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm transition-all group"
+            :title="collapsed ? item.label : undefined"
+            class="flex items-center gap-3 py-2.5 rounded-xl font-medium text-sm transition-all group"
             :class="[
+              collapsed ? 'justify-center px-0' : 'px-3.5',
               $route.path === item.path
                 ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             ]"
           >
-            <i :class="[item.icon, 'text-base group-hover:scale-110 transition-transform']"></i>
-            <span>{{ item.label }}</span>
+            <i :class="[item.icon, 'text-base shrink-0 group-hover:scale-110 transition-transform']"></i>
+            <span v-show="!collapsed" class="whitespace-nowrap truncate">{{ item.label }}</span>
           </router-link>
         </nav>
       </div>
 
       <!-- Bottom User Card -->
-      <div class="p-4 border-t border-slate-800 bg-slate-900/50">
-        <div class="flex items-center justify-between">
+      <div class="border-t border-slate-800 bg-slate-900/50" :class="collapsed ? 'p-3' : 'p-4'">
+        <div class="flex items-center gap-2" :class="collapsed ? 'flex-col' : 'justify-between'">
           <div class="flex items-center gap-3 overflow-hidden">
-            <div class="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 font-bold">
+            <div
+              class="w-9 h-9 shrink-0 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 font-bold"
+              :title="collapsed ? `${authStore.user?.full_name || 'Usuario'} (${authStore.user?.role || 'Consulta'})` : undefined"
+            >
               {{ authStore.user?.full_name?.charAt(0) || 'U' }}
             </div>
-            <div class="truncate">
+            <div v-show="!collapsed" class="truncate">
               <p class="text-xs font-semibold text-slate-200 truncate">{{ authStore.user?.full_name || 'Usuario' }}</p>
               <span class="inline-block text-[10px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-800/60">
                 {{ authStore.user?.role || 'Consulta' }}
@@ -140,6 +158,15 @@ const tcValue = ref<number>(1200);
 const tempTc = ref<number>(1200);
 const tcDialog = ref(false);
 const savingTc = ref(false);
+
+// Sidebar colapsable (estado persistido en localStorage)
+const SIDEBAR_KEY = 'biocostos_sidebar_collapsed';
+const collapsed = ref<boolean>(localStorage.getItem(SIDEBAR_KEY) === '1');
+
+const toggleSidebar = () => {
+  collapsed.value = !collapsed.value;
+  localStorage.setItem(SIDEBAR_KEY, collapsed.value ? '1' : '0');
+};
 
 const formatCurrency = (val: number | string | undefined | null) => {
   return Number(val || 0).toLocaleString('es-AR');
