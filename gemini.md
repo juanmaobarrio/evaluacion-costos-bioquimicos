@@ -1,13 +1,33 @@
 # SISTEMA DE COSTOS DE DETERMINACIONES Y ATENCIÓN BIOQUÍMICA - PROMPT Y GUÍA DE CONTEXTO PARA ASISTENTE IA
 
 > 🔴 **ESTADO DEL PROYECTO: EN PRODUCCIÓN ACTIVA (ZimaBoard / CasaOS)**
-> 
+>
 > **REGLA DE ORO OBLIGATORIA PARA FUTUROS UPDATES:**
 > 1. El sistema **ya está en producción real y cuenta con información cargada por el usuario** (determinaciones, autoanalizadores, insumos, costos fijos y configuraciones).
 > 2. **ESTRICTAMENTE PROHIBIDO:** Ejecutar comandos destructivos en la base de datos (`drop_all`, recrear el archivo SQLite de cero, sobrescribir volúmenes de datos o resetear IDs).
 > 3. **MIGRACIONES AUTOMÁTICAS NO DESTRUCTIVAS:** Cualquier cambio en modelos de datos (nuevas columnas o tablas) DEBE realizarse mediante `ALTER TABLE` automático en `backend/app/core/migration.py` o Alembic, garantizando que todos los registros preexistentes se mantengan intactos y con valores por defecto seguros.
 > 4. **RESILIENCIA EN FRONTEND:** La carga de datos debe ser tolerante a fallos (`Promise.allSettled`), asegurando que ningún cambio o nuevo módulo deje pantallas en blanco.
 > 5. **AISLAMIENTO DE VOLÚMENES DOCKER:** La base de datos persistente reside en `/app/data/costos_bioquimica.db` mapeada al volumen `backend_data`, asegurando que compilar o actualizar contenedores nunca afecte los datos guardados.
+
+---
+
+## 0. ENTORNOS Y FLUJO DE TRABAJO (LEER ANTES DE MODIFICAR)
+
+### Entornos
+| Entorno | Ubicación | Rol | Reglas |
+|---|---|---|---|
+| **Local (PC del usuario)** | `d:\Laboratorio\Python\Aplicaciones\Evaluacion_de_costos` | **Desarrollo** | Aquí se hacen y prueban los cambios. Se puede levantar backend/frontend libremente y usar datos de prueba. |
+| **Servidor Zima (ZimaBoard / CasaOS)** | Docker Compose en producción | **Producción** | El sistema está en uso real con datos cargados por el usuario. **NUNCA** generar cambios que borren, trunquen, recreen o reseteen información de la base de datos (`drop_all`, borrar el `.db`, `DELETE` masivos, sobrescribir volúmenes, seeds destructivos). Todo cambio de esquema debe ser aditivo vía `backend/app/core/migration.py`. |
+
+### Flujo de despliegue
+1. El asistente desarrolla y verifica en **local** (build del frontend / arranque del backend sin errores).
+2. **Al finalizar cada cambio, el asistente DEBE cerrar el trabajo con `git add` de los archivos modificados y `git commit`** con un mensaje descriptivo en formato Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, etc.) que resuma los cambios realizados.
+3. El usuario hace `git pull` en el servidor Zima y reconstruye los contenedores. Por eso el commit debe dejar el repositorio en un estado desplegable y **seguro para los datos de producción**.
+
+### Reglas del commit
+- Commitear sólo los archivos relacionados con la tarea realizada (no arrastrar cambios ajenos que estén sin commitear; avisar al usuario si existen).
+- No commitear artefactos: capturas `screenshot_*.png`, logs, `dist/`, `node_modules/`, bases de datos `.db`.
+- Si el cambio afecta el esquema de la base de datos, indicar explícitamente en el mensaje del commit que la migración es no destructiva.
 
 ---
 
