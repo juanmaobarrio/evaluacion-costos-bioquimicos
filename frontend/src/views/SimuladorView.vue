@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-slate-900">Simulador de Escenarios "¿Qué pasa si?"</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Simulador de Escenarios "¿Qué pasa si?"</h1>
         <p class="text-sm text-slate-500">Análisis de sensibilidad y estrés financiero ante variaciones macroeconómicas o de volumen</p>
       </div>
       <div class="flex items-center gap-3">
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Sliders and Inputs Panel -->
-    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xl space-y-6">
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
       <h3 class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-2">
         <i class="pi pi-cog text-brand-600"></i>
         Variables y Palancas de Estrés Financiero
@@ -90,7 +90,7 @@
 
       <div class="card-stat">
         <div class="text-xs text-slate-500 uppercase font-semibold">Pacientes Mensuales Proyectados</div>
-        <div class="text-2xl font-bold text-slate-900 mt-1">
+        <div class="text-2xl font-bold text-slate-800 mt-1">
           {{ resultado.volumen_pacientes_simulado }} pacientes
         </div>
         <div class="text-xs text-slate-500 mt-1">
@@ -110,7 +110,7 @@
     </div>
 
     <!-- Simulation Detailed Table -->
-    <div v-if="resultado" class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
+    <div v-if="resultado" class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
       <h3 class="text-xs font-bold text-slate-600 uppercase tracking-wider">
         Impacto Unitario en Todas las Determinaciones
       </h3>

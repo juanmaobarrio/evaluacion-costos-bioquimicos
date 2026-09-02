@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-slate-900">Insumos y Reactivos de Laboratorio</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Insumos y Reactivos de Laboratorio</h1>
         <p class="text-sm text-slate-500">Maestro de reactivos específicos, calibradores compartidos, controles globales y soluciones de lavado</p>
       </div>
       <div class="flex items-center gap-3">
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Table Container -->
-    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
       <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div class="relative w-full sm:w-80">
           <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
@@ -61,7 +61,7 @@
 
         <Column field="nombre" header="Insumo / Reactivo" :sortable="true">
           <template #body="{ data }">
-            <div class="font-semibold text-slate-900">{{ data.nombre }}</div>
+            <div class="font-semibold text-slate-800">{{ data.nombre }}</div>
             <div class="text-[11px] text-slate-500">{{ data.marca_proveedor || 'Sin marca' }} • {{ data.presentacion || 'Unidad' }}</div>
           </template>
         </Column>
@@ -241,7 +241,7 @@
             </div>
             <div class="text-right">
               <span class="text-slate-500 block text-[10px]">Costo Unitario / {{ formIns.base_calculo === 'paciente' ? 'Paciente' : 'Test' }}:</span>
-              <span class="text-brand-600 font-black font-mono text-sm">
+              <span class="text-brand-600 font-bold font-mono text-sm">
                 USD ${{ previewCostoUsd }} <span class="text-xs text-slate-500">(${{ previewCostoArs }} ARS)</span>
               </span>
             </div>

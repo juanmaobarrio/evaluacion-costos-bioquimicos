@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-slate-900">Catálogo de Determinaciones</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Catálogo de Determinaciones</h1>
         <p class="text-sm text-slate-500">Modelado analítico de costos unitarios directos e indirectos por práctica bioquímica</p>
       </div>
       <div class="flex items-center gap-3">
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Filters & Table -->
-    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
       <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div class="relative w-full sm:w-80">
           <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
@@ -55,7 +55,7 @@
 
         <Column field="nombre" header="Determinación / Estudio" :sortable="true">
           <template #body="{ data }">
-            <div class="font-semibold text-slate-900 text-sm">{{ data.nombre }}</div>
+            <div class="font-semibold text-slate-800 text-sm">{{ data.nombre }}</div>
             <div class="text-[11px] text-slate-500">{{ data.seccion }}</div>
           </template>
         </Column>
@@ -85,7 +85,7 @@
 
         <Column field="arancel_referencia_ars" header="Arancel de Referencia" style="width: 180px">
           <template #body="{ data }">
-            <div class="font-semibold text-slate-900 font-mono text-sm">
+            <div class="font-semibold text-slate-800 font-mono text-sm">
               ${{ formatCurrency(data.arancel_referencia_ars) }}
             </div>
             <div class="text-[10px] text-brand-600 font-mono">
@@ -117,7 +117,7 @@
       <div v-if="selectedDetalle" class="space-y-4 text-xs">
         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
           <div>
-            <div class="text-sm font-bold text-slate-900">{{ selectedDetalle.nombre }}</div>
+            <div class="text-sm font-bold text-slate-800">{{ selectedDetalle.nombre }}</div>
             <div class="text-slate-500 mt-0.5">Código: {{ selectedDetalle.codigo || 'N/A' }} | Sección: {{ selectedDetalle.seccion }}</div>
           </div>
           <div class="text-right">
@@ -144,7 +144,7 @@
               <div class="space-y-0.5">
                 <div class="flex items-center gap-2">
                   <span class="font-mono text-xs font-bold text-slate-800">{{ item.insumo?.codigo || '-' }}</span>
-                  <span class="font-semibold text-slate-900">{{ item.insumo?.nombre }}</span>
+                  <span class="font-semibold text-slate-800">{{ item.insumo?.nombre }}</span>
                   <span class="text-[9px] px-1.5 py-0.2 rounded border font-bold uppercase"
                     :class="getTipoBadgeClass(item.insumo?.tipo || 'otro')">
                     {{ formatTipo(item.insumo?.tipo || 'otro') }}
@@ -204,7 +204,7 @@
             <div class="text-xs text-slate-600 font-bold">Margen Bruto por Test: ${{ formatCurrency(selectedDetalle.margen_bruto_ars) }}</div>
           </div>
           <div class="text-right">
-            <div class="text-lg font-black text-emerald-600">{{ selectedDetalle.margen_estimado_porcentaje }}%</div>
+            <div class="text-lg font-bold text-emerald-600">{{ selectedDetalle.margen_estimado_porcentaje }}%</div>
             <div class="text-[10px] text-slate-500">Rentabilidad Bruta</div>
           </div>
         </div>
@@ -285,7 +285,7 @@
                 <div class="flex items-center justify-between w-full py-1 text-xs">
                   <div class="flex items-center gap-2">
                     <span class="font-mono font-bold text-brand-600">{{ option.codigo || '-' }}</span>
-                    <span class="text-slate-900 font-medium">{{ option.nombre }}</span>
+                    <span class="text-slate-800 font-medium">{{ option.nombre }}</span>
                     <span class="text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase" :class="getTipoBadgeClass(option.tipo)">
                       {{ formatTipo(option.tipo) }}
                     </span>
@@ -322,7 +322,7 @@
                     min="0.0001"
                     :value="getCantidad(ins.id)"
                     @input="setCantidad(ins.id, ($event.target as HTMLInputElement).value)"
-                    class="form-input !w-20 !py-1 !px-2 text-center font-mono font-bold text-xs text-slate-900"
+                    class="form-input !w-20 !py-1 !px-2 text-center font-mono font-bold text-xs text-slate-800"
                     :class="getCantidad(ins.id) !== 1 ? '!border-amber-500/60 !text-amber-700' : ''"
                   />
                 </div>

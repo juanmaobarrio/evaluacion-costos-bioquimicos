@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-slate-900">Gastos Fijos y Parámetros Operativos</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Gastos Fijos y Parámetros Operativos</h1>
         <p class="text-sm text-slate-500">Estructura fija mensual (Overhead), parámetros de costeo y kit de extracción</p>
       </div>
       <div class="flex items-center gap-3">
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Tabs Container -->
-    <TabView class="bg-white border border-slate-200 rounded-2xl p-2 shadow-xl">
+    <TabView class="bg-white border border-slate-200 rounded-2xl p-2 shadow-sm">
       <!-- TAB 1: GASTOS FIJOS MENSUALES -->
       <TabPanel header="Gastos Fijos Mensuales (Overhead)">
         <div class="p-2 space-y-4">
@@ -33,7 +33,7 @@
           <DataTable :value="gastosFijos" :loading="loading" class="text-xs">
             <Column field="concepto" header="Concepto / Gasto" :sortable="true">
               <template #body="{ data }">
-                <span class="font-semibold text-slate-900">{{ data.concepto }}</span>
+                <span class="font-semibold text-slate-800">{{ data.concepto }}</span>
               </template>
             </Column>
             <Column field="categoria" header="Categoría" :sortable="true">
@@ -46,7 +46,7 @@
             </Column>
             <Column field="monto_mensual" header="Monto Mensual (ARS)" :sortable="true">
               <template #body="{ data }">
-                <span class="font-bold text-slate-900">${{ formatCurrency(data.monto_mensual) }}</span>
+                <span class="font-bold text-slate-800">${{ formatCurrency(data.monto_mensual) }}</span>
               </template>
             </Column>
             <Column header="Acciones" style="width: 100px">
@@ -82,7 +82,7 @@
           <DataTable :value="materialesExtraccion" class="text-xs">
             <Column header="Insumo / Descartable">
               <template #body="{ data }">
-                <div class="font-semibold text-slate-900">{{ data.insumo?.nombre }}</div>
+                <div class="font-semibold text-slate-800">{{ data.insumo?.nombre }}</div>
                 <div class="text-[10px] text-slate-500">{{ data.insumo?.marca_proveedor }}</div>
               </template>
             </Column>
@@ -153,7 +153,7 @@
               <template #body="{ data }">
                 <div class="flex items-center gap-2">
                   <span class="w-2.5 h-2.5 rounded-full" :class="getColorCircleClass(data.color)"></span>
-                  <span class="font-semibold text-slate-900 text-sm">{{ data.nombre }}</span>
+                  <span class="font-semibold text-slate-800 text-sm">{{ data.nombre }}</span>
                 </div>
               </template>
             </Column>

@@ -10,7 +10,7 @@
         <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center shadow-lg shadow-brand-600/30 mb-4">
           <i class="pi pi-chart-line text-white text-3xl"></i>
         </div>
-        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">BioCostos</h1>
+        <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">BioCostos</h1>
         <p class="text-sm text-slate-500 mt-1">Gestión y Cálculo de Costos de Laboratorio</p>
       </div>
 

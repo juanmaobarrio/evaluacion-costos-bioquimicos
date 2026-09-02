@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-slate-900">Protocolos y Costo por Paciente</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Protocolos y Costo por Paciente</h1>
         <p class="text-sm text-slate-500">Cálculo integral por orden/atención: Determinaciones + Kit de Extracción + Overhead Fijo</p>
       </div>
       <div class="flex items-center gap-3">
@@ -15,7 +15,7 @@
     </div>
 
     <!-- Header & Search Filter -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white border border-slate-200 rounded-2xl p-4 shadow-xl">
+    <div class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
       <div class="relative w-full sm:w-80">
         <i class="pi pi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm"></i>
         <input
@@ -35,7 +35,7 @@
       <div
         v-for="proto in filteredProtocolos"
         :key="proto.id"
-        class="bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-5 shadow-xl transition-all flex flex-col justify-between"
+        class="bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-5 shadow-sm transition-all flex flex-col justify-between"
       >
         <div>
           <!-- Top Tag & Code -->
@@ -46,7 +46,7 @@
             </span>
           </div>
 
-          <h3 class="text-base font-bold text-slate-900 mb-1">{{ proto.nombre }}</h3>
+          <h3 class="text-base font-bold text-slate-800 mb-1">{{ proto.nombre }}</h3>
           <p class="text-xs text-slate-500 mb-4 line-clamp-2">{{ proto.descripcion || 'Sin descripción' }}</p>
 
           <!-- Studies badges -->
@@ -89,7 +89,7 @@
               <div class="text-xs font-bold text-slate-800">${{ formatCurrency(proto.arancel_sugerido_ars) }}</div>
             </div>
             <div class="text-right">
-              <div class="text-sm font-black text-emerald-600">{{ proto.margen_estimado_porcentaje }}%</div>
+              <div class="text-sm font-bold text-emerald-600">{{ proto.margen_estimado_porcentaje }}%</div>
               <div class="text-[10px] text-slate-500">Margen (${{ formatCurrency(proto.margen_bruto_ars) }})</div>
             </div>
           </div>

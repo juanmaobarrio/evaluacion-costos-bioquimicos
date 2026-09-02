@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-slate-900">Conciliación de Compras y Producción</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Conciliación de Compras y Producción</h1>
         <p class="text-sm text-slate-500">Control de desvíos: Consumo Teórico proyectado por determinaciones ejecutadas vs. Compras Reales</p>
       </div>
       <div class="flex items-center gap-3">
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Summary Banner -->
-    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
       <div class="flex items-center justify-between">
         <div>
           <h3 class="text-xs font-bold text-slate-600 uppercase tracking-wider">Auditoría de Insumos - {{ getNombreMes(mes) }} {{ anio }}</h3>
@@ -37,7 +37,7 @@
       <DataTable :value="conciliacionItems" :loading="loading" class="text-xs">
         <Column field="insumo_nombre" header="Insumo / Reactivo">
           <template #body="{ data }">
-            <span class="font-semibold text-slate-900">{{ data.insumo_nombre }}</span>
+            <span class="font-semibold text-slate-800">{{ data.insumo_nombre }}</span>
           </template>
         </Column>
 

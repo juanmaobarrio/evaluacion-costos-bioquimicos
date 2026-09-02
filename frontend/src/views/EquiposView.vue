@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-slate-900">Equipos y Autoanalizadores</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Equipos y Autoanalizadores</h1>
         <p class="text-sm text-slate-500">Prorrateo de costos fijos mensuales (alquiler, mantenimiento oficial, amortización) por volumen de determinaciones</p>
       </div>
       <div class="flex items-center gap-3">
@@ -18,7 +18,7 @@
     <div class="p-4 bg-white border border-slate-200 rounded-2xl flex items-start gap-3 shadow-lg">
       <i class="pi pi-info-circle text-sky-600 text-lg mt-0.5"></i>
       <div class="text-xs text-slate-600 space-y-1">
-        <span class="font-bold text-slate-900 block">¿Cómo se computa el costo del equipo?</span>
+        <span class="font-bold text-slate-800 block">¿Cómo se computa el costo del equipo?</span>
         <p class="text-slate-500 leading-relaxed">
           En esta pantalla se cargan exclusivamente los <strong class="text-slate-800">costos fijos del autoanalizador</strong> (Alquiler/Comodato mensual, Abono de Service Técnico Oficial, Amortización contable y Abono de Calibración/QC). La suma mensual se divide por el volumen de tests mensual que procesa el equipo.
         </p>
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Table Container -->
-    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl space-y-4">
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
       <DataTable
         :value="equipos"
         :paginator="true"
@@ -40,7 +40,7 @@
       >
         <Column field="nombre" header="Analizador / Equipo" :sortable="true">
           <template #body="{ data }">
-            <div class="font-semibold text-slate-900 text-sm">{{ data.nombre }}</div>
+            <div class="font-semibold text-slate-800 text-sm">{{ data.nombre }}</div>
             <div class="text-[11px] text-slate-500">{{ data.marca || 'Sin marca' }} {{ data.modelo || '' }} • <span class="text-brand-600 font-medium">{{ data.seccion }}</span></div>
           </template>
         </Column>
@@ -201,7 +201,7 @@
             </div>
             <div class="text-right">
               <span class="text-slate-500 block text-[10px]">Costo Fijo Prorrateado / Test:</span>
-              <span class="text-brand-600 font-black font-mono text-sm">
+              <span class="text-brand-600 font-bold font-mono text-sm">
                 USD ${{ previewCostoTestUsd }} <span class="text-xs text-slate-500">(${{ previewCostoTestArs }} ARS)</span>
               </span>
             </div>

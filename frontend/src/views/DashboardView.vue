@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-slate-900">Dashboard Financiero y Costos</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-800">Dashboard Financiero y Costos</h1>
         <p class="text-sm text-slate-500">Resumen integral de costos operativos, overhead y márgenes por determinación</p>
       </div>
       <div class="flex items-center gap-3">
@@ -21,7 +21,7 @@
           <span class="text-xs font-semibold uppercase tracking-wider">Determinaciones</span>
           <i class="pi pi-list text-brand-600"></i>
         </div>
-        <div class="text-2xl font-bold text-slate-900">{{ stats.total_determinaciones || 0 }}</div>
+        <div class="text-2xl font-bold text-slate-800">{{ stats.total_determinaciones || 0 }}</div>
         <div class="text-xs text-slate-500 mt-1">Prácticas activas costeadas</div>
       </div>
 
@@ -30,7 +30,7 @@
           <span class="text-xs font-semibold uppercase tracking-wider">Autoanalizadores</span>
           <i class="pi pi-server text-brand-400"></i>
         </div>
-        <div class="text-2xl font-bold text-slate-900">{{ stats.total_equipos || 0 }}</div>
+        <div class="text-2xl font-bold text-slate-800">{{ stats.total_equipos || 0 }}</div>
         <div class="text-xs text-slate-500 mt-1">Equipos con prorrateo</div>
       </div>
 
@@ -60,7 +60,7 @@
     <!-- Charts Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Gastos Fijos Por Categoría -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
           <i class="pi pi-chart-pie text-brand-600"></i>
           Distribución de Gastos Fijos (Overhead)
@@ -71,7 +71,7 @@
       </div>
 
       <!-- Costo Promedio por Sección -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
           <i class="pi pi-chart-bar text-sky-600"></i>
           Costo Promedio por Sección de Laboratorio
@@ -85,7 +85,7 @@
     <!-- Tables: Top Costosas vs Menor Margen -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Top Costosas -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
           <i class="pi pi-sort-amount-down text-rose-600"></i>
           Top 5 Determinaciones de Mayor Costo
@@ -111,7 +111,7 @@
       </div>
 
       <!-- Menor Margen -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xl">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
         <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
           <i class="pi pi-exclamation-triangle text-amber-600"></i>
           Determinaciones con Menor Margen (%)
@@ -149,6 +149,10 @@ import { Chart, registerables } from 'chart.js';
 import { apiClient } from '@/services/api';
 
 Chart.register(...registerables);
+// Defaults globales para tema claro (evita textos/bordes negros por defecto de Chart.js)
+Chart.defaults.color = '#64748b';
+Chart.defaults.borderColor = '#e2e8f0';
+Chart.defaults.font.family = 'Inter, ui-sans-serif, system-ui, sans-serif';
 
 const loading = ref(false);
 const stats = ref<any>({});
@@ -175,16 +179,18 @@ const renderCharts = () => {
         labels,
         datasets: [{
           data,
-          backgroundColor: ['#10b981', '#38bdf8', '#f59e0b', '#ec4899', '#8b5cf6', '#64748b'],
-          borderColor: '#0f172a',
+          // Gama corporativa de azules + acentos complementarios (tema claro)
+          backgroundColor: ['#1d4ed8', '#3b82f6', '#60a5fa', '#0ea5e9', '#6366f1', '#94a3b8'],
+          borderColor: '#ffffff',
           borderWidth: 2,
+          hoverBorderColor: '#ffffff',
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'right', labels: { color: '#cbd5e1', font: { size: 11 } } }
+          legend: { position: 'right', labels: { color: '#475569', font: { size: 11 }, usePointStyle: true, boxWidth: 8 } }
         }
       }
     });
@@ -203,7 +209,8 @@ const renderCharts = () => {
         datasets: [{
           label: 'Costo Promedio (ARS)',
           data,
-          backgroundColor: '#38bdf8',
+          backgroundColor: '#3b82f6',
+          hoverBackgroundColor: '#2563eb',
           borderRadius: 6
         }]
       },
@@ -214,8 +221,8 @@ const renderCharts = () => {
           legend: { display: false }
         },
         scales: {
-          x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
-          y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+          x: { ticks: { color: '#64748b' }, grid: { display: false }, border: { color: '#e2e8f0' } },
+          y: { ticks: { color: '#64748b' }, grid: { color: '#e2e8f0' }, border: { display: false } }
         }
       }
     });

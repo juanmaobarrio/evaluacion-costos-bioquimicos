@@ -82,7 +82,7 @@
       <header
         class="h-16 bg-white backdrop-blur-md border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-2">
-          <h2 class="text-lg font-bold text-slate-900 capitalize">{{ currentRouteTitle }}</h2>
+          <h2 class="text-lg font-bold text-slate-800 capitalize">{{ currentRouteTitle }}</h2>
         </div>
         <div class="flex items-center gap-4">
           <!-- TC Button / Dialog trigger -->
