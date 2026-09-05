@@ -78,17 +78,52 @@
     @apply bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:border-brand-300 hover:shadow-md transition-all;
   }
 
-  /* PrimeVue MultiSelect & Dropdown filter fix */
+  /* PrimeVue MultiSelect & Dropdown high-contrast styling */
+  .p-multiselect,
+  .p-dropdown {
+    @apply bg-white border-2 border-slate-300 hover:border-brand-500 rounded-xl transition-all shadow-xs text-slate-900 font-medium !important;
+  }
+  .p-multiselect:not(.p-disabled).p-focus,
+  .p-dropdown:not(.p-disabled).p-focus {
+    @apply border-brand-600 ring-2 ring-brand-500/20 shadow-md !important;
+  }
+  .p-multiselect .p-multiselect-label,
+  .p-dropdown .p-dropdown-label {
+    @apply text-slate-800 font-medium !important;
+  }
+  .p-multiselect .p-placeholder,
+  .p-dropdown .p-placeholder {
+    @apply text-slate-500 font-medium !important;
+  }
+  .p-multiselect .p-multiselect-trigger,
+  .p-dropdown .p-dropdown-trigger {
+    @apply text-slate-700 bg-slate-50 hover:bg-slate-100 border-l border-slate-200 rounded-r-xl transition-colors !important;
+  }
+  .p-multiselect-panel,
+  .p-dropdown-panel {
+    @apply bg-white border-2 border-slate-300 rounded-2xl shadow-2xl text-slate-800 !important;
+  }
+  .p-multiselect-panel .p-multiselect-header {
+    @apply bg-slate-100 border-b-2 border-slate-200 p-3 rounded-t-2xl !important;
+  }
   .p-multiselect-panel .p-multiselect-filter-container,
   .p-dropdown-panel .p-dropdown-filter-container {
-    @apply relative w-full;
+    @apply relative w-full !important;
   }
   .p-multiselect-panel .p-multiselect-filter,
   .p-dropdown-panel .p-dropdown-filter {
-    @apply w-full bg-white border border-slate-300 rounded-lg pl-10 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-500 !important;
+    @apply w-full bg-white border-2 border-slate-400 rounded-xl pl-10 pr-3 py-2 text-xs text-slate-900 font-semibold placeholder-slate-500 focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500/20 shadow-inner !important;
   }
   .p-multiselect-panel .p-multiselect-filter-icon,
   .p-dropdown-panel .p-dropdown-filter-icon {
-    @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs;
+    @apply absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none text-xs font-bold !important;
+  }
+  .p-multiselect-panel .p-multiselect-items .p-multiselect-item,
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    @apply px-3.5 py-2.5 text-xs text-slate-800 border-b border-slate-100 hover:bg-brand-50 hover:text-brand-900 transition-colors font-medium !important;
+  }
+  .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight,
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    @apply bg-brand-50 text-brand-900 font-bold !important;
   }
 }

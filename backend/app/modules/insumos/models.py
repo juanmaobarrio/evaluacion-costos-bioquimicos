@@ -28,7 +28,7 @@ class Insumo(Base):
     codigo = Column(String(50), unique=True, index=True, nullable=True)
     nombre = Column(String(200), nullable=False, index=True)
     marca_proveedor = Column(String(150), nullable=True)
-    tipo = Column(Enum(TipoInsumo), default=TipoInsumo.REACTIVO, nullable=False)
+    tipo = Column(String(50), default="reactivo", nullable=False) # Clave del tipo según tipos_insumo_catalogo
     base_calculo = Column(Enum(BaseCalculoInsumo), default=BaseCalculoInsumo.TEST, nullable=False)
 
     # Presentación y rendimiento de compra

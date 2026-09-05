@@ -36,13 +36,13 @@ class InsumoService:
     async def get_all(
         cls,
         db: AsyncSession,
-        tipo: Optional[TipoInsumo] = None,
+        tipo: Optional[str] = None,
         search: Optional[str] = None,
         activo_only: bool = False
     ) -> List[Insumo]:
         query = select(Insumo)
         if tipo:
-            query = query.where(Insumo.tipo == tipo)
+            query = query.where(Insumo.tipo == tipo.lower().strip())
         if activo_only:
             query = query.where(Insumo.activo == True)
         if search:
@@ -63,6 +63,8 @@ class InsumoService:
     @classmethod
     async def create(cls, db: AsyncSession, insumo_in: InsumoCreate) -> Insumo:
         data = insumo_in.model_dump()
+        if "tipo" in data and data["tipo"]:
+            data["tipo"] = data["tipo"].lower().strip()
         calc = cls._calcular_costo_unitario(data)
         data["costo_por_determinacion_usd"] = calc["costo_por_determinacion_usd"]
         data["costo_unitario_ars"] = calc["costo_unitario_ars"]
@@ -79,6 +81,8 @@ class InsumoService:
             return None
 
         update_data = insumo_in.model_dump(exclude_unset=True)
+        if "tipo" in update_data and update_data["tipo"]:
+            update_data["tipo"] = update_data["tipo"].lower().strip()
         # Combinar datos existentes con actualizados para recalcular costo_unitario
         merged = {
             "moneda": update_data.get("moneda", insumo.moneda),

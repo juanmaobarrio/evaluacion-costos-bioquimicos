@@ -38,6 +38,11 @@ class Determinacion(Base):
     arancel_referencia_ars = Column(Numeric(14, 4), default=0.0)
     arancel_referencia_usd = Column(Numeric(14, 4), default=0.0)
 
+    # Costo y Laboratorio de Referencia (Derivación externa)
+    costo_referencia_ars = Column(Numeric(14, 4), default=0.0) # Costo que cobra el laboratorio derivador
+    costo_referencia_usd = Column(Numeric(14, 4), default=0.0)
+    laboratorio_referencia_id = Column(Integer, ForeignKey("laboratorios_referencia.id", ondelete="SET NULL"), nullable=True)
+
     # Costos calculados cacheados / snapshot (en ARS y USD)
     costo_reactivos_ars = Column(Numeric(14, 4), default=0.0)
     costo_reactivos_usd = Column(Numeric(14, 6), default=0.0)
@@ -57,4 +62,5 @@ class Determinacion(Base):
 
     # Relaciones
     equipo = relationship("Equipo", back_populates="determinaciones")
+    laboratorio_referencia = relationship("LaboratorioReferencia", lazy="selectin")
     insumos_asociados = relationship("DeterminacionInsumo", back_populates="determinacion", cascade="all, delete-orphan")

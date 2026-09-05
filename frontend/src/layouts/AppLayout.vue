@@ -225,6 +225,7 @@ const navItems = [
   { label: 'Gastos Fijos (Overhead)', path: '/gastos-fijos', icon: 'pi pi-building' },
   { label: 'Simulador "What-If"', path: '/simulador', icon: 'pi pi-sliders-h' },
   { label: 'Conciliación y Compras', path: '/conciliacion', icon: 'pi pi-sync' },
+  { label: 'Configuración Global', path: '/configuracion', icon: 'pi pi-cog' },
 ];
 
 const currentRouteTitle = computed(() => {

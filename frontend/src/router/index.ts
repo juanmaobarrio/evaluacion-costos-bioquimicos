@@ -54,6 +54,11 @@ const router = createRouter({
           path: 'conciliacion',
           name: 'conciliacion',
           component: () => import('@/views/ConciliacionView.vue'),
+        },
+        {
+          path: 'configuracion',
+          name: 'configuracion',
+          component: () => import('@/views/ConfiguracionView.vue'),
         }
       ]
     },

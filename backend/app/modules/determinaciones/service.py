@@ -77,6 +77,13 @@ class DeterminacionService:
         margen_bruto_usd = arancel_usd - costo_total_usd
         margen_pct = (margen_bruto_ars / arancel_ars * Decimal("100.0")) if arancel_ars > Decimal("0") else Decimal("0.0")
 
+        # Comparativa con laboratorio externo de referencia
+        costo_ref_ars = det.costo_referencia_ars or Decimal("0.0")
+        costo_ref_usd = det.costo_referencia_usd or (costo_ref_ars / Decimal("1200.0") if costo_ref_ars > 0 else Decimal("0.0"))
+        # diferencia = costo_interno - costo_externo (positivo = hacerlo interno es más caro; negativo = ahorro interno)
+        dif_ref_ars = (costo_total_ars - costo_ref_ars) if costo_ref_ars > 0 else Decimal("0.0")
+        dif_ref_pct = ((costo_total_ars - costo_ref_ars) / costo_ref_ars * Decimal("100.0")) if costo_ref_ars > 0 else Decimal("0.0")
+
         # Insumos asociados enriquecidos con subtotales
         ins_outs = []
         for item in (det.insumos_asociados or []):
@@ -105,6 +112,11 @@ class DeterminacionService:
             tasa_repeticion_porcentaje=det.tasa_repeticion_porcentaje,
             arancel_referencia_ars=det.arancel_referencia_ars,
             arancel_referencia_usd=round_currency(arancel_usd, 4),
+            costo_referencia_ars=det.costo_referencia_ars or Decimal("0.0"),
+            costo_referencia_usd=round_currency(costo_ref_usd, 4),
+            laboratorio_referencia_id=det.laboratorio_referencia_id,
+            diferencia_referencia_ars=round_currency(dif_ref_ars, 2),
+            diferencia_referencia_porcentaje=round_currency(dif_ref_pct, 2),
             activo=det.activo,
             notas=det.notas,
             costo_reactivos_ars=det.costo_reactivos_ars,
@@ -120,6 +132,7 @@ class DeterminacionService:
             margen_bruto_ars=round_currency(margen_bruto_ars, 2),
             margen_bruto_usd=round_currency(margen_bruto_usd, 4),
             equipo=det.equipo,
+            laboratorio_referencia=det.laboratorio_referencia,
             insumos_asociados=ins_outs,
             created_at=det.created_at,
             updated_at=det.updated_at
@@ -136,6 +149,7 @@ class DeterminacionService:
     ) -> List[DeterminacionOut]:
         query = select(Determinacion).options(
             selectinload(Determinacion.equipo),
+            selectinload(Determinacion.laboratorio_referencia),
             selectinload(Determinacion.insumos_asociados).selectinload(DeterminacionInsumo.insumo)
         )
         if seccion:
@@ -158,6 +172,7 @@ class DeterminacionService:
     async def get_by_id(cls, db: AsyncSession, det_id: int) -> Optional[DeterminacionOut]:
         query = select(Determinacion).options(
             selectinload(Determinacion.equipo),
+            selectinload(Determinacion.laboratorio_referencia),
             selectinload(Determinacion.insumos_asociados).selectinload(DeterminacionInsumo.insumo)
         ).where(Determinacion.id == det_id)
         result = await db.execute(query)

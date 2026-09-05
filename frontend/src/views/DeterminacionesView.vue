@@ -72,13 +72,20 @@
           </template>
         </Column>
 
-        <Column field="costo_unitario_total_ars" header="Costo Total" :sortable="true" style="width: 180px">
+        <Column field="costo_unitario_total_ars" header="Costo Total" :sortable="true" style="width: 190px">
           <template #body="{ data }">
             <div class="font-bold text-rose-600 font-mono text-sm">
               USD ${{ formatHighPrecision(data.costo_unitario_total_usd) }}
             </div>
             <div class="text-[10px] text-slate-500 font-mono">
               ARS ${{ formatCurrency(data.costo_unitario_total_ars) }}
+            </div>
+            <div v-if="Number(data.costo_referencia_ars) > 0" class="mt-1 pt-1 border-t border-slate-100 flex items-center gap-1 text-[10px]">
+              <span class="text-slate-400">Ref. Ext:</span>
+              <span class="font-mono font-semibold text-slate-700">${{ formatCurrency(data.costo_referencia_ars) }}</span>
+              <span v-if="data.laboratorio_referencia" class="text-[9px] text-brand-600 truncate max-w-[80px]" :title="data.laboratorio_referencia.nombre">
+                ({{ data.laboratorio_referencia.nombre }})
+              </span>
             </div>
           </template>
         </Column>
@@ -197,100 +204,146 @@
           </div>
         </div>
 
-        <!-- Rentabilidad -->
-        <div class="p-3 bg-brand-50/30 rounded-xl border border-brand-100/60 flex justify-between items-center">
-          <div>
-            <div class="text-[11px] text-brand-600 font-semibold">Arancel Referencia: ${{ formatCurrency(selectedDetalle.arancel_referencia_ars) }} (USD ${{ formatCurrency(selectedDetalle.arancel_referencia_usd) }})</div>
-            <div class="text-xs text-slate-600 font-bold">Margen Bruto por Test: ${{ formatCurrency(selectedDetalle.margen_bruto_ars) }}</div>
+        <!-- Rentabilidad y Comparativa de Derivación -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="p-3 bg-brand-50/40 rounded-xl border border-brand-100 flex justify-between items-center">
+            <div>
+              <div class="text-[11px] text-brand-700 font-semibold">Arancel Venta: ${{ formatCurrency(selectedDetalle.arancel_referencia_ars) }}</div>
+              <div class="text-xs text-slate-700 font-bold">Margen Bruto: ${{ formatCurrency(selectedDetalle.margen_bruto_ars) }}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-bold text-emerald-600">{{ selectedDetalle.margen_estimado_porcentaje }}%</div>
+              <div class="text-[10px] text-slate-500">Rentabilidad Bruta</div>
+            </div>
           </div>
-          <div class="text-right">
-            <div class="text-lg font-bold text-emerald-600">{{ selectedDetalle.margen_estimado_porcentaje }}%</div>
-            <div class="text-[10px] text-slate-500">Rentabilidad Bruta</div>
+
+          <div class="p-3 rounded-xl border flex justify-between items-center"
+            :class="Number(selectedDetalle.costo_referencia_ars) > 0 ? (Number(selectedDetalle.diferencia_referencia_ars) <= 0 ? 'bg-emerald-50/50 border-emerald-200' : 'bg-amber-50/50 border-amber-200') : 'bg-slate-50 border-slate-200'">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-slate-500">
+                Laboratorio de Referencia
+                <span v-if="selectedDetalle.laboratorio_referencia" class="text-slate-800 font-semibold block normal-case text-xs">
+                  {{ selectedDetalle.laboratorio_referencia.nombre }}
+                </span>
+                <span v-else class="text-slate-400 block normal-case text-xs">No configurado</span>
+              </div>
+              <div v-if="Number(selectedDetalle.costo_referencia_ars) > 0" class="text-[11px] text-slate-600 font-mono mt-0.5">
+                Costo externo: ${{ formatCurrency(selectedDetalle.costo_referencia_ars) }}
+              </div>
+            </div>
+            <div v-if="Number(selectedDetalle.costo_referencia_ars) > 0" class="text-right">
+              <div class="text-sm font-mono font-bold"
+                :class="Number(selectedDetalle.diferencia_referencia_ars) <= 0 ? 'text-emerald-700' : 'text-amber-700'">
+                {{ Number(selectedDetalle.diferencia_referencia_ars) <= 0 ? 'Ahorro int.' : 'Más caro int.' }}
+              </div>
+              <div class="text-[10px] font-mono text-slate-600">
+                ${{ formatCurrency(Math.abs(Number(selectedDetalle.diferencia_referencia_ars))) }} ({{ Math.abs(Number(selectedDetalle.diferencia_referencia_porcentaje)) }}%)
+              </div>
+            </div>
+            <div v-else class="text-right text-[11px] text-slate-400 italic">
+              Sin cotización externa
+            </div>
           </div>
         </div>
       </div>
     </Dialog>
 
     <!-- Modal Formulario Creación / Edición -->
-    <Dialog v-model:visible="formDialog" modal :header="formDet.id ? 'Editar Determinación' : 'Nueva Determinación'" :style="{ width: '680px' }">
-      <form @submit.prevent="saveDeterminacion" class="space-y-4 text-xs">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Nombre de la Práctica *</label>
-            <input v-model="formDet.nombre" required class="form-input text-xs" placeholder="Ej: Colesterol Total" />
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Código Interno</label>
-            <input v-model="formDet.codigo" class="form-input text-xs" placeholder="Ej: DET-004" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Sección *</label>
-            <select v-model="formDet.seccion" required class="form-input text-xs">
-              <option v-for="sec in seccionesList" :key="sec.id" :value="sec.nombre">{{ sec.nombre }}</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Equipo Asociado</label>
-            <select v-model="formDet.equipo_id" class="form-input text-xs">
-              <option :value="null">Ninguno / Manual (Sin prorrateo de equipo)</option>
-              <option v-for="eq in equipos" :key="eq.id" :value="eq.id">{{ eq.nombre }} ({{ eq.seccion }})</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Arancel de Venta Ref. (ARS) *</label>
-            <input v-model.number="formDet.arancel_referencia_ars" type="number" step="any" required class="form-input text-xs" placeholder="Ej: 5200" />
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Tiempo de Proceso Técnico (min)</label>
-            <input v-model.number="formDet.tiempo_proceso_minutos" type="number" step="any" class="form-input text-xs" />
-          </div>
-        </div>
-
-        <!-- Insumos Receta con MultiSelect Buscable -->
-        <div class="pt-2 border-t border-slate-200 space-y-3">
-          <div class="flex justify-between items-center">
+    <Dialog
+      v-model:visible="formDialog"
+      modal
+      :header="formDet.id ? 'Editar Determinación' : 'Nueva Determinación'"
+      :style="{ width: '760px', height: '88vh', maxHeight: '88vh' }"
+      :contentStyle="{ height: 'calc(88vh - 120px)', display: 'flex', flexDirection: 'column', padding: '1.25rem', overflow: 'hidden' }"
+    >
+      <form @submit.prevent="saveDeterminacion" class="flex flex-col h-full text-xs">
+        <!-- Parte superior: campos fijos -->
+        <div class="space-y-3 shrink-0 pb-3 border-b border-slate-200">
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <span class="font-bold text-slate-800 block">Componentes Utilizados (Reactivos, Calibradores, Controles, Lavados)</span>
-              <span class="text-[10px] text-slate-500">Buscá y seleccioná los insumos que intervienen y ajustá la cantidad que consume cada determinación (por defecto 1)</span>
+              <label class="block font-semibold text-slate-700 mb-1">Nombre de la Práctica *</label>
+              <input v-model="formDet.nombre" required class="form-input text-xs font-medium" placeholder="Ej: Colesterol Total" />
             </div>
-            <div v-if="selectedInsumoIds.length > 0" class="text-right">
-              <span class="text-[10px] text-slate-500 block">Total Reactivos:</span>
-              <span class="font-mono text-xs font-bold text-brand-600">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Código Interno</label>
+              <input v-model="formDet.codigo" class="form-input text-xs font-mono font-bold" placeholder="Ej: DET-004" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Sección *</label>
+              <select v-model="formDet.seccion" required class="form-input text-xs font-medium">
+                <option v-for="sec in seccionesList" :key="sec.id" :value="sec.nombre">{{ sec.nombre }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Equipo Asociado</label>
+              <select v-model="formDet.equipo_id" class="form-input text-xs font-medium">
+                <option :value="null">Ninguno / Manual (Sin prorrateo de equipo)</option>
+                <option v-for="eq in equipos" :key="eq.id" :value="eq.id">{{ eq.nombre }} ({{ eq.seccion }})</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Arancel Venta Ref. (ARS) *</label>
+              <input v-model.number="formDet.arancel_referencia_ars" type="number" step="any" required class="form-input text-xs font-mono font-bold text-brand-700" placeholder="Ej: 5200" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Costo Ref. Externo (ARS)</label>
+              <input v-model.number="formDet.costo_referencia_ars" type="number" step="any" min="0" class="form-input text-xs font-mono font-bold text-amber-700" placeholder="Ej: 3500" title="Costo cobrado por laboratorio de derivación externa" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Lab. de Referencia</label>
+              <select v-model="formDet.laboratorio_referencia_id" class="form-input text-xs font-medium">
+                <option :value="null">Sin derivación / Ninguno</option>
+                <option v-for="lab in laboratoriosList" :key="lab.id" :value="lab.id">{{ lab.nombre }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Área Central de Insumos: altura flexible y scroll interno -->
+        <div class="flex-1 flex flex-col min-h-0 pt-3 space-y-2.5">
+          <div class="flex justify-between items-center shrink-0">
+            <div>
+              <span class="font-bold text-slate-800 block text-xs">Componentes Utilizados (Reactivos, Calibradores, Controles, Lavados)</span>
+              <span class="text-[10px] text-slate-500">Seleccioná los insumos y ajustá la cantidad unitaria requerida</span>
+            </div>
+            <div v-if="selectedInsumoIds.length > 0" class="text-right shrink-0">
+              <span class="text-[10px] text-slate-500 block">Total Insumos:</span>
+              <span class="font-mono text-xs font-bold text-brand-700">
                 USD ${{ formatHighPrecision(formCostoTotalInsumosUsd) }} <span class="text-[10px] text-slate-500">(${{ formatCurrency(formCostoTotalInsumosArs) }} ARS)</span>
               </span>
             </div>
           </div>
 
-          <!-- MultiSelect con Filtro / Búsqueda -->
-          <div class="space-y-2">
+          <!-- Dropdown / MultiSelect con Alto Contraste -->
+          <div class="shrink-0">
             <MultiSelect
               v-model="selectedInsumoIds"
               :options="insumosList"
               optionLabel="nombre"
               optionValue="id"
               filter
-              filterPlaceholder="Buscar por nombre, código o marca..."
+              filterPlaceholder="Buscar reactivo por nombre, código o marca..."
               placeholder="Buscar y seleccionar reactivos, calibradores, controles y lavados..."
               class="w-full text-xs"
               display="chip"
-              :maxSelectedLabels="4"
+              :maxSelectedLabels="3"
             >
               <template #option="{ option }">
                 <div class="flex items-center justify-between w-full py-1 text-xs">
                   <div class="flex items-center gap-2">
-                    <span class="font-mono font-bold text-brand-600">{{ option.codigo || '-' }}</span>
-                    <span class="text-slate-800 font-medium">{{ option.nombre }}</span>
+                    <span class="font-mono font-bold text-brand-700">{{ option.codigo || '-' }}</span>
+                    <span class="text-slate-900 font-semibold">{{ option.nombre }}</span>
                     <span class="text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase" :class="getTipoBadgeClass(option.tipo)">
                       {{ formatTipo(option.tipo) }}
                     </span>
                   </div>
-                  <div class="font-mono text-brand-600 font-semibold ml-4">
+                  <div class="font-mono text-brand-700 font-bold ml-4">
                     USD ${{ formatHighPrecision(option.costo_por_determinacion_usd) }}
                   </div>
                 </div>
@@ -298,61 +351,68 @@
             </MultiSelect>
           </div>
 
-          <!-- Lista Visual de Insumos Seleccionados -->
-          <div v-if="selectedInsumosDetails.length > 0" class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-            <div
-              v-for="ins in selectedInsumosDetails"
-              :key="ins.id"
-              class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs"
-            >
-              <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-bold text-brand-600">{{ ins.codigo || '-' }}</span>
-                <span class="font-semibold text-slate-800">{{ ins.nombre }}</span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase" :class="getTipoBadgeClass(ins.tipo)">
-                  {{ formatTipo(ins.tipo) }}
-                </span>
-              </div>
-              <div class="flex items-center gap-3">
-                <!-- Cantidad utilizada por determinación -->
-                <div class="flex items-center gap-1.5" title="Cantidad de unidades de este componente que consume una determinación (ej: 2 tubos)">
-                  <span class="text-[10px] text-slate-500 uppercase tracking-wider">Cant.</span>
-                  <input
-                    type="number"
-                    step="any"
-                    min="0.0001"
-                    :value="getCantidad(ins.id)"
-                    @input="setCantidad(ins.id, ($event.target as HTMLInputElement).value)"
-                    class="form-input !w-20 !py-1 !px-2 text-center font-mono font-bold text-xs text-slate-800"
-                    :class="getCantidad(ins.id) !== 1 ? '!border-amber-500/60 !text-amber-700' : ''"
-                  />
-                </div>
-                <div class="text-right min-w-[110px]">
-                  <span class="font-mono text-brand-600 font-bold block">
-                    USD ${{ formatHighPrecision(Number(ins.costo_por_determinacion_usd || 0) * getCantidad(ins.id)) }}
-                  </span>
-                  <span v-if="getCantidad(ins.id) !== 1" class="text-[10px] font-mono text-slate-500 block">
-                    {{ formatNumber(getCantidad(ins.id)) }} × ${{ formatHighPrecision(ins.costo_por_determinacion_usd) }}
+          <!-- Lista de Seleccionados Scrolleable con altura constante -->
+          <div class="flex-1 overflow-y-auto pr-1 border border-slate-200 rounded-xl bg-slate-50/50 p-2">
+            <div v-if="selectedInsumosDetails.length > 0" class="space-y-1.5">
+              <div
+                v-for="ins in selectedInsumosDetails"
+                :key="ins.id"
+                class="p-2.5 bg-white rounded-xl border border-slate-200 shadow-xs flex items-center justify-between text-xs"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs font-bold text-brand-700">{{ ins.codigo || '-' }}</span>
+                  <span class="font-semibold text-slate-900">{{ ins.nombre }}</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase" :class="getTipoBadgeClass(ins.tipo)">
+                    {{ formatTipo(ins.tipo) }}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  @click="removeInsumoId(ins.id)"
-                  title="Quitar componente"
-                  class="p-1 text-slate-500 hover:text-rose-600 rounded hover:bg-white"
-                >
-                  <i class="pi pi-times text-xs"></i>
-                </button>
+                <div class="flex items-center gap-3">
+                  <div class="flex items-center gap-1.5" title="Cantidad utilizada por determinación">
+                    <span class="text-[10px] text-slate-600 uppercase font-semibold">Cant.</span>
+                    <input
+                      type="number"
+                      step="any"
+                      min="0.0001"
+                      :value="getCantidad(ins.id)"
+                      @input="setCantidad(ins.id, ($event.target as HTMLInputElement).value)"
+                      class="form-input !w-20 !py-1 !px-2 text-center font-mono font-bold text-xs text-slate-900 border-2 border-slate-300"
+                      :class="getCantidad(ins.id) !== 1 ? '!border-amber-500 !text-amber-800 bg-amber-50/40' : ''"
+                    />
+                  </div>
+                  <div class="text-right min-w-[110px]">
+                    <span class="font-mono text-brand-700 font-bold block text-xs">
+                      USD ${{ formatHighPrecision(Number(ins.costo_por_determinacion_usd || 0) * getCantidad(ins.id)) }}
+                    </span>
+                    <span v-if="getCantidad(ins.id) !== 1" class="text-[10px] font-mono text-slate-500 block">
+                      {{ formatNumber(getCantidad(ins.id)) }} × ${{ formatHighPrecision(ins.costo_por_determinacion_usd) }}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    @click="removeInsumoId(ins.id)"
+                    title="Quitar componente"
+                    class="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
+                  >
+                    <i class="pi pi-times text-xs"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div v-else class="p-4 text-center text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-            No has seleccionado insumos para esta determinación. Abrí el buscador arriba para agregar reactivos y consumibles.
+            <div v-else class="h-full flex flex-col items-center justify-center text-center p-6 text-slate-500">
+              <i class="pi pi-box text-3xl text-slate-300 mb-2"></i>
+              <p class="font-medium">No has seleccionado insumos para esta determinación</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">Buscá en el selector de arriba para incorporar reactivos, calibradores y consumibles</p>
+            </div>
           </div>
         </div>
 
-        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200">
+        <!-- Botonera Fija al Fondo -->
+        <div class="flex justify-end gap-2 pt-3 mt-3 border-t border-slate-200 shrink-0">
           <button type="button" @click="formDialog = false" class="btn-secondary text-xs">Cancelar</button>
-          <button type="submit" class="btn-primary text-xs">Guardar Determinación</button>
+          <button type="submit" class="btn-primary text-xs">
+            <i class="pi pi-check text-xs"></i>
+            <span>Guardar Determinación</span>
+          </button>
         </div>
       </form>
     </Dialog>
@@ -364,7 +424,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { apiClient } from '@/services/api';
-import type { Determinacion, Equipo, Insumo, SeccionLaboratorio } from '@/types';
+import type { Determinacion, Equipo, Insumo, SeccionLaboratorio, LaboratorioReferencia } from '@/types';
 
 const toast = useToast();
 const confirm = useConfirm();
@@ -375,6 +435,7 @@ const determinaciones = ref<Determinacion[]>([]);
 const equipos = ref<Equipo[]>([]);
 const insumosList = ref<Insumo[]>([]);
 const seccionesList = ref<SeccionLaboratorio[]>([]);
+const laboratoriosList = ref<LaboratorioReferencia[]>([]);
 
 const searchQuery = ref('');
 const selectedSeccion = ref('');
@@ -391,6 +452,8 @@ const formDet = ref<any>({
   equipo_id: null,
   tiempo_proceso_minutos: 0,
   arancel_referencia_ars: 5200,
+  costo_referencia_ars: 0,
+  laboratorio_referencia_id: null,
 });
 
 const selectedInsumoIds = ref<number[]>([]);
@@ -490,12 +553,14 @@ const loadData = async () => {
       apiClient.get('/determinaciones'),
       apiClient.get('/equipos'),
       apiClient.get('/insumos'),
-      apiClient.get('/secciones')
+      apiClient.get('/secciones'),
+      apiClient.get('/laboratorios-referencia')
     ]);
     if (results[0].status === 'fulfilled') determinaciones.value = results[0].value.data;
     if (results[1].status === 'fulfilled') equipos.value = results[1].value.data;
     if (results[2].status === 'fulfilled') insumosList.value = results[2].value.data;
     if (results[3].status === 'fulfilled') seccionesList.value = results[3].value.data;
+    if (results[4].status === 'fulfilled') laboratoriosList.value = results[4].value.data;
   } catch (err) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar algunos datos de determinaciones', life: 3000 });
   } finally {
@@ -530,6 +595,8 @@ const openNewDialog = () => {
     equipo_id: equipos.value[0]?.id || null,
     tiempo_proceso_minutos: 0,
     arancel_referencia_ars: 5200,
+    costo_referencia_ars: 0,
+    laboratorio_referencia_id: null,
   };
   selectedInsumoIds.value = [];
   insumoCantidades.value = {};
@@ -545,6 +612,8 @@ const editDeterminacion = (det: Determinacion) => {
     equipo_id: det.equipo_id,
     tiempo_proceso_minutos: det.tiempo_proceso_minutos,
     arancel_referencia_ars: det.arancel_referencia_ars,
+    costo_referencia_ars: det.costo_referencia_ars || 0,
+    laboratorio_referencia_id: det.laboratorio_referencia_id || null,
   };
   const asociados = det.insumos_asociados || [];
   insumoCantidades.value = Object.fromEntries(

@@ -12,7 +12,7 @@ router = APIRouter(prefix="/insumos", tags=["Insumos y Reactivos"])
 
 @router.get("", response_model=List[InsumoOut])
 async def list_insumos(
-    tipo: Optional[TipoInsumo] = Query(None, description="Filtrar por tipo de insumo"),
+    tipo: Optional[str] = Query(None, description="Filtrar por tipo de insumo"),
     search: Optional[str] = Query(None, description="Buscar por nombre, código o marca"),
     activo_only: bool = Query(False, description="Solo insumos activos"),
     db: AsyncSession = Depends(get_db),

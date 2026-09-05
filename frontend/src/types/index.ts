@@ -6,6 +6,31 @@ export interface User {
   is_active: boolean;
 }
 
+export interface LaboratorioReferencia {
+  id: number;
+  nombre: string;
+  contacto?: string;
+  telefono?: string;
+  email?: string;
+  direccion?: string;
+  activo: boolean;
+  notas?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface TipoInsumoCatalogo {
+  id: number;
+  clave: string;
+  nombre: string;
+  descripcion?: string;
+  color?: string;
+  base_calculo_sugerida?: 'test' | 'paciente';
+  orden?: number;
+  activo: boolean;
+  created_at?: string;
+}
+
 export interface SeccionLaboratorio {
   id: number;
   nombre: string;
@@ -20,7 +45,7 @@ export interface Insumo {
   codigo?: string;
   nombre: string;
   marca_proveedor?: string;
-  tipo: 'reactivo' | 'calibrador' | 'control' | 'solucion_lavado' | 'descartable_extraccion' | 'descartable_equipo' | 'otro';
+  tipo: string;
   base_calculo: 'test' | 'paciente';
   presentacion?: string;
   cantidad_por_presentacion: number;
@@ -85,6 +110,11 @@ export interface Determinacion {
   tasa_repeticion_porcentaje: number;
   arancel_referencia_ars: number;
   arancel_referencia_usd?: number;
+  costo_referencia_ars?: number;
+  costo_referencia_usd?: number;
+  laboratorio_referencia_id?: number | null;
+  diferencia_referencia_ars?: number;
+  diferencia_referencia_porcentaje?: number;
   costo_reactivos_ars: number;
   costo_reactivos_usd?: number;
   costo_equipo_ars: number;
@@ -98,6 +128,7 @@ export interface Determinacion {
   margen_bruto_ars: number;
   margen_bruto_usd?: number;
   equipo?: Equipo;
+  laboratorio_referencia?: LaboratorioReferencia;
   insumos_asociados: DeterminacionInsumo[];
   activo: boolean;
   notas?: string;

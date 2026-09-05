@@ -137,6 +137,17 @@
       <!-- TAB 4: SECCIONES DEL LABORATORIO -->
       <TabPanel header="Secciones del Laboratorio">
         <div class="p-2 space-y-4">
+          <div class="p-3 bg-brand-50/60 rounded-xl border border-brand-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2">
+              <i class="pi pi-sliders-h text-brand-600 text-sm shrink-0"></i>
+              <span class="text-slate-700 font-medium">Las secciones ahora forman parte del nuevo panel unificado de <strong>Configuración Global</strong> junto a los Tipos de Insumo y Laboratorios de Referencia.</span>
+            </div>
+            <router-link to="/configuracion" class="btn-primary !py-1 text-xs whitespace-nowrap shrink-0">
+              <span>Ir a Configuración</span>
+              <i class="pi pi-arrow-right text-[10px]"></i>
+            </router-link>
+          </div>
+
           <div class="flex justify-between items-center">
             <div>
               <p class="text-xs text-slate-500">Maestro de secciones operativas para clasificar determinaciones, autoanalizadores y reportes</p>

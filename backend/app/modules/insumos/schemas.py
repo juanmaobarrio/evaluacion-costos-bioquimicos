@@ -8,7 +8,7 @@ class InsumoBase(BaseModel):
     codigo: Optional[str] = None
     nombre: str
     marca_proveedor: Optional[str] = None
-    tipo: TipoInsumo = TipoInsumo.REACTIVO
+    tipo: str = "reactivo" # Clave del tipo según catálogo
     base_calculo: BaseCalculoInsumo = BaseCalculoInsumo.TEST
     presentacion: Optional[str] = None
     cantidad_por_presentacion: Decimal = Field(default=Decimal("1.0"), gt=Decimal("0.0"))
@@ -29,7 +29,7 @@ class InsumoUpdate(BaseModel):
     codigo: Optional[str] = None
     nombre: Optional[str] = None
     marca_proveedor: Optional[str] = None
-    tipo: Optional[TipoInsumo] = None
+    tipo: Optional[str] = None
     base_calculo: Optional[BaseCalculoInsumo] = None
     presentacion: Optional[str] = None
     cantidad_por_presentacion: Optional[Decimal] = None

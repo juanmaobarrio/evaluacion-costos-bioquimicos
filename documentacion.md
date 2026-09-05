@@ -53,3 +53,27 @@ backend/
 ├── seed_data.py
 └── requirements.txt
 ```
+
+---
+
+## 4. Módulo de Configuración Global y Pruebas Derivadas (Outsourced Tests)
+
+### A. Nuevos Modelos y Catálogos (`app/modules/configuracion/`)
+- **Laboratorios de Referencia (`laboratorios_referencia`):** Registra proveedores externos para la derivación de estudios de alta complejidad o contraste analítico (`nombre`, `contacto`, `telefono`, `email`, `direccion`, `notas`).
+- **Tipos de Insumo (`tipos_insumo_catalogo`):** Catálogo dinámico maestro de categorías de insumos (`reactivo`, `calibrador`, `control`, `solucion_lavado`, `descartable_extraccion`, `descartable_equipo`, etc.) con base de cálculo sugerida (`test` o `paciente`) y color identificador.
+- **Secciones del Laboratorio (`secciones_laboratorio`):** Departamentos técnicos para clasificar determinaciones y analizadores.
+
+### B. Pruebas / Determinaciones Derivadas y Contraste de Costos
+- **Campos incorporados en Determinaciones:**
+  - `costo_referencia_ars`: Costo monetario cobrado por el laboratorio de derivación externo.
+  - `costo_referencia_usd`: Equivalente en dólares según tipo de cambio de referencia vigente.
+  - `laboratorio_referencia_id`: Foreign key apuntando a `laboratorios_referencia.id`.
+- **Cálculo de Ahorro / Diferencia:**
+  $$\text{Diferencia} = \text{Costo Unitario Interno Total} - \text{Costo Laboratorio Externo}$$
+  - Si es $\le 0$, el procesamiento interno representa un ahorro económico frente a la derivación externa.
+  - Si es $> 0$, se evidencia sobrecosto interno respecto al precio de mercado de referencia externa.
+
+### C. Ajustes de UI y Experiencia de Usuario
+- **Contraste Visual en Búsqueda y Dropdowns:** Se aumentaron los bordes, colores de texto y fondos de `MultiSelect` y `Dropdown` de PrimeVue para garantizar legibilidad clara de los reactivos y consumibles.
+- **Altura Fija en Modal de Determinaciones:** El modal de creación y edición tiene ahora altura fija (`88vh`) con disposición flexible (`flex-col`). El área de selección de insumos posee scroll interno dedicado para evitar saltos o redimensionamientos dinámicos al añadir o quitar componentes.
+- **Vista de Configuración Global (`/configuracion`):** Panel centralizado con tabs para la gestión integral de Secciones, Tipos de Insumo y Laboratorios de Referencia.

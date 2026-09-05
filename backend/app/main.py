@@ -12,6 +12,7 @@ import app.modules.insumos.models
 import app.modules.determinaciones.models
 import app.modules.costos_generales.models
 import app.modules.produccion.models
+import app.modules.configuracion.models
 
 # Routers
 from app.modules.auth.router import router as auth_router
@@ -21,6 +22,7 @@ from app.modules.determinaciones.router import router as determinaciones_router
 from app.modules.costos_generales.router import router as costos_generales_router
 from app.modules.costos.router import router as costos_router
 from app.modules.produccion.router import router as produccion_router
+from app.modules.configuracion.router import router as configuracion_router
 
 from app.core.migration import run_auto_migrations
 
@@ -80,6 +82,7 @@ app.include_router(determinaciones_router, prefix=settings.API_V1_STR)
 app.include_router(costos_generales_router, prefix=settings.API_V1_STR)
 app.include_router(costos_router, prefix=settings.API_V1_STR)
 app.include_router(produccion_router, prefix=settings.API_V1_STR)
+app.include_router(configuracion_router, prefix=settings.API_V1_STR)
 
 @app.get("/")
 async def root():

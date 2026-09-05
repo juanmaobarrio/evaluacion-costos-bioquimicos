@@ -32,15 +32,9 @@
             <option value="test">Por Tests / Determinación</option>
             <option value="paciente">Por Paciente / Extracción</option>
           </select>
-          <select v-model="selectedTipo" class="form-input text-xs w-full sm:w-52">
+          <select v-model="selectedTipo" class="form-input text-xs w-full sm:w-52 font-medium">
             <option value="">Todos los Tipos</option>
-            <option value="reactivo">Reactivo Específico</option>
-            <option value="calibrador">Calibrador</option>
-            <option value="control">Control de Calidad</option>
-            <option value="solucion_lavado">Solución Lavado / Equipo</option>
-            <option value="descartable_extraccion">Descartables Extracción</option>
-            <option value="descartable_equipo">Descartables Equipo</option>
-            <option value="otro">Otro</option>
+            <option v-for="t in tiposList" :key="t.clave" :value="t.clave">{{ t.nombre }}</option>
           </select>
         </div>
       </div>
@@ -150,15 +144,9 @@
         <!-- Base de Cálculo y Tipo -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-semibold text-slate-600 mb-1">Tipo de Insumo *</label>
-            <select v-model="formIns.tipo" required class="form-input text-xs">
-              <option value="reactivo">Reactivo Específico</option>
-              <option value="calibrador">Calibrador Multi-analito / Específico</option>
-              <option value="control">Control de Calidad Global</option>
-              <option value="solucion_lavado">Solución de Lavado / Consumible Equipo</option>
-              <option value="descartable_extraccion">Descartable Extracción (Agujas, Tubos, Algodón)</option>
-              <option value="descartable_equipo">Descartable de Equipo (Cubetas, Puntas)</option>
-              <option value="otro">Otro</option>
+            <label class="block font-semibold text-slate-700 mb-1">Tipo de Insumo *</label>
+            <select v-model="formIns.tipo" required class="form-input text-xs font-medium" @change="onTipoChange">
+              <option v-for="t in tiposList" :key="t.clave" :value="t.clave">{{ t.nombre }}</option>
             </select>
           </div>
           <div>
@@ -262,13 +250,15 @@ import { ref, computed, onMounted } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { apiClient } from '@/services/api';
-import type { Insumo } from '@/types';
+import { configuracionService } from '@/services/configuracion.service';
+import type { Insumo, TipoInsumoCatalogo } from '@/types';
 
 const toast = useToast();
 const confirm = useConfirm();
 
 const loading = ref(false);
 const insumos = ref<Insumo[]>([]);
+const tiposList = ref<TipoInsumoCatalogo[]>([]);
 const searchQuery = ref('');
 const selectedTipo = ref('');
 const selectedBase = ref('');
@@ -332,6 +322,8 @@ const formatHighPrecision = (val: number) => {
 };
 
 const formatTipo = (t: string) => {
+  const found = tiposList.value.find(item => item.clave.toLowerCase() === (t || '').toLowerCase());
+  if (found) return found.nombre;
   const map: any = {
     reactivo: 'Reactivo Específico',
     calibrador: 'Calibrador',
@@ -345,6 +337,19 @@ const formatTipo = (t: string) => {
 };
 
 const getTipoBadgeClass = (t: string) => {
+  const found = tiposList.value.find(item => item.clave.toLowerCase() === (t || '').toLowerCase());
+  const color = found?.color;
+  const colorMap: any = {
+    brand: 'bg-brand-50 text-brand-700 border-brand-200',
+    purple: 'bg-purple-50 text-purple-700 border-purple-200',
+    amber: 'bg-amber-50 text-amber-700 border-amber-200',
+    cyan: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+    blue: 'bg-blue-50 text-blue-700 border-blue-200',
+    emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    rose: 'bg-rose-50 text-rose-700 border-rose-200',
+    slate: 'bg-slate-100 text-slate-700 border-slate-300'
+  };
+  if (color && colorMap[color]) return colorMap[color];
   const map: any = {
     reactivo: 'bg-brand-50 text-brand-600 border-brand-200',
     calibrador: 'bg-purple-50 text-purple-600 border-purple-200',
@@ -372,12 +377,23 @@ const filteredInsumos = computed(() => {
 const loadInsumos = async () => {
   loading.value = true;
   try {
-    const response = await apiClient.get('/insumos');
-    insumos.value = response.data;
+    const [insRes, tipos] = await Promise.all([
+      apiClient.get('/insumos'),
+      configuracionService.getTiposInsumo().catch(() => [])
+    ]);
+    insumos.value = insRes.data;
+    if (tipos && tipos.length) tiposList.value = tipos;
   } catch (err) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron cargar los insumos', life: 3000 });
   } finally {
     loading.value = false;
+  }
+};
+
+const onTipoChange = () => {
+  const found = tiposList.value.find(item => item.clave === formIns.value.tipo);
+  if (found && found.base_calculo_sugerida && !formIns.value.id) {
+    formIns.value.base_calculo = found.base_calculo_sugerida;
   }
 };
 
